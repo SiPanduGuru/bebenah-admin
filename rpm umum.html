@@ -48,20 +48,17 @@
             color: white; border-radius: 10px; font-size: 14px; box-sizing: border-box;
         }
 
-        /* PROFIL LULUSAN */
         .profil-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
         .profil-box { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
         .profil-check { display: flex; align-items: center; gap: 10px; font-size: 13px; cursor: pointer; }
         .profil-input { display: none; margin-top: 10px; }
 
-        /* 3M CARDS */
         .pertemuan-card { background: rgba(0,0,0,0.2); padding: 25px; margin-top: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
         .m-box { padding: 15px; border-radius: 12px; margin-top: 10px; border-left: 4px solid; }
         .mindful { border-left-color: var(--accent-green); background: rgba(34, 197, 94, 0.05); }
         .meaningful { border-left-color: var(--purple-soft); background: rgba(139, 92, 246, 0.05); }
         .joyful { border-left-color: var(--accent-orange); background: rgba(230, 126, 34, 0.05); }
 
-        /* MODAL */
         #tpModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; justify-content:center; align-items:center; }
         .modal-content { background: #1c153a; padding:30px; border-radius:20px; width:90%; max-width:600px; border: 1px solid var(--purple-main); }
 
@@ -71,7 +68,7 @@
         .btn-save { background: var(--accent-green); color: white; }
         .btn-word { background: #2b579a; color: white; width: 100%; font-size: 16px; margin-top: 50px; }
 
-        .save-notif { position: fixed; bottom: 20px; right: 20px; background: var(--purple-main); padding: 10px 20px; border-radius: 50px; font-size: 12px; display: none; }
+        .save-notif { position: fixed; bottom: 20px; right: 20px; background: var(--purple-main); padding: 10px 20px; border-radius: 50px; font-size: 12px; display: none; z-index: 1000; }
     </style>
 </head>
 <body>
@@ -299,7 +296,7 @@
 
     function downloadDoc() {
         const data = db.find(x => x.id === currentId);
-        if(!data) return;
+        if(!data) return alert("Pilih data terlebih dahulu");
 
         let profHtml = "";
         dimensiList.forEach((d, i) => { 
@@ -335,23 +332,19 @@
                 <tr><td>Bab / Topik</td><td>: ${data.bab}</td></tr>
                 <tr><td>Alokasi Waktu</td><td>: ${data.alokasi}</td></tr>
             </table>
-
             <h3>I. KOMPONEN INTI</h3>
             <table>
                 <tr><td width="30%" bgcolor="#f9f9f9"><b>Tujuan Pembelajaran</b></td><td>${data.tp.replace(/\n/g, '<br>')}</td></tr>
                 <tr><td bgcolor="#f9f9f9"><b>Indikator (IKTP)</b></td><td>${data.iktp.replace(/\n/g, '<br>')}</td></tr>
             </table>
-
             <h3>II. PROFIL LULUSAN & MAKNA</h3>
             <table>
                 ${profHtml}
                 <tr><td bgcolor="#f9f9f9"><b>Pertanyaan Pemantik</b></td><td>${data.pemantik.replace(/\n/g, '<br>')}</td></tr>
                 <tr><td bgcolor="#f9f9f9"><b>Pemahaman Bermakna</b></td><td>${data.bermakna.replace(/\n/g, '<br>')}</td></tr>
             </table>
-
             <h3>III. STRATEGI PEMBELAJARAN (3M)</h3>
             <table>${mHtml}</table>
-
             <h3>IV. DIFERENSIASI & ASESMEN</h3>
             <table>
                 <tr><td width="30%" bgcolor="#f9f9f9"><b>Diferensiasi</b></td><td>${data.diff_umum.replace(/\n/g, '<br>')}</td></tr>
@@ -359,7 +352,6 @@
                 <tr><td bgcolor="#f9f9f9"><b>Asesmen Proses</b></td><td>${data.as_proses}</td></tr>
                 <tr><td bgcolor="#f9f9f9"><b>Asesmen Akhir</b></td><td>${data.as_akhir}</td></tr>
             </table>
-
             <br><br>
             <table class="header-table">
                 <tr>
@@ -369,11 +361,23 @@
             </table>
         </div></body></html>`;
 
+        const filename = `RPM_${data.bab.replace(/[/\\?%*:|"<>]/g, '-')}.doc`;
         const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `RPM_${data.bab}.doc`;
-        link.click();
+        
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, filename);
+        } else {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(() => {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
+        }
     }
 
     function deleteRPM(id) { if(confirm('Hapus?')) { db = db.filter(x => x.id !== id); localStorage.setItem('rpm_db_v5', JSON.stringify(db)); location.reload(); } }
