@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bebenah Admin | Premium Glass</title>
+    <title>Bebenah Admin | Premium Glass Fix</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     
     <script>
@@ -13,13 +13,10 @@
 
     <style>
         :root {
-            /* Tema Biru Keunguan Pop-up */
             --bg-deep: #0f1035;
             --main-gradient: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);
-            --glass-bg: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.12);
             --accent-purple: #a78bfa;
-            --accent-blue: #6366f1;
             --sidebar-width: 280px;
         }
 
@@ -29,111 +26,85 @@
             font-family: 'Inter', sans-serif; 
             background: var(--main-gradient); 
             background-attachment: fixed;
-            height: 100vh;
-            overflow: hidden;
-            color: white;
+            height: 100vh; overflow: hidden; color: white;
         }
 
-        /* Efek Cahaya Pop-up di Background */
-        body::before {
-            content: "";
-            position: absolute; width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(167, 139, 250, 0.2) 0%, transparent 70%);
-            top: -150px; left: -150px; z-index: -1;
+        .layout { display: flex; width: 100vw; height: 100vh; position: relative; }
+
+        /* OVERLAY: Penting agar saat menu terbuka di HP, iframe tidak bisa diklik */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px); z-index: 90;
+            display: none; opacity: 0; transition: 0.3s;
         }
+        .overlay.show { display: block; opacity: 1; }
 
-        .layout { display: flex; width: 100vw; height: 100vh; }
-
-        /* Sidebar Glassmorphism */
+        /* SIDEBAR: Diperbaiki agar transisi geser lancar */
         .sidebar {
             width: var(--sidebar-width);
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border-right: 1px solid var(--glass-border);
             display: flex; flex-direction: column;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 100;
+            z-index: 100; position: relative;
         }
 
-        .sidebar-header { 
-            height: 100px; display: flex; align-items: center; padding: 0 35px; 
-        }
+        /* Logic Geser: Menggunakan Transform agar ringan */
+        .sidebar.collapsed { margin-left: calc(var(--sidebar-width) * -1); opacity: 0; }
 
+        .sidebar-header { height: 100px; display: flex; align-items: center; padding: 0 35px; }
         .logo-text { 
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800; font-size: 26px; letter-spacing: -1px;
+            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 26px;
             background: linear-gradient(to right, #fff, var(--accent-purple));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .nav { flex: 1; padding: 10px 20px; }
+        .nav { flex: 1; padding: 10px 20px; overflow-y: auto; }
+        .nav-label { font-size: 10px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin: 20px 0 10px 10px; letter-spacing: 1px; }
 
-        /* Menu Item dengan Efek Hover Pop-up */
         .item {
-            padding: 15px 20px; margin-bottom: 10px; border-radius: 18px;
-            cursor: pointer; display: flex; align-items: center; gap: 15px;
-            color: rgba(255, 255, 255, 0.6); transition: all 0.3s ease;
-            font-weight: 500; font-size: 15px;
-            border: 1px solid transparent;
+            padding: 14px 18px; margin-bottom: 8px; border-radius: 15px;
+            cursor: pointer; display: flex; align-items: center; gap: 12px;
+            color: rgba(255, 255, 255, 0.6); transition: 0.3s; font-size: 14px;
         }
-
-        .item:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: #fff; transform: scale(1.02);
-        }
-
+        .item:hover { background: rgba(255,255,255,0.05); color: #fff; }
         .item.active {
-            background: linear-gradient(135deg, rgba(167, 139, 250, 0.3), rgba(99, 102, 241, 0.3));
-            color: #fff; font-weight: 600;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.2), rgba(99, 102, 241, 0.2));
+            color: #fff; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
-        .item i { font-style: normal; font-size: 22px; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
-
-        /* Main Content */
-        .content { flex: 1; display: flex; flex-direction: column; position: relative; }
+        /* CONTENT AREA */
+        .content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 
         .topbar {
             height: 80px; display: flex; align-items: center; gap: 20px;
-            padding: 0 40px; border-bottom: 1px solid var(--glass-border);
+            padding: 0 30px; border-bottom: 1px solid var(--glass-border);
         }
 
         .toggle-btn {
-            background: var(--glass-bg); border: 1px solid var(--glass-border);
-            color: white; width: 45px; height: 45px; border-radius: 15px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: 0.3s;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            color: white; width: 42px; height: 42px; border-radius: 12px;
+            cursor: pointer; font-size: 20px; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center;
         }
+        .toggle-btn:hover { background: rgba(255,255,255,0.15); transform: scale(1.05); }
 
-        .toggle-btn:hover { background: rgba(255,255,255,0.15); transform: scale(1.1); }
-
-        /* Iframe Box: Putih Bersih & Mengambang */
         .frame-box {
-            flex: 1; margin: 0 30px 30px 30px;
-            background: #ffffff; /* Putih solid agar isi file terlihat jelas */
-            border-radius: 30px; overflow: hidden;
-            box-shadow: 0 30px 70px rgba(0,0,0,0.5);
-            border: 8px solid rgba(255,255,255,0.05); /* Border luar tebal transparan */
-            position: relative;
+            flex: 1; margin: 20px; background: white;
+            border-radius: 25px; overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            border: 5px solid rgba(255,255,255,0.05);
         }
 
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* Status Online Indicator */
-        .status-pill {
-            margin-left: auto; background: rgba(16, 185, 129, 0.15);
-            color: #10b981; padding: 6px 14px; border-radius: 100px;
-            font-size: 11px; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 1px; border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-
+        /* Responsif HP */
         @media (max-width: 768px) {
-            .sidebar { position: fixed; transform: translateX(-100%); }
+            .sidebar { position: fixed; height: 100%; left: 0; margin-left: 0; transform: translateX(-100%); }
             .sidebar.show-mobile { transform: translateX(0); }
-            .frame-box { margin: 10px; border-radius: 20px; }
+            .sidebar.collapsed { transform: translateX(-100%); margin-left: 0; opacity: 1; }
+            .frame-box { margin: 10px; border-radius: 15px; }
         }
     </style>
 </head>
@@ -146,35 +117,23 @@
         <div class="sidebar-header">
             <h2 class="logo-text">BEBENAH</h2>
         </div>
-        
         <nav class="nav">
-            <div class="item active" onclick="go('home.html', 'Control Center', this)">
-                <i>🏠</i> Beranda
-            </div>
-            <div class="item" onclick="go('administrasi.html', 'Data Repository', this)">
-                <i>📂</i> Administrasi
-            </div>
-            <div class="item" onclick="go('jurnal.html', 'Jurnal Guru', this)">
-                <i>📝</i> Jurnal Guru
-            </div>
-            <div style="height: 1px; background: var(--glass-border); margin: 20px 0;"></div>
-            <div class="item" onclick="go('rpm.html', 'RPM Harian', this)">
-                <i>📊</i> RPM Harian
-            </div>
-            <div class="item" onclick="go('rpm umum.html', 'RPM Umum', this)">
-                <i>📑</i> RPM Umum
-            </div>
-            <div class="item" onclick="go('nilai.html', 'Nilai Siswa', this)">
-                <i>📈</i> Nilai Siswa
-            </div>
+            <div class="nav-label">Dashboard</div>
+            <div class="item active" onclick="go('home.html', 'Control Center', this)"><i>🏠</i> Beranda</div>
+            <div class="item" onclick="go('administrasi.html', 'Data Repository', this)"><i>📂</i> Administrasi</div>
+            <div class="item" onclick="go('jurnal.html', 'Jurnal Guru', this)"><i>📝</i> Jurnal Guru</div>
+            
+            <div class="nav-label">Management</div>
+            <div class="item" onclick="go('rpm.html', 'RPM Harian', this)"><i>📊</i> RPM Harian</div>
+            <div class="item" onclick="go('rpm umum.html', 'RPM Umum', this)"><i>📑</i> RPM Umum</div>
+            <div class="item" onclick="go('nilai.html', 'Nilai Siswa', this)"><i>📈</i> Nilai Siswa</div>
         </nav>
     </aside>
 
     <main class="content">
         <header class="topbar">
             <button class="toggle-btn" onclick="toggleSide()">☰</button>
-            <h3 id="ttl" style="font-family: 'Montserrat'; font-size: 20px; letter-spacing: -0.5px;">Control Center</h3>
-            <div class="status-pill">● Online Session</div>
+            <h3 id="ttl" style="font-family: 'Montserrat'; font-size: 18px;">Control Center</h3>
         </header>
         
         <section class="frame-box">
@@ -189,29 +148,36 @@
 
     function toggleSide() { 
         if (window.innerWidth <= 768) {
+            // Mode HP: Pakai class khusus mobile dan overlay
             side.classList.toggle('show-mobile');
+            overlay.classList.toggle('show');
         } else {
+            // Mode Desktop: Geser sidebar ke kiri (hilangkan sebentar)
             side.classList.toggle('collapsed');
         }
     }
 
     function go(url, title, el) {
-        const vf = document.getElementById('vf');
-        // Efek transisi halus saat pindah halaman
-        vf.style.opacity = '0';
-        setTimeout(() => {
-            vf.src = url;
-            document.getElementById('ttl').innerText = title;
-            vf.style.opacity = '1';
-        }, 150);
+        document.getElementById('vf').src = url;
+        document.getElementById('ttl').innerText = title;
 
         document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
         el.classList.add('active');
 
-        if(window.innerWidth <= 768) { 
+        // Jika di HP, otomatis tutup sidebar setelah pilih menu
+        if (window.innerWidth <= 768) {
             side.classList.remove('show-mobile');
+            overlay.classList.remove('show');
         }
     }
+
+    // Reset jika layar di-resize
+    window.onresize = () => {
+        if (window.innerWidth > 768) {
+            side.classList.remove('show-mobile');
+            overlay.classList.remove('show');
+        }
+    };
 </script>
 </body>
 </html>
