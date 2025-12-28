@@ -6,58 +6,133 @@
     <title>SiPandu Guru V.1.0 - Teaching Assistant</title>
     <style>
         :root { 
-            --primary: #2c3e50; --accent: #27ae60; --sidebar: #1a252f; 
-            --bg: #f4f7f6; --white: #ffffff; --text: #333; --danger: #e74c3c;
-            --gold: #f1c40f; --info: #3498db; --bloom-bg: #ebf5fb;
+            /* Palette: 2025 Calm but Alive */
+            --primary: #1e293b;          /* Modern Dark Slate */
+            --accent: #22c55e;           /* Fresh Emerald Green */
+            --sidebar: #0f172a;          /* Deep Navy */
+            --bg: #f8fafc;               /* Crisp Light Slate */
+            --white: #ffffff; 
+            --text: #334155;             /* Softened Dark Slate */
+            --danger: #ef4444;           /* Modern Red */
+            --gold: #facc15;             /* Amber Gold */
+            --info: #38bdf8;             /* Sky Blue */
+            --bloom-bg: #ecfeff;         /* Cyan Tint */
         }
-        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        
+        * { box-sizing: border-box; font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; }
         
         body { margin: 0; display: flex; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-        /* Sidebar Navigation */
-        .sidebar { width: 280px; background: var(--sidebar); color: white; display: flex; flex-direction: column; position: fixed; height: 100vh; overflow-y: auto; z-index: 100; }
-        .sidebar-header { padding: 25px 20px; text-align: center; background: #141d26; border-bottom: 1px solid #34495e; }
-        .sidebar-header h2 { margin: 0; font-size: 18px; color: var(--accent); letter-spacing: 1px; }
-        .sidebar-header small { opacity: 0.7; font-size: 11px; display: block; margin-top: 5px; }
+        /* Sidebar Navigation - Enhanced Depth */
+        .sidebar { 
+            width: 280px; 
+            background: linear-gradient(180deg, var(--sidebar), #020617);
+            color: white; 
+            display: flex; 
+            flex-direction: column; 
+            position: fixed; 
+            height: 100vh; 
+            overflow-y: auto; 
+            z-index: 100;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+        }
+        .sidebar-header { padding: 30px 20px; text-align: center; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .sidebar-header h2 { margin: 0; font-size: 18px; color: var(--accent); letter-spacing: 2px; font-weight: 800; }
+        .sidebar-header small { opacity: 0.6; font-size: 10px; display: block; margin-top: 5px; text-transform: uppercase; }
 
-        .nav-menu { flex-grow: 1; padding: 15px 0; }
-        .nav-item { padding: 14px 25px; cursor: pointer; font-size: 13px; border-left: 5px solid transparent; transition: 0.3s; color: rgba(255,255,255,0.8); display: flex; align-items: center; gap: 10px; }
-        .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
-        .nav-item.active { background: #2c3e50; border-left-color: var(--accent); color: var(--accent); font-weight: bold; }
+        .nav-menu { flex-grow: 1; padding: 20px 0; }
+        .nav-item { 
+            padding: 14px 25px; 
+            cursor: pointer; 
+            font-size: 13px; 
+            border-left: 4px solid transparent; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            color: rgba(255,255,255,0.7); 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: white; padding-left: 30px; }
+        .nav-item.active { 
+            background: rgba(34, 197, 94, 0.12); 
+            border-left-color: var(--accent); 
+            color: var(--accent); 
+            font-weight: 700; 
+        }
 
-        .mapel-selector { padding: 20px; border-top: 1px solid #34495e; background: #141d26; }
-        .mapel-selector label { font-size: 11px; text-transform: uppercase; color: #7f8c8d; display: block; margin-bottom: 8px; }
-        select { background: #2c3e50; color: white; border: 1px solid #34495e; padding: 10px; border-radius: 6px; width: 100%; cursor: pointer; outline: none; }
+        .mapel-selector { padding: 20px; border-top: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.2); }
+        .mapel-selector label { font-size: 10px; text-transform: uppercase; color: #94a3b8; display: block; margin-bottom: 10px; letter-spacing: 1px; }
+        select { background: #1e293b; color: white; border: 1px solid #334155; padding: 10px; border-radius: 8px; width: 100%; cursor: pointer; outline: none; font-size: 13px; }
 
-        /* Main Content Area */
-        .main { margin-left: 280px; width: calc(100% - 280px); padding: 40px; }
-        .page { display: none; max-width: 1000px; margin: auto; animation: fadeIn 0.4s ease; }
+        /* Main Area - Better Breathing Space */
+        .main { margin-left: 280px; width: calc(100% - 280px); padding: 50px; }
+        .page { display: none; max-width: 1050px; margin: auto; animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Component Styles */
-        .card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); margin-bottom: 25px; border: 1px solid #e0e6ed; }
-        h1 { font-size: 22px; margin-top: 0; color: var(--primary); border-bottom: 2px solid var(--bg); padding-bottom: 15px; margin-bottom: 25px; }
+        /* Card Style - Elevating Content */
+        .card { 
+            background: var(--white); 
+            padding: 35px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04); 
+            margin-bottom: 30px; 
+            border: 1px solid #f1f5f9; 
+        }
+        h1 { 
+            font-size: 22px; 
+            font-weight: 800; 
+            color: var(--primary); 
+            border-bottom: 3px solid var(--bg); 
+            padding-bottom: 15px; 
+            margin-bottom: 30px; 
+            letter-spacing: -0.5px;
+        }
         
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        label { font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px; }
-        input, textarea, .page select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; transition: 0.2s; }
-        input:focus, textarea:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        label { font-size: 12px; font-weight: 700; color: #64748b; display: block; margin-bottom: 8px; text-transform: uppercase; }
+        input, textarea, .page select { 
+            width: 100%; 
+            padding: 12px 15px; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 10px; 
+            font-size: 14px; 
+            color: var(--text);
+            transition: 0.2s; 
+            background: #fdfdfd;
+        }
+        input:focus, textarea:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1); background: #fff; }
 
-        .btn-action { background: var(--accent); color: white; border: none; padding: 12px 22px; border-radius: 6px; cursor: pointer; font-weight: bold; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; margin-top: 10px; }
-        .btn-action:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-action { 
+            background: var(--accent); 
+            color: white; 
+            border: none; 
+            padding: 12px 24px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 10px; 
+            transition: all 0.3s; 
+            margin-top: 10px; 
+            font-size: 13px;
+        }
+        .btn-action:hover { filter: brightness(1.05); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(34, 197, 94, 0.3); }
         .btn-info { background: var(--info); }
+        .btn-info:hover { box-shadow: 0 5px 15px rgba(56, 189, 248, 0.3); }
 
-        /* Table Design */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 8px; overflow: hidden; }
-        th { background: var(--primary); padding: 12px; border: 1px solid #e5e7eb; color: white; font-size: 12px; }
-        td { border: 1px solid #e5e7eb; padding: 10px; font-size: 12px; text-align: center; }
+        /* Table Design - Cleaner Contrast */
+        table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 25px; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; }
+        th { background: var(--primary); padding: 15px; color: white; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+        td { border: 0.5px solid #f1f5f9; padding: 12px; font-size: 12px; text-align: center; color: var(--text); }
+        tr:nth-child(even) { background: #f8fafc; }
         
-        .week-cell { cursor: pointer; width: 22px; height: 25px; border: 1px solid #eee; transition: 0.2s; }
-        .week-cell.checked { background: var(--accent) !important; }
+        .week-cell { cursor: pointer; width: 22px; height: 28px; border: 1px solid #f1f5f9; transition: 0.2s; background: #fff; }
+        .week-cell.checked { background: var(--accent) !important; box-shadow: inset 0 0 8px rgba(0,0,0,0.1); }
 
-        .bloom-badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; background: var(--bloom-bg); color: #2980b9; font-weight: bold; margin-top: 5px; }
-        .char-counter { font-size: 10px; font-weight: bold; color: #999; margin-top: 5px; display: block; text-align: right; }
+        .bloom-badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 10px; background: var(--bloom-bg); color: #0891b2; font-weight: 800; margin-top: 8px; border: 1px solid #cffafe; }
+        .char-counter { font-size: 10px; font-weight: 700; color: #94a3b8; margin-top: 8px; display: block; text-align: right; }
 
         @media print {
             .sidebar, .no-print, .btn-action { display: none !important; }
@@ -115,9 +190,9 @@
                 <div><label>Nama Kepala Sekolah</label><input type="text" id="ks" oninput="saveAll()"></div>
                 <div><label>NIP Kepala Sekolah</label><input type="text" id="ks_nip" oninput="saveAll()"></div>
             </div>
-            <div style="margin-top:25px; padding:15px; background:#f0fff4; border-radius:8px; border: 1px solid #c6f6d5;">
-                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                    <input type="checkbox" id="showTtd" onchange="saveAll()" style="width: auto;"> 
+            <div style="margin-top:25px; padding:15px; background:#f0fff4; border-radius:12px; border: 1px solid #c6f6d5;">
+                <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; color: #2d6a4f;">
+                    <input type="checkbox" id="showTtd" onchange="saveAll()" style="width: auto; accent-color: var(--accent);"> 
                     <span>Munculkan Kolom Tanda Tangan di Dokumen</span>
                 </label>
             </div>
@@ -156,7 +231,7 @@
     <div id="atp_sec" class="page">
         <div class="card">
             <h1>ALUR TUJUAN PEMBELAJARAN (ATP)</h1>
-            <div class="no-print" style="margin-bottom:20px; padding:20px; background:#ebf5fb; border-radius:8px; border: 1px solid #d4e6f1;">
+            <div class="no-print" style="margin-bottom:20px; padding:20px; background:#ebf5fb; border-radius:12px; border: 1px solid #d4e6f1;">
                 <label>Input Master Bab/Materi (Pisahkan dengan koma):</label>
                 <textarea id="masterMateriInput" onchange="updateMasterMateri(this.value)" placeholder="Contoh: Bab 1: Bilangan, Bab 2: Aljabar..."></textarea>
             </div>
@@ -190,7 +265,7 @@
     <div id="promes_sec" class="page">
         <div class="card">
             <h1>PROGRAM SEMESTER (PROMES)</h1>
-            <button class="btn-action" onclick="toggleSemester()" style="background: var(--gold); color: #333;">🔄 Pindah ke Smt <span id="nextSmtText">2</span></button>
+            <button class="btn-action" onclick="toggleSemester()" style="background: var(--gold); color: #1e293b; border: 1px solid #eab308;">🔄 Pindah ke Smt <span id="nextSmtText">2</span></button>
             <div id="promesExportArea">
                 <div class="header-promes"></div>
                 <div style="overflow-x:auto;">
@@ -204,7 +279,6 @@
 </div>
 
 <script>
-    // Logic tetap sama dengan penyempurnaan pada fungsi render dan penyimpanan
     const BLOOM_MAP = {
         'C1': ['mengenal', 'menyebutkan', 'mengingat', 'menghafal', 'membaca'],
         'C2': ['memahami', 'menjelaskan', 'mengidentifikasi', 'mengklasifikasikan'],
@@ -325,7 +399,7 @@
             if (!tp.selectedMateri) tp.selectedMateri = [];
             let chips = mList.map(m => {
                 const active = tp.selectedMateri.includes(m) ? 'active' : '';
-                return `<span class="materi-chip ${active}" onclick="toggleMat(${i}, '${m}')" style="display:inline-block; padding:3px 8px; margin:2px; background:#eee; border-radius:10px; font-size:10px; cursor:pointer">${m}</span>`;
+                return `<span class="materi-chip ${active}" onclick="toggleMat(${i}, '${m}')" style="display:inline-block; padding:3px 8px; margin:2px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:10px; font-size:10px; cursor:pointer">${m}</span>`;
             }).join('');
 
             body.innerHTML += `<tr>
@@ -362,7 +436,7 @@
         
         let h1 = `<tr><th rowspan="2">No</th><th rowspan="2">TP</th><th rowspan="2">JP</th>`;
         let h2 = `<tr>`;
-        months.forEach(m => { h1 += `<th colspan="5">${m}</th>`; for(let i=1; i<=5; i++) h2 += `<th style="font-size:7px; width:15px">${i}</th>`; });
+        months.forEach(m => { h1 += `<th colspan="5">${m}</th>`; for(let i=1; i<=5; i++) h2 += `<th style="font-size:7px; width:15px; background:#334155">${i}</th>`; });
         head.innerHTML = h1 + "</tr>" + h2 + "</tr>";
 
         body.innerHTML = '';
@@ -448,9 +522,11 @@
     function renderElemen() {
         const container = document.getElementById('elemenContainer'); container.innerHTML = '';
         state.subjects[currentMapel].elemenList.forEach((el, i) => { 
-            container.innerHTML += `<div class="card" style="padding:20px">
-                <input value="${el.name}" placeholder="Nama Elemen" oninput="state.subjects['${currentMapel}'].elemenList[${i}].name=this.value; saveAll()">
-                <textarea style="margin-top:10px" placeholder="Isi Capaian Pembelajaran" oninput="state.subjects['${currentMapel}'].elemenList[${i}].cp=this.value; saveAll()">${el.cp}</textarea>
+            container.innerHTML += `<div class="card" style="padding:25px; border-left: 5px solid var(--accent)">
+                <label>Elemen ${i+1}</label>
+                <input value="${el.name}" placeholder="Contoh: Bilangan / Al-Qur'an Hadist" oninput="state.subjects['${currentMapel}'].elemenList[${i}].name=this.value; saveAll()">
+                <label style="margin-top:15px">Capaian Pembelajaran</label>
+                <textarea style="margin-top:5px; min-height:100px" placeholder="Copy-paste isi CP dari PDF regulasi di sini..." oninput="state.subjects['${currentMapel}'].elemenList[${i}].cp=this.value; saveAll()">${el.cp}</textarea>
             </div>`; 
         });
     }
@@ -468,8 +544,8 @@
     
     function exportToWord(id, filename) {
         const area = document.getElementById(id); const clone = area.cloneNode(true);
-        clone.querySelectorAll('td.week-cell').forEach(td => { if(td.classList.contains('checked')) { td.innerText = "V"; td.style.backgroundColor = "#27ae60"; } });
-        const html = `<html><head><meta charset="utf-8"><style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 5px; font-size: 10pt; }</style></head><body>${clone.innerHTML}</body></html>`;
+        clone.querySelectorAll('td.week-cell').forEach(td => { if(td.classList.contains('checked')) { td.innerText = "V"; td.style.backgroundColor = "#22c55e"; } });
+        const html = `<html><head><meta charset="utf-8"><style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 5px; font-size: 10pt; text-align:center; }</style></head><body>${clone.innerHTML}</body></html>`;
         const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
         const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = filename + ".doc"; link.click();
     }
