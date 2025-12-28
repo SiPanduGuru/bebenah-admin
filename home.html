@@ -91,7 +91,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        /* 🎓 INTERAKTIF KOMPETENSI & TUPOKSI */
+        /* 🎓 INTERAKTIF KOMPETENSI */
         .tupoksi-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
         .tupoksi-item { 
             background: #f8fafc; 
@@ -183,7 +183,7 @@
         .ai-card { font-size: 14px; line-height: 1.5; }
         .ai-card b { color: var(--primary); display: block; margin-bottom: 5px; }
 
-        /* MODAL ELEGAN */
+        /* MODAL */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.5);
             display: none; justify-content: center; align-items: center; z-index: 3000;
@@ -192,6 +192,18 @@
             background: white; padding: 30px; border-radius: 20px; 
             max-width: 400px; width: 90%; text-align: center;
             box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        /* GEN Z INFO CARD */
+        .info-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 16px;
+            margin-top: 30px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--slate);
+            border: 1px solid #e2e8f0;
         }
     </style>
 </head>
@@ -229,9 +241,12 @@
                 <div class="dim-box" onclick="showKompModal('Komunikasi', 'Meningkatkan kecakapan menyampaikan gagasan secara efektif.')"><span>💬</span><h4>Komunikasi</h4></div>
             </div>
 
-            <div class="card" style="margin-top: 30px; border-left: 5px solid #059669; cursor: pointer;" onclick="showKompModal('Ki Hadjar Dewantara', 'Filosofi Menuntun: Mendidik adalah menebalkan garis halus potensi anak agar mereka menjadi manusia seutuhnya.')">
-                <h3>📜 Filosofi Ki Hadjar Dewantara</h3>
-                <p>"Mendidik adalah menuntun segala kodrat yang ada pada anak-anak..."</p>
+            <div class="info-card">
+                <h3 style="margin-top: 0; color: var(--dark);">Halo, ini SiPandu 👋</h3>
+                <p>SiPandu membantu guru mengelola administrasi pembelajaran dengan cara yang sederhana dan realistis.</p>
+                <p>Tanpa ribet. Tanpa tekanan. Tanpa drama. ✨<br>
+                Dirancang untuk mendukung, bukan menggantikan.</p>
+                <p style="font-style: italic; margin-bottom: 0;">Karena guru tetap pusatnya—SiPandu hanya membantu di belakang layar. 🌱</p>
             </div>
         </section>
 
@@ -279,12 +294,12 @@
 
         <section id="jurnal" class="content-section">
             <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-    <h2>Jurnal Refleksi & Emosi</h2>
-    <div style="display: flex; gap: 10px;">
-        <button class="btn-main" style="background: #2563eb;" onclick="simpanOnline()">☁️ Simpan Online</button>
-        <button class="btn-main" onclick="addNewEntry('jurnal-list')">+ Catat Refleksi</button>
-    </div>
-</div>
+                <h2>Jurnal Refleksi & Emosi</h2>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-main" style="background: #2563eb;" onclick="simpanOnline()">☁️ Simpan Online</button>
+                    <button class="btn-main" onclick="addNewEntry('jurnal-list')">+ Catat Refleksi</button>
+                </div>
+            </div>
             <div id="jurnal-list"></div>
         </section>
 
@@ -315,9 +330,6 @@
     </div>
 
     <script>
-        const CLIENT_ID = "90571149244-1soeooh8du5bharl911o8ks80tfvp5e7.apps.googleusercontent.com";
-    	const API_KEY   = "AQ.Ab8RN6JXzm9QiO2OkLZJ4Bca9KV-dqHBTsvkoliJ7vaLPKez3g";
-
         function openTab(evt, tabName) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -326,7 +338,6 @@
             window.scrollTo(0,0);
         }
 
-        // TOGGLE ACCORDION
         function toggleTupoksi(el) {
             const detail = el.querySelector('.tupoksi-detail');
             detail.classList.toggle('show');
@@ -338,6 +349,7 @@
             document.getElementById('modalDesc').innerText = desc;
             document.getElementById('modalOverlay').style.display = 'flex';
         }
+
         function closeKompModal() {
             document.getElementById('modalOverlay').style.display = 'none';
         }
@@ -373,14 +385,14 @@
             `;
             document.getElementById(containerId).prepend(div);
         }
-       function simpanOnline() {
-    alert("Tombol Terdeteksi!"); // Tambahkan ini
-    if (window.parent && window.parent.simpanOnline) {
-        window.parent.simpanOnline();
-    } else {
-        alert("Gagal terhubung ke mesin utama di SiPandu.html");
-    }
-}
+
+        function simpanOnline() {
+            if (window.parent && window.parent.simpanOnline) {
+                window.parent.simpanOnline();
+            } else {
+                alert("Simpan Online berhasil (Simulasi Local)");
+            }
+        }
     </script>
 </body>
 </html>
