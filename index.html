@@ -31,7 +31,6 @@
 
         .layout { display: flex; width: 100vw; height: 100vh; position: relative; }
 
-        /* OVERLAY: Penting agar saat menu terbuka di HP, iframe tidak bisa diklik */
         .overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.5);
             backdrop-filter: blur(4px); z-index: 90;
@@ -39,7 +38,7 @@
         }
         .overlay.show { display: block; opacity: 1; }
 
-        /* SIDEBAR: Diperbaiki agar transisi geser lancar */
+        /* SIDEBAR */
         .sidebar {
             width: var(--sidebar-width);
             background: rgba(15, 23, 42, 0.6);
@@ -50,7 +49,6 @@
             z-index: 100; position: relative;
         }
 
-        /* Logic Geser: Menggunakan Transform agar ringan */
         .sidebar.collapsed { margin-left: calc(var(--sidebar-width) * -1); opacity: 0; }
 
         .sidebar-header { height: 100px; display: flex; align-items: center; padding: 0 35px; }
@@ -74,21 +72,43 @@
             color: #fff; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
-        /* CONTENT AREA */
-        .content { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        /* CONTENT AREA - DIPERBAIKI */
+        .content { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            min-width: 0; 
+            position: relative;
+            z-index: 10;
+        }
 
         .topbar {
-            height: 80px; display: flex; align-items: center; gap: 20px;
-            padding: 0 30px; border-bottom: 1px solid var(--glass-border);
+            height: 80px; 
+            display: flex; 
+            align-items: center; 
+            gap: 20px;
+            padding: 0 30px; 
+            border-bottom: 1px solid var(--glass-border);
+            position: relative;
+            z-index: 110; /* Berada di atas sidebar saat bergeser */
         }
 
         .toggle-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-            color: white; width: 42px; height: 42px; border-radius: 12px;
-            cursor: pointer; font-size: 20px; transition: 0.3s;
-            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.1); 
+            border: 1px solid var(--glass-border);
+            color: white; 
+            width: 42px; 
+            height: 42px; 
+            border-radius: 12px;
+            cursor: pointer; 
+            font-size: 20px; 
+            transition: 0.3s;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            pointer-events: auto; /* Memastikan bisa diklik */
         }
-        .toggle-btn:hover { background: rgba(255,255,255,0.15); transform: scale(1.05); }
+        .toggle-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
 
         .frame-box {
             flex: 1; margin: 20px; background: white;
@@ -99,7 +119,6 @@
 
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* Responsif HP */
         @media (max-width: 768px) {
             .sidebar { position: fixed; height: 100%; left: 0; margin-left: 0; transform: translateX(-100%); }
             .sidebar.show-mobile { transform: translateX(0); }
@@ -148,11 +167,9 @@
 
     function toggleSide() { 
         if (window.innerWidth <= 768) {
-            // Mode HP: Pakai class khusus mobile dan overlay
             side.classList.toggle('show-mobile');
             overlay.classList.toggle('show');
         } else {
-            // Mode Desktop: Geser sidebar ke kiri (hilangkan sebentar)
             side.classList.toggle('collapsed');
         }
     }
@@ -164,14 +181,12 @@
         document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
         el.classList.add('active');
 
-        // Jika di HP, otomatis tutup sidebar setelah pilih menu
         if (window.innerWidth <= 768) {
             side.classList.remove('show-mobile');
             overlay.classList.remove('show');
         }
     }
 
-    // Reset jika layar di-resize
     window.onresize = () => {
         if (window.innerWidth > 768) {
             side.classList.remove('show-mobile');
