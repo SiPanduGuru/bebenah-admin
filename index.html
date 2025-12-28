@@ -4,15 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bebenah Admin | Professional</title>
-    
     <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#10b981">
-
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
     
     <script>
-        const p = prompt("🔐 Masukkan PIN Akses:");
-        if (p !== "2001") { window.location.href = "https://google.com"; }
+        if (!sessionStorage.getItem('auth')) {
+            const p = prompt("🔐 Masukkan PIN Akses:");
+            if (p === "2001") { 
+                sessionStorage.setItem('auth', 'true'); 
+            } else { 
+                window.location.href = "https://google.com"; 
+            }
+        }
     </script>
 
     <style>
@@ -20,103 +23,73 @@
             --bg: #0a0f1e;
             --side: linear-gradient(180deg, #111827 0%, #1e1b4b 100%);
             --accent: #10b981;
-            --accent-hot: #8b5cf6;
             --sidebar-w: 260px;
-            --sidebar-min: 75px;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); overflow: hidden; height: 100vh; color: white; }
         
         .layout { display: flex; width: 100vw; height: 100vh; position: relative; }
 
-        #overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); z-index: 9;
-        }
-
         .sidebar {
             width: var(--sidebar-w);
             background: var(--side);
-            border-right: 1px solid rgba(255,255,255,0.05);
+            height: 100vh;
             display: flex; flex-direction: column;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 10;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            flex-shrink: 0;
         }
 
-        .sidebar-header { padding: 25px 18px; display: flex; align-items: center; gap: 15px; overflow: hidden; }
-        .nav { flex: 1; padding: 10px; overflow-y: auto; overflow-x: hidden; }
-        
-        .toggle-btn {
-            min-width: 40px; height: 40px; border-radius: 12px;
-            background: rgba(255,255,255,0.1); border: none; color: white;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px;
-        }
+        .sidebar.hide-desk { width: 0; overflow: hidden; }
 
+        .sidebar-header { padding: 25px 20px; font-weight: 800; color: var(--accent); font-size: 20px; }
+        .nav { flex: 1; padding: 10px; }
         .item {
-            padding: 15px; margin-bottom: 8px; border-radius: 14px;
-            cursor: pointer; display: flex; align-items: center;
+            padding: 15px; margin-bottom: 8px; border-radius: 12px;
+            cursor: pointer; display: flex; align-items: center; gap: 12px;
             color: #94a3b8; transition: 0.2s; white-space: nowrap;
         }
-        .item i { font-style: normal; font-size: 22px; min-width: 45px; text-align: center; }
-        .item:hover, .item.active { background: rgba(139, 92, 246, 0.15); color: white; }
-        .item.active { border-left: 4px solid var(--accent); }
+        .item.active, .item:hover { background: rgba(16, 185, 129, 0.1); color: white; }
         
-        @media (min-width: 769px) {
-            .sidebar.hide { width: var(--sidebar-min); }
-            .sidebar.hide .txt, .sidebar.hide h2 { opacity: 0; pointer-events: none; }
+        .content { flex: 1; display: flex; flex-direction: column; min-width: 0; background: #0f172a; }
+        .topbar { height: 60px; display: flex; align-items: center; padding: 0 20px; gap: 15px; }
+        .btn-toggle { 
+            width: 40px; height: 40px; background: #1e293b; border: none; 
+            color: white; border-radius: 10px; cursor: pointer; font-size: 20px; 
         }
 
-        /* MOBILE SIDEBAR */
-        @media (max-width: 768px) {
-            .sidebar { position: fixed; left: -100%; height: 100%; }
-            .sidebar.show-mobile { left: 0; }
-            #overlay.active { display: block; }
-        }
-
-        .content { 
-            flex: 1; display: flex; flex-direction: column; padding: 12px; 
-            background: radial-gradient(circle at bottom left, #1e1b4b, #0a0f1e);
-            min-width: 0;
-        }
-        .topbar { height: 50px; display: flex; align-items: center; gap: 15px; margin-bottom: 8px; }
-        .btn-hp { 
-            display: none; width: 40px; height: 40px; background: var(--accent-hot); 
-            border: none; color: white; border-radius: 10px; align-items: center; justify-content: center; font-size: 20px;
-        }
-
-        @media (max-width: 768px) { .btn-hp { display: flex; } }
-
-        .frame-box { flex: 1; background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+        .frame-box { flex: 1; margin: 0 10px 10px 10px; background: white; border-radius: 20px; overflow: hidden; }
         iframe { width: 100%; height: 100%; border: none; }
-        .logo-text { font-weight: 800; font-size: 18px; color: var(--accent); }
-        .page-title { font-size: 18px; font-weight: 700; background: linear-gradient(to right, #34d399, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -260px;
+                width: 260px;
+            }
+            .sidebar.show-hp { left: 0; }
+            .sidebar.hide-desk { width: 260px; } 
+        }
     </style>
 </head>
 <body>
 
-<div id="overlay" onclick="toggleSide()"></div>
-
 <div class="layout">
     <aside class="sidebar" id="side">
-        <div class="sidebar-header">
-            <button class="toggle-btn" onclick="toggleSide()">☰</button>
-            <h2 class="logo-text">BEBENAH</h2>
-        </div>
+        <div class="sidebar-header">BEBENAH</div>
         <nav class="nav">
-            <div class="item active" onclick="go('home.html', 'Control Center', this)"><i>🏠</i> <span class="txt">Beranda</span></div>
-            <div class="item" onclick="go('administrasi.html', 'Data Repository', this)"><i>📂</i> <span class="txt">Administrasi</span></div>
-            <div class="item" onclick="go('jurnal.html', 'Jurnal Harian', this)"><i>📝</i> <span class="txt">Jurnal Guru</span></div>
-            <div class="item" onclick="go('rpm.html', 'Teaching Matrix (Day)', this)"><i>📊</i> <span class="txt">RPM Harian</span></div>
-            <div class="item" onclick="go('rpm umum.html', 'Teaching Matrix (Gen)', this)"><i>📑</i> <span class="txt">RPM Umum</span></div>
-            <div class="item" onclick="go('nilai.html', 'Academic Analytics', this)"><i>📈</i> <span class="txt">Nilai Siswa</span></div>
+            <div class="item active" onclick="go('home.html', 'Beranda', this)">🏠 Beranda</div>
+            <div class="item" onclick="go('administrasi.html', 'Administrasi', this)">📂 Administrasi</div>
+            <div class="item" onclick="go('jurnal.html', 'Jurnal Guru', this)">📝 Jurnal Guru</div>
+            <div class="item" onclick="go('rpm.html', 'RPM Harian', this)">📊 RPM Harian</div>
+            <div class="item" onclick="go('nilai.html', 'Nilai Siswa', this)">📈 Nilai Siswa</div>
         </nav>
     </aside>
 
     <main class="content">
         <header class="topbar">
-            <button class="btn-hp" onclick="toggleSide()">☰</button>
-            <h3 id="ttl" class="page-title">Control Center</h3>
-            <div style="font-size: 10px; color: var(--accent); font-weight: 700;">● ONLINE</div>
+            <button class="btn-toggle" onclick="toggle()">☰</button>
+            <h3 id="ttl">Beranda</h3>
         </header>
         <section class="frame-box">
             <iframe id="vf" src="home.html"></iframe>
@@ -125,14 +98,12 @@
 </div>
 
 <script>
-    function toggleSide() { 
-        const side = document.getElementById('side');
-        const over = document.getElementById('overlay');
+    function toggle() {
+        const s = document.getElementById('side');
         if (window.innerWidth <= 768) {
-            side.classList.toggle('show-mobile');
-            over.classList.toggle('active');
+            s.classList.toggle('show-hp');
         } else {
-            side.classList.toggle('hide'); 
+            s.classList.toggle('hide-desk');
         }
     }
 
@@ -141,15 +112,13 @@
         document.getElementById('ttl').innerText = t;
         document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
         e.classList.add('active');
-        if(window.innerWidth <= 768) { toggleSide(); }
+        if (window.innerWidth <= 768) {
+            document.getElementById('side').classList.remove('show-hp');
+        }
     }
 
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('Bebenah PWA: SW Terdaftar'))
-                .catch(err => console.error('Bebenah PWA: SW Gagal', err));
-        });
+        navigator.serviceWorker.register('./sw.js');
     }
 </script>
 </body>
