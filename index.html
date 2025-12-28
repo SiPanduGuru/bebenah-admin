@@ -3,225 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bebenah Admin | Professional Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Bebenah Admin | Elite System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Outfit:wght@300;600&display=swap" rel="stylesheet">
     
     <script>
-        // SECURITY LAYER WITH FADE EFFECT
-        const accessPin = "2001";
-        let p = prompt("🔐 Enter Encrypted Access Key:");
-        if (p !== accessPin) { 
+        // ENCRYPTED GATEWAY
+        const key = "2001";
+        if (prompt("🗝️ IDENTITY VERIFICATION:") !== key) { 
             window.location.href = "https://github.com"; 
         }
     </script>
 
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            --accent-color: #10b981; /* Emerald Green */
-            --accent-glow: 0 0 15px rgba(16, 185, 129, 0.4);
-            --sidebar-width: 280px;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --bg-dark: #05070a;
+            --accent: #00ff88; /* Neon Green */
+            --accent-soft: rgba(0, 255, 136, 0.15);
+            --glass-white: rgba(255, 255, 255, 0.03);
+            --sidebar-w: 290px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body, html {
-            height: 100%;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #020617;
-            color: #f8fafc;
+        body {
+            background-color: var(--bg-dark);
+            font-family: 'Outfit', sans-serif;
+            color: #e2e8f0;
+            height: 100vh;
             overflow: hidden;
         }
 
-        .app-container {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-            background: var(--primary-gradient);
+        /* 🌌 BACKGROUND ANIMATION */
+        .bg-glow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 10% 10%, #00ff8811 0%, transparent 40%),
+                        radial-gradient(circle at 90% 90%, #00ff8808 0%, transparent 40%);
+            z-index: -1;
         }
 
-        /* --- SIDEBAR ARTWORK --- */
+        .container { display: flex; height: 100vh; width: 100vw; }
+
+        /* 🏛️ ARCHITECT SIDEBAR */
         .sidebar {
-            width: var(--sidebar-width);
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid var(--glass-border);
+            width: var(--sidebar-w);
+            background: rgba(10, 15, 25, 0.7);
+            backdrop-filter: blur(25px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
-            padding: 30px 20px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 40px 24px;
         }
 
-        .brand-section {
-            padding-bottom: 40px;
-            text-align: center;
+        .header-box {
+            margin-bottom: 50px;
+            border-left: 3px solid var(--accent);
+            padding-left: 20px;
         }
 
-        .brand-logo {
-            font-weight: 800;
-            font-size: 22px;
-            letter-spacing: -0.5px;
-            background: linear-gradient(to right, #10b981, #34d399);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .header-box h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            letter-spacing: 2px;
             text-transform: uppercase;
+            color: #fff;
         }
 
-        .nav-menu { flex: 1; }
+        .header-box span { font-size: 10px; color: var(--accent); opacity: 0.8; }
 
-        .nav-item {
-            position: relative;
-            padding: 14px 18px;
-            margin-bottom: 8px;
-            border-radius: 12px;
+        /* 🖱️ NAVIGATION LINK */
+        .nav-link {
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            border-radius: 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            color: #94a3b8;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #64748b;
             border: 1px solid transparent;
-        }
-
-        .nav-item:hover {
-            background: var(--glass);
-            color: #fff;
-            border-color: var(--glass-border);
-            transform: translateX(5px);
-        }
-
-        .nav-item.active {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--accent-color);
-            border-color: rgba(16, 185, 129, 0.2);
-            box-shadow: var(--accent-glow);
-        }
-
-        .nav-item i {
-            font-style: normal;
-            font-size: 20px;
-            margin-right: 15px;
-            filter: grayscale(1);
-            transition: 0.3s;
-        }
-
-        .nav-item:hover i, .nav-item.active i { filter: grayscale(0); }
-
-        /* --- MAIN AREA --- */
-        .viewport {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
             position: relative;
         }
 
-        .top-nav {
-            height: 80px;
-            padding: 0 40px;
+        .nav-link i { font-style: normal; margin-right: 15px; font-size: 20px; filter: grayscale(1); transition: 0.3s; }
+
+        .nav-link:hover {
+            color: #fff;
+            background: var(--glass-white);
+            transform: translateX(8px);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .nav-link.active {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-color: rgba(0, 255, 136, 0.2);
+            box-shadow: 0 10px 20px -10px rgba(0, 255, 136, 0.3);
+        }
+
+        .nav-link.active i { filter: grayscale(0); transform: scale(1.2); }
+
+        /* 🚀 MAIN CONTENT AREA */
+        .main-stage {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            position: relative;
+        }
+
+        .top-bar {
+            height: 70px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(15, 23, 42, 0.4);
+            padding: 0 30px;
+            background: var(--glass-white);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
         }
 
-        .page-title {
-            font-size: 20px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .current-page { font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: 18px; color: #fff; }
 
-        .status-badge {
-            padding: 6px 14px;
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 100px;
-            font-size: 11px;
-            color: var(--accent-color);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        /* 📟 SYSTEM MONITOR */
+        .system-status { display: flex; align-items: center; gap: 12px; font-size: 12px; color: #64748b; }
+        .pulse-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); animation: glow 2s infinite; }
 
-        .status-dot {
-            width: 6px; height: 6px; background: var(--accent-color);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
+        @keyframes glow { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-        @keyframes pulse {
-            0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; }
-        }
-
-        .content-frame {
+        .frame-container {
             flex: 1;
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: #fff; /* Memberikan background putih agar isi file HTML Anda tetap terbaca jelas */
-            border-top-left-radius: 24px; /* Efek melengkung modern */
-            margin-top: 5px;
+            background: #ffffff;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 4px solid rgba(255,255,255,0.02);
         }
 
-        /* Scrollbar Sidebar */
-        .nav-menu::-webkit-scrollbar { width: 4px; }
-        .nav-menu::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
+<div class="bg-glow"></div>
+
+<div class="container">
     <aside class="sidebar">
-        <div class="brand-section">
-            <div class="brand-logo">Bebenah Admin</div>
-            <p style="font-size: 10px; color: #475569; margin-top: 5px;">PRO EDITION v2.0</p>
+        <div class="header-box">
+            <h2>Bebenah</h2>
+            <span>SYSTEM ARCHITECT v3.0</span>
         </div>
 
-        <nav class="nav-menu">
-            <div class="nav-item active" onclick="loadPage('home.html', 'Dashboard Overview', this)"><i>🏠</i> Beranda</div>
-            <div class="nav-item" onclick="loadPage('administrasi.html', 'Administrasi Core', this)"><i>📂</i> Administrasi</div>
-            <div class="nav-item" onclick="loadPage('jurnal.html', 'Daily Journaling', this)"><i>📝</i> Jurnal Guru</div>
-            <div class="nav-item" onclick="loadPage('rpm.html', 'Daily Lesson Plan', this)"><i>📊</i> RPM Harian</div>
-            <div class="nav-item" onclick="loadPage('rpm-umum.html', 'General Lesson Plan', this)"><i>📑</i> RPM Umum</div>
-            <div class="nav-item" onclick="loadPage('nilai.html', 'Student Performance', this)"><i>📈</i> Nilai Siswa</div>
+        <nav id="menu">
+            <div class="nav-link active" onclick="go('home.html', 'Control Center', this)"><i>🏠</i> Dashboard</div>
+            <div class="nav-link" onclick="go('administrasi.html', 'Data Repository', this)"><i>📂</i> Administrasi</div>
+            <div class="nav-link" onclick="go('jurnal.html', 'Neural Journal', this)"><i>📝</i> Jurnal Guru</div>
+            <div class="nav-item-divider" style="height: 1px; background: rgba(255,255,255,0.05); margin: 15px 0;"></div>
+            <div class="nav-link" onclick="go('rpm.html', 'Teaching Matrix (Day)', this)"><i>📊</i> RPM Harian</div>
+            <div class="nav-link" onclick="go('rpm-umum.html', 'Teaching Matrix (Gen)', this)"><i>📑</i> RPM Umum</div>
+            <div class="nav-link" onclick="go('nilai.html', 'Academic Analytics', this)"><i>📈</i> Nilai Siswa</div>
         </nav>
 
-        <div style="padding-top: 20px; border-top: 1px solid var(--glass-border); font-size: 11px; color: #475569;">
-            © 2025 Education System
+        <div style="margin-top: auto; font-size: 10px; color: #334155; text-align: center;">
+            SECURE ENVIRONMENT BY GEMINI
         </div>
     </aside>
 
-    <main class="viewport">
-        <header class="top-nav">
-            <div class="page-title">
-                <span id="currentPage">Dashboard Overview</span>
-            </div>
-            <div class="status-badge">
-                <span class="status-dot"></span> System Online
+    <main class="main-stage">
+        <header class="top-bar">
+            <div class="current-page" id="view-title">Control Center</div>
+            <div class="system-status">
+                <span class="pulse-dot"></span> ENCRYPTED SESSION
             </div>
         </header>
 
-        <iframe id="mainFrame" class="content-frame" src="home.html"></iframe>
+        <section class="frame-container">
+            <iframe id="viewport" src="home.html"></iframe>
+        </section>
     </main>
 </div>
 
 <script>
-    function loadPage(url, title, el) {
-        // Update Frame
-        document.getElementById('mainFrame').src = url;
-        // Update Title
-        document.getElementById('currentPage').innerText = title;
+    function go(src, title, el) {
+        document.getElementById('viewport').src = src;
+        document.getElementById('view-title').innerText = title;
         
-        // Update Active State
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.remove('active');
-        });
+        // UI Interaction
+        document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
         el.classList.add('active');
     }
 </script>
