@@ -9,55 +9,40 @@
         body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 15px; color: #333; font-size: 14px; }
         .container { max-width: 1100px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         .brand-wrapper { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
-        .sipandu-brand { border-left: 4px solid var(--accent); padding-left: 12px; }
-        .sipandu-name { font-weight: bold; font-size: 18px; color: var(--primary); margin: 0; line-height: 1.2; }
-        .sipandu-sub { font-size: 11px; color: #64748b; margin: 0; }
-        .sipandu-tagline { font-size: 10px; color: var(--accent); font-style: italic; margin-top: 2px; }
+        .brand-box { border-left: 4px solid var(--accent); padding-left: 12px; }
+        .brand-name { font-weight: bold; font-size: 18px; color: var(--primary); margin: 0; line-height: 1.2; }
+        .brand-sub { font-size: 11px; color: #64748b; margin: 0; }
+        .brand-tagline { font-size: 10px; color: var(--accent); font-style: italic; margin-top: 2px; }
         .khd-quote { font-style: italic; color: #64748b; font-size: 12px; border-left: 2px solid #cbd5e1; padding-left: 10px; line-height: 1.4; max-width: 350px; text-align: left; }
         .header { text-align: center; border-bottom: 3px double var(--primary); margin-bottom: 20px; padding-bottom: 10px; }
         .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; background: #f1f5f9; padding: 20px; border-radius: 8px; margin-bottom: 25px; }
         label { display: block; font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px; }
-        input, select, textarea { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
         table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         th { background: #f1f5f9; color: #475569; padding: 12px; border: 1px solid #cbd5e1; font-size: 12px; }
         td { padding: 10px; border: 1px solid #cbd5e1; text-align: center; }
-        .text-left { text-align: left; }
         .section-header { background: var(--primary); color: white; padding: 10px 15px; margin-top: 25px; border-radius: 6px 6px 0 0; display: flex; justify-content: space-between; align-items: center; }
-        .card { border: 1px solid #cbd5e1; border-top: none; padding: 15px; border-radius: 0 0 6px 6px; background: white; margin-bottom: 20px; }
         .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; font-size: 13px; }
         .btn-add { background: var(--accent); color: white; }
         .btn-del { background: #ef4444; color: white; padding: 5px 10px; }
-        .btn-nav { background: #64748b; color: white; }
-        .no-print { display: inline-flex; gap: 8px; }
-        .calc-box { background: #fffbeb; border: 1px solid #fef3c7; padding: 15px; border-radius: 8px; margin: 15px 0; }
-        .final-score { font-size: 24px; font-weight: 800; color: #1e40af; }
-        .nilai-dasar-box { margin-top: 40px; padding: 20px; border: 1px dashed #cbd5e1; border-radius: 8px; background: #fff; page-break-inside: avoid; }
-        .nilai-title { font-weight: bold; font-size: 13px; color: var(--primary); margin-bottom: 12px; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+        .nilai-dasar-box { margin-top: 40px; padding: 20px; border: 1px dashed #cbd5e1; border-radius: 8px; background: #fff; }
+        .nilai-title { font-weight: bold; font-size: 13px; color: var(--primary); margin-bottom: 12px; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; text-transform: uppercase; }
         .nilai-grid { display: flex; flex-wrap: wrap; gap: 10px; }
         .nilai-item { background: #f8fafc; padding: 6px 12px; border-radius: 4px; border: 1px solid #e2e8f0; font-size: 11px; color: #475569; font-weight: 600; }
-        .nilai-item span { color: var(--accent); margin-right: 5px; }
-        @media print {
-            .no-print, .btn, .btn-del { display: none !important; }
-            body { background: white; padding: 0; }
-            .container { box-shadow: none; max-width: 100%; border: none; }
-            #detailView { display: block !important; }
-            #listView { display: none !important; }
-            .nilai-dasar-box { border: 1px solid #eee; }
-        }
+        .footer-text { font-size: 10px; color: #94a3b8; margin-top: 15px; text-align: right; font-weight: normal; }
+        @media print { .no-print { display: none !important; } }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="brand-wrapper">
-        <div class="sipandu-brand">
-            <div class="sipandu-name">Teaching Assistant</div>
-            <div class="sipandu-sub">Rencana Pembelajaran Mendalam</div>
-            <div class="sipandu-tagline">“Menuntun Kodrat Anak”</div>
+        <div class="brand-box">
+            <div class="brand-name">Teaching Assistant</div>
+            <div class="brand-sub">Rencana Pembelajaran Mendalam</div>
+            <div class="brand-tagline">“Menuntun Kodrat Anak”</div>
         </div>
-        <div class="khd-quote">
-            “Mendidik adalah menuntun segala kodrat yang ada pada anak-anak.”
-        </div>
+        <div class="khd-quote">“Mendidik adalah menuntun segala kodrat yang ada pada anak-anak.”</div>
     </div>
 
     <div class="header">
@@ -66,10 +51,10 @@
     </div>
 
     <div class="meta-grid">
-        <div><label>Sekolah</label><input type="text" id="cfg_sekolah" oninput="saveMeta()" placeholder="Nama Sekolah"></div>
+        <div><label>Sekolah</label><input type="text" id="cfg_sekolah" placeholder="Nama Sekolah"></div>
         <div>
             <label>Mata Pelajaran</label>
-            <select id="cfg_mapel" onchange="switchMapel()">
+            <select id="cfg_mapel">
                 <option>Pendidikan Pancasila</option>
                 <option>Bahasa Indonesia</option>
                 <option>Matematika</option>
@@ -80,255 +65,68 @@
                 <option>P5 / Kokurikuler</option>
             </select>
         </div>
-        <div><label>Kelas</label><input type="text" id="cfg_kelas" oninput="saveMeta()" placeholder="Contoh: IV-B"></div>
-        <div><label>Semester</label><select id="cfg_semester" onchange="saveMeta()"><option>I (Ganjil)</option><option>II (Genap)</option></select></div>
-        <div><label>Guru Pengampu</label><input type="text" id="cfg_guru" oninput="saveMeta()"></div>
+        <div><label>Guru Pengampu</label><input type="text" id="cfg_guru"></div>
     </div>
 
     <div id="listView">
         <div class="section-header">
-            <span>DAFTAR NILAI: <span id="labelMapel">Pendidikan Pancasila</span></span>
+            <span>DAFTAR NILAI</span>
             <button class="btn btn-add" onclick="addStudent()">+ Tambah Siswa</button>
         </div>
         <table>
             <thead>
                 <tr>
                     <th width="40">No</th>
-                    <th class="text-left">Nama Siswa</th>
+                    <th style="text-align:left">Nama Siswa</th>
                     <th width="100">Rerata Harian</th>
                     <th width="100">ASAS</th>
                     <th width="100">NA RAPOR</th>
-                    <th width="120" class="no-print">Aksi</th>
+                    <th width="80" class="no-print">Aksi</th>
                 </tr>
             </thead>
             <tbody id="studentBody"></tbody>
         </table>
-        <div class="no-print">
-            <button class="btn btn-nav" onclick="exportData()">📥 Simpan Backup (JSON)</button>
-        </div>
-    </div>
-
-    <div id="detailView" style="display:none;">
-        <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <button class="btn btn-nav no-print" onclick="closeDetail()">← Kembali</button>
-            <h2 id="det_nama" style="margin:0; color:var(--primary);">Nama Siswa</h2>
-            <button class="btn no-print" style="background:#f59e0b; color:white;" onclick="window.print()">🖨️ Cetak</button>
-        </div>
-
-        <div class="section-header">
-            <span>1. NILAI HARIAN / FORMATIF (OPSIONAL)</span>
-            <button class="btn btn-add no-print" onclick="addRow('harian')">+ Tambah Nilai</button>
-        </div>
-        <div class="card">
-            <table id="tblHarian">
-                <thead><tr><th width="150">Tanggal</th><th>Keterangan Tugas/TP</th><th width="100">Nilai</th><th width="50" class="no-print"></th></tr></thead>
-                <tbody id="bodyHarian"></tbody>
-            </table>
-            <p id="emptyHarian" style="color:gray; font-style:italic; display:none;">Tidak ada nilai harian.</p>
-        </div>
-
-        <div class="section-header">
-            <span>2. ASESMEN LINGKUP MATERI / SUMATIF (OPSIONAL)</span>
-            <button class="btn btn-add no-print" onclick="addRow('sumatif')">+ Tambah Materi</button>
-        </div>
-        <div class="card">
-            <table id="tblSumatif">
-                <thead><tr><th>Materi / Tujuan Pembelajaran</th><th width="100">Nilai</th><th width="50" class="no-print"></th></tr></thead>
-                <tbody id="bodySumatif"></tbody>
-            </table>
-        </div>
-
-        <div class="section-header"><span>3. PENENTUAN NILAI AKHIR (NA)</span></div>
-        <div class="card">
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                <div class="calc-box">
-                    <label>Rata-rata Harian (70%)</label>
-                    <div id="calc_harian_val" style="font-size:18px; font-weight:bold;">0</div>
-                    <label style="margin-top:10px;">Nilai ASAS (30%)</label>
-                    <input type="number" id="det_asas" oninput="updateAll()" style="font-size:18px; font-weight:bold;">
-                </div>
-                <div class="calc-box" style="text-align:center; background:#e0f2fe;">
-                    <label>Hasil Rumus Otomatis</label>
-                    <div class="final-score" id="auto_na">0</div>
-                    <hr>
-                    <label>NILAI AKHIR RAPOR (OVERRIDE)</label>
-                    <input type="number" id="det_na_final" oninput="manualSave()" style="text-align:center; font-size:22px; color:#1e40af; font-weight:bold;">
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="nilai-dasar-box">
         <div class="nilai-title">Nilai Dasar Pendidik</div>
         <div class="nilai-grid">
-            <div class="nilai-item"><span>•</span> Integritas</div>
-            <div class="nilai-item"><span>•</span> Profesional</div>
-            <div class="nilai-item"><span>•</span> Berpihak pada Anak</div>
-            <div class="nilai-item"><span>•</span> Reflektif</div>
-            <div class="nilai-item"><span>•</span> Manusiawi</div>
+            <div class="nilai-item">Integritas</div>
+            <div class="nilai-item">Profesional</div>
+            <div class="nilai-item">Berpihak pada Anak</div>
+            <div class="nilai-item">Reflektif</div>
+            <div class="nilai-item">Manusiawi</div>
         </div>
-        <p style="font-size: 10px; color: #94a3b8; margin-top: 15px; text-align: right;">
-            V.1.0 - Teaching Assistant
-        </p>
+        <p class="footer-text">Panduan Administrasi • V.1.0 - Teaching Assistant</p>
     </div>
 </div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('guru_v2_db')) || { meta: {}, data: {} };
-    let currentMapel = "Pendidikan Pancasila";
-    let activeIdx = null;
-
-    function init() {
-        document.getElementById('cfg_sekolah').value = db.meta.sekolah || '';
-        document.getElementById('cfg_guru').value = db.meta.guru || '';
-        document.getElementById('cfg_kelas').value = db.meta.kelas || '';
-        document.getElementById('cfg_semester').value = db.meta.semester || 'I (Ganjil)';
-        switchMapel();
-    }
-
-    function switchMapel() {
-        currentMapel = document.getElementById('cfg_mapel').value;
-        document.getElementById('labelMapel').innerText = currentMapel;
-        renderList();
-    }
-
-    function saveMeta() {
-        db.meta = {
-            sekolah: document.getElementById('cfg_sekolah').value,
-            guru: document.getElementById('cfg_guru').value,
-            kelas: document.getElementById('cfg_kelas').value,
-            semester: document.getElementById('cfg_semester').value
-        };
-        save();
-    }
-
-    function addStudent() {
-        let n = prompt("Nama Siswa:");
-        if (!n) return;
-        if (!db.data[currentMapel]) db.data[currentMapel] = [];
-        db.data[currentMapel].push({
-            name: n, harian: [], sumatif: [], asas: '', na: '', praktik: '', sikap: 'Baik (B)', catatan: ''
-        });
-        save(); renderList();
-    }
+    let db = JSON.parse(localStorage.getItem('ta_db')) || { data: [] };
+    
+    function save() { localStorage.setItem('ta_db', JSON.stringify(db)); }
 
     function renderList() {
-        let list = db.data[currentMapel] || [];
         let html = '';
-        list.forEach((s, i) => {
-            let hAvg = calculateAvg(s.harian);
+        db.data.forEach((s, i) => {
             html += `<tr>
                 <td>${i+1}</td>
-                <td class="text-left"><b>${s.name}</b></td>
-                <td>${hAvg || '-'}</td>
-                <td>${s.asas || '-'}</td>
-                <td style="background:#f0f9ff; font-weight:bold;">${s.na || '-'}</td>
-                <td class="no-print">
-                    <button class="btn btn-add" onclick="openDetail(${i})">Input</button>
-                    <button class="btn btn-del" onclick="delStd(${i})">×</button>
-                </td>
+                <td style="text-align:left">${s.name}</td>
+                <td>-</td><td>-</td><td>-</td>
+                <td class="no-print"><button class="btn btn-del" onclick="del(${i})">×</button></td>
             </tr>`;
         });
         document.getElementById('studentBody').innerHTML = html;
     }
 
-    function openDetail(idx) {
-        activeIdx = idx;
-        let s = db.data[currentMapel][idx];
-        document.getElementById('listView').style.display = 'none';
-        document.getElementById('detailView').style.display = 'block';
-        document.getElementById('det_nama').innerText = s.name;
-        document.getElementById('det_asas').value = s.asas;
-        document.getElementById('det_na_final').value = s.na;
-        renderSubTable('harian');
-        renderSubTable('sumatif');
-        updateAll();
+    function addStudent() {
+        let n = prompt("Nama Siswa:");
+        if (n) { db.data.push({name: n}); save(); renderList(); }
     }
 
-    function renderSubTable(type) {
-        let s = db.data[currentMapel][activeIdx];
-        let body = document.getElementById(type === 'harian' ? 'bodyHarian' : 'bodySumatif');
-        body.innerHTML = '';
-        s[type].forEach((item, i) => {
-            if(type === 'harian') {
-                body.innerHTML += `<tr>
-                    <td><input type="date" value="${item.tgl}" oninput="updRow('harian',${i},'tgl',this.value)"></td>
-                    <td><input type="text" value="${item.ket}" oninput="updRow('harian',${i},'ket',this.value)"></td>
-                    <td><input type="number" value="${item.val}" oninput="updRow('harian',${i},'val',this.value)"></td>
-                    <td class="no-print"><button class="btn btn-del" onclick="remRow('harian',${i})">×</button></td>
-                </tr>`;
-            } else {
-                body.innerHTML += `<tr>
-                    <td><input type="text" value="${item.tp}" oninput="updRow('sumatif',${i},'tp',this.value)"></td>
-                    <td><input type="number" value="${item.val}" oninput="updRow('sumatif',${i},'val',this.value)"></td>
-                    <td class="no-print"><button class="btn btn-del" onclick="remRow('sumatif',${i})">×</button></td>
-                </tr>`;
-            }
-        });
-        if(type === 'harian') document.getElementById('emptyHarian').style.display = s.harian.length ? 'none' : 'block';
-    }
+    function del(i) { if(confirm("Hapus?")) { db.data.splice(i,1); save(); renderList(); } }
 
-    function addRow(type) {
-        let s = db.data[currentMapel][activeIdx];
-        if(type === 'harian') s.harian.push({tgl:'', ket:'', val:''});
-        else s.sumatif.push({tp:'', val:''});
-        renderSubTable(type);
-    }
-
-    function updRow(type, i, field, v) {
-        db.data[currentMapel][activeIdx][type][i][field] = v;
-        updateAll();
-    }
-
-    function remRow(type, i) {
-        db.data[currentMapel][activeIdx][type].splice(i,1);
-        renderSubTable(type);
-        updateAll();
-    }
-
-    function updateAll() {
-        let s = db.data[currentMapel][activeIdx];
-        let hAvg = parseFloat(calculateAvg(s.harian)) || 0;
-        let asas = parseFloat(document.getElementById('det_asas').value) || 0;
-        s.asas = document.getElementById('det_asas').value;
-        document.getElementById('calc_harian_val').innerText = hAvg || '-';
-        let naFinal = hAvg > 0 ? Math.round((hAvg * 0.7) + (asas * 0.3)) : asas;
-        document.getElementById('auto_na').innerText = naFinal;
-        let naInput = document.getElementById('det_na_final');
-        if (!naInput.dataset.modified) { naInput.value = naFinal; s.na = naFinal; }
-        save();
-    }
-
-    function manualSave() {
-        let s = db.data[currentMapel][activeIdx];
-        let naInput = document.getElementById('det_na_final');
-        naInput.dataset.modified = "true";
-        s.na = naInput.value;
-        save();
-    }
-
-    function calculateAvg(arr) {
-        let vals = arr.map(x => parseFloat(x.val)).filter(v => !isNaN(v));
-        return vals.length ? (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1) : 0;
-    }
-
-    function closeDetail() {
-        document.getElementById('listView').style.display = 'block';
-        document.getElementById('detailView').style.display = 'none';
-        renderList();
-    }
-
-    function save() { localStorage.setItem('guru_v2_db', JSON.stringify(db)); }
-    function delStd(i) { if(confirm("Hapus siswa ini?")) { db.data[currentMapel].splice(i,1); save(); renderList(); } }
-    function exportData() {
-        const blob = new Blob([JSON.stringify(db)], {type: 'application/json'});
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `Backup_TA.json`;
-        a.click();
-    }
-
-    init();
+    renderList();
 </script>
 </body>
 </html>
