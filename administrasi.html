@@ -11,67 +11,64 @@
             --gold: #f1c40f; --info: #3498db; --bloom-bg: #ebf5fb;
         }
         * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-        body { margin: 0; display: flex; background: var(--bg); color: var(--text); min-height: 100vh; }
         
-        /* Sidebar Styles */
-        .sidebar { width: 280px; background: var(--sidebar); color: white; display: flex; flex-direction: column; flex-shrink: 0; }
-        .sidebar-header { padding: 25px; text-align: center; background: #141d26; border-bottom: 1px solid #34495e; }
-        .sidebar-header h2 { margin: 0; font-size: 20px; color: var(--accent); letter-spacing: 1px; }
-        .sidebar-header small { opacity: 0.7; font-size: 11px; }
+        body { margin: 0; display: flex; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+        /* Sidebar Navigation */
+        .sidebar { width: 280px; background: var(--sidebar); color: white; display: flex; flex-direction: column; position: fixed; height: 100vh; overflow-y: auto; z-index: 100; }
+        .sidebar-header { padding: 25px 20px; text-align: center; background: #141d26; border-bottom: 1px solid #34495e; }
+        .sidebar-header h2 { margin: 0; font-size: 18px; color: var(--accent); letter-spacing: 1px; }
+        .sidebar-header small { opacity: 0.7; font-size: 11px; display: block; margin-top: 5px; }
 
         .nav-menu { flex-grow: 1; padding: 15px 0; }
         .nav-item { padding: 14px 25px; cursor: pointer; font-size: 13px; border-left: 5px solid transparent; transition: 0.3s; color: rgba(255,255,255,0.8); display: flex; align-items: center; gap: 10px; }
-        .nav-item:hover { background: rgba(255,255,255,0.05); }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
         .nav-item.active { background: #2c3e50; border-left-color: var(--accent); color: var(--accent); font-weight: bold; }
 
-        .mapel-selector { padding: 20px; border-top: 1px solid #34495e; }
+        .mapel-selector { padding: 20px; border-top: 1px solid #34495e; background: #141d26; }
         .mapel-selector label { font-size: 11px; text-transform: uppercase; color: #7f8c8d; display: block; margin-bottom: 8px; }
-        select { background: #2c3e50; color: white; border: 1px solid #34495e; padding: 10px; border-radius: 6px; width: 100%; cursor: pointer; }
+        select { background: #2c3e50; color: white; border: 1px solid #34495e; padding: 10px; border-radius: 6px; width: 100%; cursor: pointer; outline: none; }
 
-        /* Main Content */
-        .main { flex-grow: 1; padding: 40px; overflow-y: auto; }
-        .page { display: none; max-width: 1100px; margin: auto; animation: fadeIn 0.3s ease; }
+        /* Main Content Area */
+        .main { margin-left: 280px; width: calc(100% - 280px); padding: 40px; }
+        .page { display: none; max-width: 1000px; margin: auto; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* Component Styles */
         .card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); margin-bottom: 25px; border: 1px solid #e0e6ed; }
         h1 { font-size: 22px; margin-top: 0; color: var(--primary); border-bottom: 2px solid var(--bg); padding-bottom: 15px; margin-bottom: 25px; }
-
-        input, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; margin-top: 8px; font-size: 14px; transition: 0.2s; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        label { font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px; }
+        input, textarea, .page select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; transition: 0.2s; }
         input:focus, textarea:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1); }
-        .input-error { border: 2px solid var(--danger) !important; background: #fff5f5; }
-        
-        .btn-action { background: var(--accent); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 15px; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
-        .btn-action:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        .btn-action { background: var(--accent); color: white; border: none; padding: 12px 22px; border-radius: 6px; cursor: pointer; font-weight: bold; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; margin-top: 10px; }
+        .btn-action:hover { filter: brightness(1.1); transform: translateY(-1px); }
         .btn-info { background: var(--info); }
-        
-        /* Table Styles */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; background: white; }
-        th { background: var(--primary); padding: 12px; border: 1px solid #e5e7eb; color: white; text-align: center; }
-        td { border: 1px solid #e5e7eb; padding: 10px; vertical-align: middle; text-align: center; }
+
+        /* Table Design */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; border-radius: 8px; overflow: hidden; }
+        th { background: var(--primary); padding: 12px; border: 1px solid #e5e7eb; color: white; font-size: 12px; }
+        td { border: 1px solid #e5e7eb; padding: 10px; font-size: 12px; text-align: center; }
         
         .week-cell { cursor: pointer; width: 22px; height: 25px; border: 1px solid #eee; transition: 0.2s; }
-        .week-cell:hover { background: #f0f0f0; }
         .week-cell.checked { background: var(--accent) !important; }
 
-        .bloom-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; background: var(--bloom-bg); color: #2980b9; margin-top: 5px; font-weight: bold; }
-        .char-counter { font-size: 10px; font-weight: bold; float: right; margin-top: 5px; color: #95a5a6; }
-        
-        .materi-chip { display: inline-block; padding: 5px 12px; margin: 3px; border-radius: 20px; background: #eee; font-size: 11px; cursor: pointer; transition: 0.2s; }
-        .materi-chip:hover { background: #ddd; }
-        .materi-chip.active { background: var(--accent); color: white; }
+        .bloom-badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; background: var(--bloom-bg); color: #2980b9; font-weight: bold; margin-top: 5px; }
+        .char-counter { font-size: 10px; font-weight: bold; color: #999; margin-top: 5px; display: block; text-align: right; }
 
         @media print {
-            .sidebar, .no-print, .btn-action, .char-counter { display: none !important; }
-            .main { padding: 0 !important; width: 100% !important; }
-            body { background: white; }
-            .card { border: none; box-shadow: none; padding: 0; }
+            .sidebar, .no-print, .btn-action { display: none !important; }
+            .main { margin-left: 0; width: 100%; padding: 0; }
+            .card { box-shadow: none; border: none; padding: 0; }
         }
-    </style>    
+    </style>
 </head>
 <body>
 
-<div class="sidebar">
+<div class="sidebar no-print">
     <div class="sidebar-header">
         <h2>SIPANDU GURU</h2>
         <small>V.1.0 - Teaching Assistant</small>
@@ -87,7 +84,7 @@
     </div>
 
     <div class="mapel-selector">
-        <label>Mata Pelajaran:</label>
+        <label>Pilih Mapel:</label>
         <select id="mainMapel" onchange="switchSubject()">
             <option>Pendidikan Agama dan BP</option>
             <option>Pendidikan Pancasila</option>
@@ -104,22 +101,25 @@
 </div>
 
 <div class="main">
+    
     <div id="identitas" class="page active">
         <div class="card">
             <h1>DATA IDENTITAS & TTD</h1>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div><label>Nama Sekolah</label><input type="text" id="sekolah" placeholder="SD Negeri..." oninput="saveAll()"></div>
+            <div class="grid-2">
+                <div><label>Nama Sekolah</label><input type="text" id="sekolah" placeholder="Masukkan nama sekolah" oninput="saveAll()"></div>
                 <div><label>Tahun Pelajaran</label><input type="text" id="tapel" value="2025/2026" oninput="saveAll()"></div>
-                <div><label>Fase</label><select id="fase" onchange="saveAll()" style="background:white; color:black;"><option value="A">Fase A</option><option value="B" selected>Fase B</option><option value="C">Fase C</option></select></div>
-                <div><label>Kelas</label><select id="kelas" onchange="saveAll()" style="background:white; color:black;"><option>I</option><option>II</option><option>III</option><option selected>IV</option><option>V</option><option>VI</option></select></div>
+                <div><label>Fase</label><select id="fase" onchange="saveAll()"><option value="A">Fase A</option><option value="B" selected>Fase B</option><option value="C">Fase C</option></select></div>
+                <div><label>Kelas</label><select id="kelas" onchange="saveAll()"><option>I</option><option>II</option><option>III</option><option selected>IV</option><option>V</option><option>VI</option></select></div>
                 <div><label>Nama Guru</label><input type="text" id="guru" oninput="saveAll()"></div>
                 <div><label>NIP Guru</label><input type="text" id="nip" oninput="saveAll()"></div>
                 <div><label>Nama Kepala Sekolah</label><input type="text" id="ks" oninput="saveAll()"></div>
                 <div><label>NIP Kepala Sekolah</label><input type="text" id="ks_nip" oninput="saveAll()"></div>
             </div>
-            <div style="margin-top:25px; padding:15px; background:#f9f9f9; border-radius:8px; border: 1px dashed #ccc;">
-                <input type="checkbox" id="showTtd" onchange="saveAll()" style="width:auto; margin:0"> 
-                <label for="showTtd" style="font-weight:bold; cursor:pointer; margin-left:10px"> Munculkan Kolom Tanda Tangan di Dokumen</label>
+            <div style="margin-top:25px; padding:15px; background:#f0fff4; border-radius:8px; border: 1px solid #c6f6d5;">
+                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                    <input type="checkbox" id="showTtd" onchange="saveAll()" style="width: auto;"> 
+                    <span>Munculkan Kolom Tanda Tangan di Dokumen</span>
+                </label>
             </div>
         </div>
     </div>
@@ -127,7 +127,6 @@
     <div id="cp_sec" class="page">
         <div class="card">
             <h1>CAPAIAN PEMBELAJARAN (CP)</h1>
-            <p style="font-size: 13px; color: #666;">Masukkan elemen dan CP. Gunakan tanda titik (.) untuk memisahkan setiap Tujuan Pembelajaran saat proses otomatis.</p>
             <div id="elemenContainer"></div>
             <div style="display: flex; gap: 10px;">
                 <button class="btn-action" onclick="addElemen()">+ Tambah Elemen</button>
@@ -147,16 +146,18 @@
                 </table>
                 <div class="ttd-tp"></div>
             </div>
-            <button class="btn-action" onclick="addTPRow()">+ Tambah TP Manual</button>
-            <button class="btn-action btn-info" onclick="exportToWord('tpExportArea', 'DAFTAR_TP')">💾 Ekspor ke Word</button>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-action" onclick="addTPRow()">+ Tambah TP Manual</button>
+                <button class="btn-action btn-info" onclick="exportToWord('tpExportArea', 'DAFTAR_TP')">💾 Ekspor ke Word</button>
+            </div>
         </div>
     </div>
 
     <div id="atp_sec" class="page">
         <div class="card">
             <h1>ALUR TUJUAN PEMBELAJARAN (ATP)</h1>
-            <div class="no-print" style="margin-bottom:20px; padding:15px; background:#e8f4fd; border-radius:8px; border: 1px solid #b3d7f2;">
-                <label><b>Input Master Bab/Materi (Pisahkan dengan koma):</b></label>
+            <div class="no-print" style="margin-bottom:20px; padding:20px; background:#ebf5fb; border-radius:8px; border: 1px solid #d4e6f1;">
+                <label>Input Master Bab/Materi (Pisahkan dengan koma):</label>
                 <textarea id="masterMateriInput" onchange="updateMasterMateri(this.value)" placeholder="Contoh: Bab 1: Bilangan, Bab 2: Aljabar..."></textarea>
             </div>
             <div id="atpExportArea">
@@ -189,8 +190,8 @@
     <div id="promes_sec" class="page">
         <div class="card">
             <h1>PROGRAM SEMESTER (PROMES)</h1>
-            <button class="btn-action" onclick="toggleSemester()" style="background: var(--gold); color: #000;">🔄 Pindah ke Smt <span id="nextSmtText">2</span></button>
-            <div id="promesExportArea" style="margin-top: 20px;">
+            <button class="btn-action" onclick="toggleSemester()" style="background: var(--gold); color: #333;">🔄 Pindah ke Smt <span id="nextSmtText">2</span></button>
+            <div id="promesExportArea">
                 <div class="header-promes"></div>
                 <div style="overflow-x:auto;">
                     <table id="promesTable"><thead id="promesHead"></thead><tbody id="promesBody"></tbody></table>
@@ -203,14 +204,14 @@
 </div>
 
 <script>
-    // Konfigurasi KKO Bloom
+    // Logic tetap sama dengan penyempurnaan pada fungsi render dan penyimpanan
     const BLOOM_MAP = {
         'C1': ['mengenal', 'menyebutkan', 'mengingat', 'menghafal', 'membaca'],
-        'C2': ['memahami', 'menjelaskan', 'mengidentifikasi', 'mengklasifikasikan', 'menginterpretasi'],
-        'C3': ['menerapkan', 'menggunakan', 'mempraktikkan', 'mendemonstrasikan', 'menentukan'],
-        'C4': ['menganalisis', 'membandingkan', 'membedakan', 'menghubungkan', 'menelaah'],
-        'C5': ['mengevaluasi', 'menilai', 'menyimpulkan', 'mengkritik'],
-        'C6': ['menciptakan', 'merancang', 'membuat', 'menyusun', 'membangun']
+        'C2': ['memahami', 'menjelaskan', 'mengidentifikasi', 'mengklasifikasikan'],
+        'C3': ['menerapkan', 'menggunakan', 'mempraktikkan', 'mendemonstrasikan'],
+        'C4': ['menganalisis', 'membandingkan', 'membedakan', 'menghubungkan'],
+        'C5': ['mengevaluasi', 'menilai', 'menyimpulkan'],
+        'C6': ['menciptakan', 'merancang', 'membuat', 'menyusun']
     };
 
     let state = {
@@ -219,20 +220,12 @@
         currentSmt: 1
     };
 
-    let currentMapel = "Bahasa Indonesia";
+    let currentMapel = "Pendidikan Agama dan BP";
 
     window.onload = () => {
-        const saved = localStorage.getItem('sipandu_v1_4');
+        const saved = localStorage.getItem('sipandu_v1_5');
         if (saved) state = JSON.parse(saved);
         loadIdentitas();
-        
-        // Set initial mapel selector
-        const sel = document.getElementById('mainMapel');
-        if (state.subjects && Object.keys(state.subjects).length > 0) {
-            currentMapel = Object.keys(state.subjects)[0];
-            sel.value = currentMapel;
-        }
-        
         switchSubject();
     };
 
@@ -249,7 +242,6 @@
         if (!state.subjects[currentMapel]) {
             state.subjects[currentMapel] = { elemenList: [{name: '', cp: ''}], tpList: [], materiMaster: '' };
         }
-        
         document.getElementById('masterMateriInput').value = state.subjects[currentMapel].materiMaster || '';
         renderElemen();
         renderAll();
@@ -262,14 +254,12 @@
             if(el) state.common[id] = el.value; 
         });
         state.common.showTtd = document.getElementById('showTtd').checked;
-        localStorage.setItem('sipandu_v1_4', JSON.stringify(state)); 
+        localStorage.setItem('sipandu_v1_5', JSON.stringify(state)); 
         renderAll();
     }
 
     function renderAll() {
         const sub = state.subjects[currentMapel];
-        if(!sub) return;
-
         renderTPTable(sub);
         renderATPTable(sub);
         renderProtaTable(sub);
@@ -290,42 +280,34 @@
         });
     }
 
-    // --- RENDER TP ---
     function renderTPTable(sub) {
-        const body = document.getElementById('tpBody'); 
-        body.innerHTML = '';
+        const body = document.getElementById('tpBody'); body.innerHTML = '';
         sub.tpList.forEach((tp, i) => {
             const charCount = tp.text.length;
-            const row = document.createElement('tr');
-            row.innerHTML = `
+            body.innerHTML += `<tr>
                 <td>${i+1}</td>
                 <td><input id="el-${i}" value="${tp.elemen}" onchange="updateTPField(${i}, 'elemen', this.value)"></td>
                 <td>
-                    <textarea id="txt-${i}" class="${charCount > 100 ? 'input-error' : ''}" 
-                        oninput="updateTPCount(${i}, this)">${tp.text}</textarea>
-                    <div style="display:flex; justify-content:space-between; align-items:center">
+                    <textarea id="txt-${i}" class="${charCount > 120 ? 'input-error' : ''}" 
+                        oninput="updateTPText(${i}, this)">${tp.text}</textarea>
+                    <div style="display:flex; justify-content:space-between">
                         <span class="bloom-badge">Bloom: ${tp.bloom}</span>
-                        <span id="cnt-${i}" class="char-counter">${charCount}/100</span>
+                        <span id="cnt-${i}" class="char-counter">${charCount}/120</span>
                     </div>
                 </td>
-                <td>
-                    <select id="smt-${i}" onchange="updateTPField(${i}, 'smt', this.value)" style="background:white; color:black; font-size:12px">
-                        <option value="1" ${tp.smt==1?'selected':''}>1</option>
-                        <option value="2" ${tp.smt==2?'selected':''}>2</option>
-                    </select>
-                </td>
+                <td><select id="smt-${i}" onchange="updateTPField(${i}, 'smt', this.value)"><option value="1" ${tp.smt==1?'selected':''}>1</option><option value="2" ${tp.smt==2?'selected':''}>2</option></select></td>
                 <td class="no-print">
-                    <button onclick="deleteTP(${i})" style="background:var(--danger); color:white; border:none; padding:8px; border-radius:4px; cursor:pointer">✕</button>
+                    <button onclick="deleteTP(${i})" style="background:var(--danger); color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer">X</button>
                 </td>
-            `;
-            body.appendChild(row);
+            </tr>`;
         });
     }
 
-    function updateTPCount(idx, el) {
-        document.getElementById(`cnt-${idx}`).innerText = el.value.length + '/100';
-        state.subjects[currentMapel].tpList[idx].text = el.value;
-        state.subjects[currentMapel].tpList[idx].bloom = getBloomLabel(el.value);
+    function updateTPText(idx, el) {
+        const sub = state.subjects[currentMapel];
+        sub.tpList[idx].text = el.value;
+        sub.tpList[idx].bloom = getBloomLabel(el.value);
+        document.getElementById(`cnt-${idx}`).innerText = el.value.length + '/120';
         saveAll();
     }
 
@@ -334,27 +316,22 @@
         saveAll();
     }
 
-    // --- ATP FUNCTIONS ---
-    function updateMasterMateri(val) { 
-        state.subjects[currentMapel].materiMaster = val; 
-        saveAll(); 
-    }
+    function updateMasterMateri(val) { state.subjects[currentMapel].materiMaster = val; saveAll(); }
 
     function renderATPTable(sub) {
         const body = document.getElementById('atpBody'); body.innerHTML = '';
         const mList = (sub.materiMaster || '').split(',').map(s => s.trim()).filter(s => s !== "");
-
         sub.tpList.forEach((tp, i) => {
             if (!tp.selectedMateri) tp.selectedMateri = [];
             let chips = mList.map(m => {
                 const active = tp.selectedMateri.includes(m) ? 'active' : '';
-                return `<span class="materi-chip ${active}" onclick="toggleMat(${i}, '${m}')">${m}</span>`;
+                return `<span class="materi-chip ${active}" onclick="toggleMat(${i}, '${m}')" style="display:inline-block; padding:3px 8px; margin:2px; background:#eee; border-radius:10px; font-size:10px; cursor:pointer">${m}</span>`;
             }).join('');
 
             body.innerHTML += `<tr>
                 <td>${i+1}</td><td>${tp.elemen}</td><td style="text-align:left">${tp.text}</td>
                 <td><div class="no-print">${chips}</div><div style="font-weight:bold; color:var(--primary); margin-top:5px">${tp.selectedMateri.join(', ')}</div></td>
-                <td><input type="number" value="${tp.jp || 0}" style="width:60px; text-align:center" onchange="updateJP(${i}, this.value)"></td>
+                <td><input type="number" value="${tp.jp || 0}" style="width:50px; text-align:center" onchange="updateJP(${i}, this.value)"></td>
             </tr>`;
         });
     }
@@ -367,10 +344,7 @@
         saveAll();
     }
 
-    function updateJP(idx, val) { 
-        state.subjects[currentMapel].tpList[idx].jp = val; 
-        saveAll();
-    }
+    function updateJP(idx, val) { state.subjects[currentMapel].tpList[idx].jp = val; saveAll(); }
 
     function renderProtaTable(sub) {
         const body = document.getElementById('protaBody'); body.innerHTML = '';
@@ -384,25 +358,21 @@
         const body = document.getElementById('promesBody');
         const head = document.getElementById('promesHead');
         const sub = state.subjects[currentMapel];
-        if (!sub || !sub.tpList) return;
-
-        const months = state.currentSmt == 1 ? ["Juli", "Agustus", "September", "Oktober", "November", "Desember"] : ["Januari", "Februari", "Maret", "April", "Mei", "Juni"];
-        let h1 = `<tr><th rowspan="2" width="30">No</th><th rowspan="2">Tujuan Pembelajaran</th><th rowspan="2" width="40">JP</th>`;
+        const months = state.currentSmt == 1 ? ["Juli", "Agt", "Sep", "Okt", "Nov", "Des"] : ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun"];
+        
+        let h1 = `<tr><th rowspan="2">No</th><th rowspan="2">TP</th><th rowspan="2">JP</th>`;
         let h2 = `<tr>`;
-        months.forEach(m => { h1 += `<th colspan="5" style="font-size:10px">${m}</th>`; for(let i=1; i<=5; i++) h2 += `<th style="font-size:8px; width:15px">${i}</th>`; });
+        months.forEach(m => { h1 += `<th colspan="5">${m}</th>`; for(let i=1; i<=5; i++) h2 += `<th style="font-size:7px; width:15px">${i}</th>`; });
         head.innerHTML = h1 + "</tr>" + h2 + "</tr>";
 
         body.innerHTML = '';
-        const filteredTP = sub.tpList.filter(t => t.smt == state.currentSmt);
-        
-        filteredTP.forEach((tp, i) => {
-            const globalIdx = sub.tpList.indexOf(tp);
+        sub.tpList.filter(t => t.smt == state.currentSmt).forEach((tp, i) => {
+            const gIdx = sub.tpList.indexOf(tp);
             if (!tp.checklists) tp.checklists = { 1: Array(30).fill(false), 2: Array(30).fill(false) };
             let cells = '';
             for(let w=0; w<30; w++) {
-                const isChecked = tp.checklists[state.currentSmt][w];
-                const chkClass = isChecked ? 'checked' : '';
-                cells += `<td class="week-cell ${chkClass}" onclick="toggleCheck(${globalIdx}, ${w})"></td>`;
+                const chk = tp.checklists[state.currentSmt][w] ? 'checked' : '';
+                cells += `<td class="week-cell ${chk}" onclick="toggleCheck(${gIdx}, ${w})"></td>`;
             }
             body.innerHTML += `<tr><td>${i+1}</td><td style="text-align:left">${tp.text}</td><td>${tp.jp}</td>${cells}</tr>`;
         });
@@ -416,41 +386,28 @@
 
     function getBloomLabel(text) {
         const lower = (text || "").toLowerCase();
-        for (const [lvl, kkos] of Object.entries(BLOOM_MAP)) { 
-            if (kkos.some(kko => lower.includes(kko))) return lvl; 
-        }
+        for (const [lvl, kkos] of Object.entries(BLOOM_MAP)) { if (kkos.some(kko => lower.includes(kko))) return lvl; }
         return "C3";
     }
 
     function createHeader(showSemester) {
         const c = state.common;
-        let smtRow = showSemester ? `<tr><td style="border:none;">Semester</td><td style="border:none;">: ${state.currentSmt}</td></tr>` : '';
-        return `
-        <div style="text-align:center; border-bottom:3px double #000; padding-bottom:10px; margin-bottom:15px">
+        let smtRow = showSemester ? `<tr><td style="border:none;">Semester</td><td style="border:none;">:</td><td style="border:none;">${state.currentSmt}</td></tr>` : '';
+        return `<div style="text-align:center; border-bottom:3px double #000; padding-bottom:10px; margin-bottom:15px">
             <div style="font-size:16pt; font-weight:bold; text-transform:uppercase">${c.sekolah || 'NAMA SEKOLAH'}</div>
-            <div style="font-size:12pt;">TAHUN PELAJARAN ${c.tapel}</div>
+            <div>Tahun Pelajaran: ${c.tapel}</div>
         </div>
-        <table style="width:100%; border:none; font-size:10pt; text-align:left; margin-bottom:10px">
-            <tr><td style="border:none; width:15%">Mata Pelajaran</td><td style="border:none;">: ${currentMapel}</td><td style="border:none; width:15%">Kelas / Fase</td><td style="border:none;">: ${c.kelas} / ${c.fase}</td></tr>
+        <table style="width:100%; border:none; font-size:10pt; text-align:left">
+            <tr><td style="border:none; width:15%">Mata Pelajaran</td><td style="border:none;">: ${currentMapel}</td><td style="border:none; width:15%">Kelas</td><td style="border:none;">: ${c.fase}/${c.kelas}</td></tr>
             ${smtRow}
         </table>`;
     }
 
     function createTtd() {
         const c = state.common;
-        const hariIni = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-        return `
-        <div style="display:flex; justify-content:space-between; margin-top:40px; text-align:left; font-size:11pt">
-            <div style="width: 300px">
-                Mengetahui,<br>Kepala Sekolah<br><br><br><br><br>
-                <b>${c.ks || '(....................................)'}</b><br>
-                NIP. ${c.ks_nip || '....................................'}
-            </div>
-            <div style="width: 300px">
-                ................, ${hariIni}<br>Guru Kelas<br><br><br><br><br>
-                <b>${c.guru || '(....................................)'}</b><br>
-                NIP. ${c.nip || '....................................'}
-            </div>
+        return `<div style="display:flex; justify-content:space-between; margin-top:30px; text-align:left; font-size:11pt">
+            <div>Mengetahui,<br>Kepala Sekolah<br><br><br><br><b>${c.ks || '(................)'}</b><br>NIP. ${c.ks_nip || '................'}</div>
+            <div>Guru Kelas,<br><br><br><br><br><b>${c.guru || '(................)'}</b><br>NIP. ${c.nip || '................'}</div>
         </div>`;
     }
 
@@ -459,25 +416,16 @@
         let jumlahTP = 0;
         sub.elemenList.forEach(el => {
             if(!el.cp) return;
-            // Memisahkan berdasarkan titik
             el.cp.split('.').forEach(s => {
                 const clean = s.trim();
                 if(clean.length > 10) {
-                    sub.tpList.push({ 
-                        elemen: el.name || 'Umum', 
-                        text: clean + '.', 
-                        smt: 1, 
-                        selectedMateri: [], 
-                        jp: 4, 
-                        bloom: getBloomLabel(clean), 
-                        checklists: { 1: Array(30).fill(false), 2: Array(30).fill(false) } 
-                    });
+                    sub.tpList.push({ elemen: el.name || 'Elemen', text: clean + '.', smt: 1, jp: 4, bloom: getBloomLabel(clean), checklists: { 1: Array(30).fill(false), 2: Array(30).fill(false) } });
                     jumlahTP++;
                 }
             });
         });
         saveAll();
-        if(jumlahTP > 0) alert(`✨ BERHASIL!\n${jumlahTP} TP berhasil dibuat.`);
+        alert(jumlahTP + " TP berhasil di-generate!");
         showPage('tp_sec');
     }
 
@@ -496,37 +444,22 @@
         if(nav) nav.classList.add('active');
     }
 
-    function addElemen() { 
-        state.subjects[currentMapel].elemenList.push({name: '', cp: ''}); 
-        renderElemen(); 
-    }
-    
+    function addElemen() { state.subjects[currentMapel].elemenList.push({name: '', cp: ''}); renderElemen(); }
     function renderElemen() {
         const container = document.getElementById('elemenContainer'); container.innerHTML = '';
         state.subjects[currentMapel].elemenList.forEach((el, i) => { 
-            container.innerHTML += `
-            <div class="card" style="padding: 20px; border-left: 4px solid var(--accent)">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
-                    <input style="width:40%; margin:0" value="${el.name}" placeholder="Nama Elemen (Contoh: Menyimak)" oninput="state.subjects['${currentMapel}'].elemenList[${i}].name=this.value; saveAll()">
-                    <button onclick="state.subjects['${currentMapel}'].elemenList.splice(${i},1); renderElemen(); saveAll()" style="background:none; border:none; color:var(--danger); cursor:pointer; font-weight:bold">Hapus Elemen</button>
-                </div>
-                <textarea placeholder="Paste Capaian Pembelajaran di sini..." oninput="state.subjects['${currentMapel}'].elemenList[${i}].cp=this.value; saveAll()">${el.cp}</textarea>
+            container.innerHTML += `<div class="card" style="padding:20px">
+                <input value="${el.name}" placeholder="Nama Elemen" oninput="state.subjects['${currentMapel}'].elemenList[${i}].name=this.value; saveAll()">
+                <textarea style="margin-top:10px" placeholder="Isi Capaian Pembelajaran" oninput="state.subjects['${currentMapel}'].elemenList[${i}].cp=this.value; saveAll()">${el.cp}</textarea>
             </div>`; 
         });
     }
 
     function addTPRow() { 
-        state.subjects[currentMapel].tpList.push({ elemen: '-', text: '', smt: 1, jp: 2, bloom: 'C3', selectedMateri: [], checklists: { 1: Array(30).fill(false), 2: Array(30).fill(false) } }); 
+        state.subjects[currentMapel].tpList.push({ elemen: '-', text: '', smt: 1, jp: 2, bloom: 'C3', checklists: { 1: Array(30).fill(false), 2: Array(30).fill(false) } }); 
         renderAll(); 
     }
-
-    function deleteTP(idx) { 
-        if(confirm('Hapus Tujuan Pembelajaran ini?')) { 
-            state.subjects[currentMapel].tpList.splice(idx,1); 
-            saveAll(); 
-        } 
-    }
-
+    function deleteTP(idx) { if(confirm('Hapus TP ini?')) { state.subjects[currentMapel].tpList.splice(idx,1); saveAll(); } }
     function toggleSemester() { 
         state.currentSmt = state.currentSmt === 1 ? 2 : 1; 
         document.getElementById('nextSmtText').innerText = state.currentSmt === 1 ? 2 : 1; 
@@ -535,16 +468,10 @@
     
     function exportToWord(id, filename) {
         const area = document.getElementById(id); const clone = area.cloneNode(true);
-        clone.querySelectorAll('td.week-cell').forEach(td => { 
-            if(td.classList.contains('checked')) { 
-                td.innerText = "V"; 
-                td.style.backgroundColor = "#27ae60"; 
-                td.style.color = "white";
-            } 
-        });
-        const html = `<html><head><meta charset="utf-8"><style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 5px; font-size: 10pt; text-align:center; } .no-print { display:none; }</style></head><body>${clone.innerHTML}</body></html>`;
+        clone.querySelectorAll('td.week-cell').forEach(td => { if(td.classList.contains('checked')) { td.innerText = "V"; td.style.backgroundColor = "#27ae60"; } });
+        const html = `<html><head><meta charset="utf-8"><style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 5px; font-size: 10pt; }</style></head><body>${clone.innerHTML}</body></html>`;
         const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-        const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = filename + "_" + currentMapel + ".doc"; link.click();
+        const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = filename + ".doc"; link.click();
     }
 </script>
 </body>
