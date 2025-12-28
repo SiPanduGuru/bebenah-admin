@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>SiPandu RPM - Midnight Command Center</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --bg-main: #0f0b1e; --bg-panel: #15102b; --bg-card: #1c153a;
@@ -70,8 +69,7 @@
         .btn-new { background: var(--purple-main); color: white; width: 100%; margin-bottom: 20px; }
         .btn-add { background: transparent; color: var(--purple-soft); border: 1px solid var(--purple-main); margin-top: 20px; }
         .btn-save { background: var(--accent-green); color: white; }
-        .btn-word { background: #2b579a; color: white; }
-        .btn-pdf { background: #e74c3c; color: white; }
+        .btn-word { background: #2b579a; color: white; width: 100%; font-size: 16px; margin-top: 50px; }
 
         .save-notif { position: fixed; bottom: 20px; right: 20px; background: var(--purple-main); padding: 10px 20px; border-radius: 50px; font-size: 12px; display: none; }
     </style>
@@ -132,13 +130,13 @@
                 </div>
                 <div style="margin-top:20px;"><label>Indikator Ketercapaian (IKTP)</label><textarea id="iktp" style="height:80px;"></textarea></div>
 
-                <h2>III. PROFIL LULUSAN (P3/INTERNAL)</h2>
+                <h2>III. PROFIL LULUSAN (8 DIMENSI)</h2>
                 <div class="profil-grid" id="profilContainer"></div>
 
                 <h2>IV. PEMANTIK & MAKNA</h2>
                 <div class="grid-id">
-                    <div class="full"><label>Pertanyaan Pemantik</label><textarea id="pemantik" placeholder="Pertanyaan untuk memicu rasa ingin tahu..."></textarea></div>
-                    <div class="full"><label>Pemahaman Bermakna</label><textarea id="bermakna" placeholder="Manfaat materi ini dalam kehidupan nyata..."></textarea></div>
+                    <div class="full"><label>Pertanyaan Pemantik</label><textarea id="pemantik"></textarea></div>
+                    <div class="full"><label>Pemahaman Bermakna</label><textarea id="bermakna"></textarea></div>
                 </div>
 
                 <h2>V. LANGKAH PEMBELAJARAN (3M)</h2>
@@ -147,7 +145,7 @@
 
                 <h2>VI. DIFERENSIASI & ASESMEN</h2>
                 <div class="grid-id">
-                    <div class="full"><label>Strategi Diferensiasi (Konten/Proses/Produk)</label><textarea id="diff_umum"></textarea></div>
+                    <div class="full"><label>Strategi Diferensiasi</label><textarea id="diff_umum"></textarea></div>
                     <div><label>Asesmen Awal</label><textarea id="as_awal"></textarea></div>
                     <div><label>Asesmen Proses</label><textarea id="as_proses"></textarea></div>
                     <div><label>Asesmen Akhir</label><textarea id="as_akhir"></textarea></div>
@@ -158,16 +156,13 @@
                     <div><label>Kepala Sekolah</label><input type="text" id="ks"></div>
                 </div>
 
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:50px;">
-                    <button type="button" class="btn-action btn-word" onclick="downloadDoc()">DOWNLOAD WORD (F4)</button>
-                    <button type="button" class="btn-action btn-pdf" onclick="downloadPDF()">DOWNLOAD PDF</button>
-                </div>
+                <button type="button" class="btn-action btn-word" onclick="downloadDoc()">GENERATE WORD DOCUMENT (.DOC)</button>
             </form>
         </div>
 
         <div id="emptyState" style="text-align:center; margin-top:200px; opacity:0.3;">
             <div style="font-size:60px;">📁</div>
-            <h2>Silakan pilih bab di sidebar atau buat baru.</h2>
+            <h2>Pilih bab atau buat baru di sidebar.</h2>
         </div>
     </div>
 </div>
@@ -186,7 +181,7 @@
         document.getElementById('profilContainer').innerHTML = dimensiList.map((d, i) => `
             <div class="profil-box">
                 <label class="profil-check"><input type="checkbox" id="chk_${i}" onchange="toggleDim(${i})"> ${d}</label>
-                <div class="profil-input" id="inp_${i}"><textarea id="txt_${i}" placeholder="Bagaimana dimensi ini dikuatkan?"></textarea></div>
+                <div class="profil-input" id="inp_${i}"><textarea id="txt_${i}" placeholder="Aktivitas penguatan..."></textarea></div>
             </div>`).join('');
     }
 
@@ -243,13 +238,13 @@
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                 <label style="font-size:14px; color:var(--purple-soft)">PERTEMUAN ${num}</label>
                 <div style="display:flex; gap:10px;">
-                    <input type="text" class="p_tgl" placeholder="Tanggal" value="${p.tanggal||''}" style="width:120px;">
+                    <input type="text" class="p_tgl" placeholder="Tgl" value="${p.tanggal||''}" style="width:100px;">
                     <input type="text" class="p_jp" placeholder="JP" value="${p.jp||''}" style="width:50px;">
                 </div>
             </div>
-            <div class="m-box mindful"><label>MINDFUL (Pembukaan & KSE)</label><textarea class="p_m1">${p.mindful||''}</textarea></div>
-            <div class="m-box meaningful"><label>MEANINGFUL (Kegiatan Inti)</label><textarea class="p_m2" style="height:100px;">${p.meaningful||''}</textarea></div>
-            <div class="m-box joyful"><label>JOYFUL (Penutup & Refleksi)</label><textarea class="p_m3">${p.joyful||''}</textarea></div>`;
+            <div class="m-box mindful"><label>MINDFUL</label><textarea class="p_m1">${p.mindful||''}</textarea></div>
+            <div class="m-box meaningful"><label>MEANINGFUL</label><textarea class="p_m2" style="height:100px;">${p.meaningful||''}</textarea></div>
+            <div class="m-box joyful"><label>JOYFUL</label><textarea class="p_m3">${p.joyful||''}</textarea></div>`;
         document.getElementById('pertemuanContainer').appendChild(div);
     }
 
@@ -277,11 +272,11 @@
 
     function importDataDariAdmn() {
         const raw = localStorage.getItem('sipandu_v1_4');
-        if(!raw) return alert("Data ADMN tidak ditemukan.");
+        if(!raw) return alert("ADMN data not found.");
         const data = JSON.parse(raw);
         const mapel = document.getElementById('mapel').value;
         tempTpList = (data.subjects[mapel] || {}).tpList || [];
-        if(!tempTpList.length) return alert("Tidak ada data TP untuk mapel ini.");
+        if(!tempTpList.length) return alert("TP empty.");
         
         document.getElementById('tpChoiceContainer').innerHTML = tempTpList.map((t, i) => `
             <label style="display:flex; gap:10px; padding:10px; border-bottom:1px solid #333; cursor:pointer;">
@@ -305,43 +300,72 @@
     function downloadDoc() {
         const data = db.find(x => x.id === currentId);
         if(!data) return;
-        
-        let profHtml = "";
-        dimensiList.forEach((d, i) => { if(data.profils[i]) profHtml += `<li><b>${d}:</b> ${data.profils[i]}</li>`; });
 
-        let pertHtml = "";
+        let profHtml = "";
+        dimensiList.forEach((d, i) => { 
+            if(data.profils[i]) profHtml += `<tr><td width="30%"><b>${d}</b></td><td>${data.profils[i]}</td></tr>`; 
+        });
+
+        let mHtml = "";
         data.pertemuan.forEach((p, i) => {
-            pertHtml += `<tr><td colspan="2" bgcolor="#f2f2f2"><b>PERTEMUAN ${i+1} (${p.tanggal || '-'})</b></td></tr>
-            <tr><td width="100">Mindful</td><td>${p.mindful}</td></tr>
-            <tr><td>Meaningful</td><td>${p.meaningful}</td></tr>
-            <tr><td>Joyful</td><td>${p.joyful}</td></tr>`;
+            mHtml += `
+            <tr bgcolor="#f2f2f2"><td colspan="2" align="center"><b>PERTEMUAN ${i+1} (${p.tanggal || '-'}) | ${p.jp || '-'} JP</b></td></tr>
+            <tr><td width="150" bgcolor="#eaffea"><b>MINDFUL</b><br><small>(Pembukaan & KSE)</small></td><td>${p.mindful.replace(/\n/g, '<br>')}</td></tr>
+            <tr><td bgcolor="#f0f0ff"><b>MEANINGFUL</b><br><small>(Kegiatan Inti)</small></td><td>${p.meaningful.replace(/\n/g, '<br>')}</td></tr>
+            <tr><td bgcolor="#fff4e5"><b>JOYFUL</b><br><small>(Refleksi & Penutup)</small></td><td>${p.joyful.replace(/\n/g, '<br>')}</td></tr>`;
         });
 
         const html = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'>
-        <head><style>
-            @page Section1 { size: 21.5cm 33.0cm; margin: 2cm; }
+        <head><meta charset='utf-8'><style>
+            @page Section1 { size: 21.59cm 33.02cm; margin: 1.5cm; }
             div.Section1 { page: Section1; }
-            table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
-            td, th { border: 1px solid black; padding: 5px; font-family: Arial; font-size: 10pt; vertical-align: top; }
-            .no-border td { border: none; }
+            body { font-family: 'Arial'; font-size: 11pt; }
+            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+            th, td { border: 1px solid black; padding: 6px; vertical-align: top; }
+            .header-table td { border: none; padding: 2px; }
+            h2, h3 { margin: 10px 0; text-align: center; text-transform: uppercase; }
         </style></head>
         <body><div class="Section1">
-            <h2 align="center">RENCANA PEMBELAJARAN MENDALAM (RPM)</h2>
-            <table class="no-border">
-                <tr><td width="150">Satuan Pendidikan</td><td>: ${data.sekolah}</td></tr>
+            <h2>RENCANA PEMBELAJARAN MENDALAM (RPM)</h2>
+            <table class="header-table">
+                <tr><td width="160">Satuan Pendidikan</td><td>: ${data.sekolah}</td></tr>
                 <tr><td>Mata Pelajaran</td><td>: ${data.mapel}</td></tr>
                 <tr><td>Kelas / Fase</td><td>: ${data.kelas} / ${data.fase}</td></tr>
                 <tr><td>Bab / Topik</td><td>: ${data.bab}</td></tr>
+                <tr><td>Alokasi Waktu</td><td>: ${data.alokasi}</td></tr>
             </table>
-            <p><b>I. TUJUAN PEMBELAJARAN:</b><br>${data.tp.replace(/\n/g, '<br>')}</p>
-            <p><b>II. PROFIL LULUSAN:</b><ul>${profHtml}</ul></p>
-            <p><b>III. PERTANYAAN PEMANTIK:</b><br>${data.pemantik}</p>
-            <table>${pertHtml}</table>
-            <p><b>IV. ASESMEN:</b><br>Awal: ${data.as_awal} | Proses: ${data.as_proses} | Akhir: ${data.as_akhir}</p>
-            <br><table class="no-border">
-                <tr><td align="center">Mengetahui,<br>Kepala Sekolah<br><br><br><br>(${data.ks})</td>
-                <td align="center">Pekalongan, .............<br>Guru Kelas<br><br><br><br>(${data.guru})</td></tr>
+
+            <h3>I. KOMPONEN INTI</h3>
+            <table>
+                <tr><td width="30%" bgcolor="#f9f9f9"><b>Tujuan Pembelajaran</b></td><td>${data.tp.replace(/\n/g, '<br>')}</td></tr>
+                <tr><td bgcolor="#f9f9f9"><b>Indikator (IKTP)</b></td><td>${data.iktp.replace(/\n/g, '<br>')}</td></tr>
+            </table>
+
+            <h3>II. PROFIL LULUSAN & MAKNA</h3>
+            <table>
+                ${profHtml}
+                <tr><td bgcolor="#f9f9f9"><b>Pertanyaan Pemantik</b></td><td>${data.pemantik.replace(/\n/g, '<br>')}</td></tr>
+                <tr><td bgcolor="#f9f9f9"><b>Pemahaman Bermakna</b></td><td>${data.bermakna.replace(/\n/g, '<br>')}</td></tr>
+            </table>
+
+            <h3>III. STRATEGI PEMBELAJARAN (3M)</h3>
+            <table>${mHtml}</table>
+
+            <h3>IV. DIFERENSIASI & ASESMEN</h3>
+            <table>
+                <tr><td width="30%" bgcolor="#f9f9f9"><b>Diferensiasi</b></td><td>${data.diff_umum.replace(/\n/g, '<br>')}</td></tr>
+                <tr><td bgcolor="#f9f9f9"><b>Asesmen Awal</b></td><td>${data.as_awal}</td></tr>
+                <tr><td bgcolor="#f9f9f9"><b>Asesmen Proses</b></td><td>${data.as_proses}</td></tr>
+                <tr><td bgcolor="#f9f9f9"><b>Asesmen Akhir</b></td><td>${data.as_akhir}</td></tr>
+            </table>
+
+            <br><br>
+            <table class="header-table">
+                <tr>
+                    <td align="center">Mengetahui,<br>Kepala Sekolah<br><br><br><br><b>${data.ks}</b></td>
+                    <td align="center">Pekalongan, .....................<br>Guru Penyusun<br><br><br><br><b>${data.guru}</b></td>
+                </tr>
             </table>
         </div></body></html>`;
 
@@ -352,12 +376,7 @@
         link.click();
     }
 
-    function downloadPDF() {
-        const opt = { margin: 10, filename: `RPM_${document.getElementById('bab').value}.pdf`, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
-        html2pdf().from(document.getElementById('rpmForm')).set(opt).save();
-    }
-
-    function deleteRPM(id) { if(confirm('Hapus bab ini?')) { db = db.filter(x => x.id !== id); localStorage.setItem('rpm_db_v5', JSON.stringify(db)); location.reload(); } }
+    function deleteRPM(id) { if(confirm('Hapus?')) { db = db.filter(x => x.id !== id); localStorage.setItem('rpm_db_v5', JSON.stringify(db)); location.reload(); } }
 </script>
 </body>
 </html>
