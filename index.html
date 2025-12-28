@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Bebenah Admin | Professional</title>
     <link rel="manifest" href="./manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); overflow: hidden; height: 100vh; color: white; }
         
-        .layout { display: flex; width: 100vw; height: 100vh; }
+        .layout { display: flex; width: 100vw; height: 100vh; position: relative; }
 
         /* SIDEBAR */
         .sidebar {
@@ -32,9 +32,25 @@
             display: flex; flex-direction: column;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            z-index: 10;
+            z-index: 100;
         }
-        .sidebar.hide { width: var(--sidebar-min); }
+
+        /* RESPONSIVE HP */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: absolute;
+                left: -260px; /* Sembunyi di kiri */
+                height: 100%;
+                box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+            }
+            .sidebar.active {
+                left: 0; /* Muncul saat aktif */
+            }
+            .sidebar.hide {
+                left: -260px;
+            }
+            .logo-text { font-size: 14px; }
+        }
 
         .sidebar-header {
             padding: 25px 18px; display: flex; align-items: center; gap: 15px; overflow: hidden;
@@ -45,9 +61,8 @@
             cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px;
             transition: 0.3s;
         }
-        .toggle-btn:hover { background: var(--accent-hot); transform: rotate(90deg); }
 
-        .nav { flex: 1; padding: 10px; overflow-y: auto; overflow-x: hidden; }
+        .nav { flex: 1; padding: 10px; overflow-y: auto; }
         .item {
             padding: 15px; margin-bottom: 8px; border-radius: 14px;
             cursor: pointer; display: flex; align-items: center;
@@ -55,30 +70,24 @@
         }
         .item i { font-style: normal; font-size: 22px; min-width: 45px; text-align: center; }
         .item:hover, .item.active { background: rgba(139, 92, 246, 0.15); color: white; }
-        .item.active { border-left: 4px solid var(--accent); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-
-        .sidebar.hide .txt, .sidebar.hide h2 { 
-            opacity: 0; pointer-events: none; transition: 0.2s; 
-        }
+        .item.active { border-left: 4px solid var(--accent); }
 
         /* MAIN CONTENT AREA */
         .content { 
             flex: 1; display: flex; flex-direction: column; padding: 12px; 
             background: radial-gradient(circle at bottom left, #1e1b4b, #0a0f1e);
-            transition: all 0.4s;
+            width: 100%;
         }
-        .topbar { height: 50px; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; margin-bottom: 8px; }
+        .topbar { height: 50px; display: flex; align-items: center; justify-content: space-between; padding: 0 5px; margin-bottom: 8px; }
         
         .frame-box { 
             flex: 1; background: white; border-radius: 24px; 
             overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
-            border: 1px solid rgba(255,255,255,0.05);
         }
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* Typography Pop */
-        .logo-text { font-weight: 800; font-size: 18px; color: var(--accent); letter-spacing: 1px; }
-        .page-title { font-size: 18px; font-weight: 700; background: linear-gradient(to right, #34d399, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo-text { font-weight: 800; font-size: 18px; color: var(--accent); }
+        .page-title { font-size: 16px; font-weight: 700; color: #a78bfa; }
     </style>
 </head>
 <body>
@@ -90,20 +99,22 @@
             <h2 class="logo-text">BEBENAH</h2>
         </div>
         <nav class="nav">
-            <div class="item active" onclick="go('home.html', 'Control Center', this)"><i>🏠</i> <span class="txt">Beranda</span></div>
-            <div class="item" onclick="go('administrasi.html', 'Data Repository', this)"><i>📂</i> <span class="txt">Administrasi</span></div>
-            <div class="item" onclick="go('jurnal.html', 'Jurnal Harian', this)"><i>📝</i> <span class="txt">Jurnal Guru</span></div>
-            <div style="height: 1px; background: rgba(255,255,255,0.05); margin: 10px 0;"></div>
-            <div class="item" onclick="go('rpm.html', 'Teaching Matrix (Day)', this)"><i>📊</i> <span class="txt">RPM Harian</span></div>
-            <div class="item" onclick="go('rpm umum.html', 'Teaching Matrix (Gen)', this)"><i>📑</i> <span class="txt">RPM Umum</span></div>
-            <div class="item" onclick="go('nilai.html', 'Academic Analytics', this)"><i>📈</i> <span class="txt">Nilai Siswa</span></div>
+            <div class="item active" onclick="go('home.html', 'Beranda', this)"><i>🏠</i> <span class="txt">Beranda</span></div>
+            <div class="item" onclick="go('administrasi.html', 'Administrasi', this)"><i>📂</i> <span class="txt">Administrasi</span></div>
+            <div class="item" onclick="go('jurnal.html', 'Jurnal Guru', this)"><i>📝</i> <span class="txt">Jurnal Guru</span></div>
+            <div class="item" onclick="go('rpm.html', 'RPM Harian', this)"><i>📊</i> <span class="txt">RPM Harian</span></div>
+            <div class="item" onclick="go('rpm umum.html', 'RPM Umum', this)"><i>📑</i> <span class="txt">RPM Umum</span></div>
+            <div class="item" onclick="go('nilai.html', 'Nilai Siswa', this)"><i>📈</i> <span class="txt">Nilai Siswa</span></div>
         </nav>
     </aside>
 
     <main class="content">
         <header class="topbar">
-            <h3 id="ttl" class="page-title">Control Center</h3>
-            <div style="font-size: 11px; color: var(--accent); font-weight: 700; letter-spacing: 1px;">● ONLINE SESSION</div>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <button class="toggle-btn" id="hp-menu" onclick="toggleSide()" style="display:none;">☰</button>
+                <h3 id="ttl" class="page-title">Beranda</h3>
+            </div>
+            <div style="font-size: 9px; color: var(--accent); font-weight: 700;">● LIVE</div>
         </header>
         <section class="frame-box">
             <iframe id="vf" src="home.html"></iframe>
@@ -112,29 +123,37 @@
 </div>
 
 <script>
-    function toggleSide() { 
-        document.getElementById('side').classList.toggle('hide'); 
+    // Deteksi jika dibuka di HP
+    if (window.innerWidth <= 768) {
+        document.getElementById('hp-menu').style.display = 'flex';
     }
+
+    function toggleSide() { 
+        const side = document.getElementById('side');
+        if (window.innerWidth <= 768) {
+            side.classList.toggle('active');
+        } else {
+            side.classList.toggle('hide'); 
+        }
+    }
+
     function go(u, t, e) {
         document.getElementById('vf').src = u;
         document.getElementById('ttl').innerText = t;
         document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
         e.classList.add('active');
         
-        // Auto-close sidebar on mobile after selection
-        if(window.innerWidth < 768) {
-            document.getElementById('side').classList.add('hide');
+        // Otomatis tutup sidebar setelah pilih menu di HP
+        if(window.innerWidth <= 768) {
+            document.getElementById('side').classList.remove('active');
         }
     }
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then(reg => console.log('Sistem Offline Aktif!'))
-        .catch(err => console.log('Gagal Aktif', err));
-    });
-  }
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js');
+        });
+    }
 </script>
 </body>
 </html>
-
-
