@@ -7,8 +7,8 @@
         :root {
             --bg-main: #0f0b1e; 
             --bg-sidebar: #120d2a;
-            --bg-form: linear-gradient(180deg, #1f1a3d, #241e4d); /* Lebih rileks untuk mata */
-            --bg-input: #18133a; /* Kontras lebih baik */
+            --bg-form: linear-gradient(180deg, #1f1a3d, #241e4d); 
+            --bg-input: #18133a; 
             --purple-main: #6d28d9; 
             --purple-soft: #8b5cf6; 
             --text-main: #f5f3ff;
@@ -18,68 +18,35 @@
         body { font-family: 'Inter', sans-serif; background: var(--bg-main); margin: 0; color: var(--text-main); overflow: hidden; }
         .wrapper { display: flex; height: 100vh; }
         
-        /* SIDEBAR - Tetap Midnight */
-        .sidebar { 
-            width: 320px; background: var(--bg-sidebar);
-            padding: 30px; border-right: 1px solid rgba(255,255,255,0.05);
-            display: flex; flex-direction: column;
-        }
+        /* SIDEBAR */
+        .sidebar { width: 320px; background: var(--bg-sidebar); padding: 30px; border-right: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; }
         .brand-title { font-size: 22px; font-weight: 900; color: var(--purple-soft); letter-spacing: 2px; margin-bottom: 5px; }
         .rpm-list { list-style: none; padding: 0; margin-top: 20px; overflow-y: auto; flex-grow: 1; }
-        .rpm-item { 
-            padding: 12px; background: rgba(255,255,255,0.03); margin-bottom: 8px; 
-            border-radius: 10px; cursor: pointer; font-size: 13px; display: flex; 
-            justify-content: space-between; align-items: center; transition: 0.3s;
-        }
-        .rpm-item:hover { background: rgba(255,255,255,0.08); }
+        .rpm-item { padding: 12px; background: rgba(255,255,255,0.03); margin-bottom: 8px; border-radius: 10px; cursor: pointer; font-size: 13px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
         .rpm-item.active { background: var(--purple-main); box-shadow: 0 5px 15px rgba(109, 40, 217, 0.4); }
 
-        /* MAIN CONTENT - Academic Workspace */
+        /* MAIN CONTENT */
         .main-content { flex: 1; padding: 40px; overflow-y: auto; background: radial-gradient(circle at top right, #1a1440, #0f0b1e); }
-        .container { 
-            max-width: 900px; margin: auto; 
-            background: var(--bg-form); 
-            padding: 50px; border-radius: 30px; 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.05);
-        }
+        .container { max-width: 900px; margin: auto; background: var(--bg-form); padding: 50px; border-radius: 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); }
         
-        h2 { 
-            background: linear-gradient(90deg, var(--purple-main), transparent);
-            padding: 12px; font-size: 13px; border-radius: 8px; margin-top: 40px;
-            border-left: 4px solid var(--purple-soft); text-transform: uppercase;
-        }
+        h2 { background: linear-gradient(90deg, var(--purple-main), transparent); padding: 12px; font-size: 13px; border-radius: 8px; margin-top: 40px; border-left: 4px solid var(--purple-soft); text-transform: uppercase; }
 
         .grid-id { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; background: rgba(0,0,0,0.2); padding: 25px; border-radius: 20px; }
         .full { grid-column: span 3; }
         label { display: block; font-weight: 700; font-size: 11px; color: var(--purple-soft); margin-bottom: 8px; text-transform: uppercase; }
         
-        input, textarea, select { 
-            width: 100%; padding: 14px; background: var(--bg-input); 
-            border: 1px solid rgba(255,255,255,0.15);
-            color: white; border-radius: 10px; font-size: 14px; box-sizing: border-box;
-            transition: 0.3s;
-        }
-        input:focus, textarea:focus { 
-            outline: none; border-color: var(--purple-soft); 
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2); 
-        }
+        input, textarea, select { width: 100%; padding: 14px; background: var(--bg-input); border: 1px solid rgba(255,255,255,0.15); color: white; border-radius: 10px; font-size: 14px; box-sizing: border-box; }
 
-        /* 3M Cards - Lighten Up */
-        .pertemuan-card { background: rgba(255,255,255,0.04); padding: 25px; margin-top: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+        .profil-grid { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+        .pertemuan-card { background: rgba(255,255,255,0.04); padding: 25px; margin-top: 20px; border-radius: 20px; }
         .m-box { padding: 15px; border-radius: 12px; margin-top: 10px; border-left: 4px solid; }
         .mindful { border-left-color: var(--accent-green); background: rgba(34, 197, 94, 0.05); }
         .meaningful { border-left-color: var(--purple-soft); background: rgba(139, 92, 246, 0.05); }
         .joyful { border-left-color: #e67e22; background: rgba(230, 126, 34, 0.05); }
 
-        .btn-action { padding: 15px 25px; border-radius: 12px; border: none; cursor: pointer; font-weight: 800; transition: 0.3s; }
-        .btn-new { background: var(--purple-main); color: white; width: 100%; margin-bottom: 20px; }
-        .btn-word { background: #2b579a; color: white; width: 100%; font-size: 16px; margin-top: 50px; box-shadow: 0 10px 20px rgba(43, 87, 154, 0.3); }
-        .btn-word:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(43, 87, 154, 0.4); }
-
+        .btn-word { background: #2b579a; color: white; width: 100%; font-size: 16px; margin-top: 50px; padding: 15px; border-radius: 12px; border: none; cursor: pointer; font-weight: 800; }
         .save-notif { position: fixed; bottom: 20px; right: 20px; background: var(--accent-green); color: white; padding: 10px 20px; border-radius: 50px; font-size: 12px; display: none; z-index: 9999; }
         
-        /* Modal */
         #tpModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; justify-content:center; align-items:center; }
         .modal-content { background: #1c153a; padding:30px; border-radius:20px; width:90%; max-width:600px; border: 1px solid var(--purple-main); }
     </style>
@@ -91,34 +58,31 @@
         <h3>Impor Tujuan Pembelajaran (ADMN)</h3>
         <div id="tpChoiceContainer" style="max-height: 350px; overflow-y: auto; margin-bottom: 20px;"></div>
         <div style="text-align: right;">
-            <button onclick="document.getElementById('tpModal').style.display='none'" style="background:none; color:white; border:none; cursor:pointer; margin-right:20px;">Batal</button>
-            <button class="btn-action" style="background:var(--accent-green); color:white;" onclick="confirmImportTP()">Terapkan TP</button>
+            <button onclick="document.getElementById('tpModal').style.display='none'" style="color:white; background:none; border:none; cursor:pointer; margin-right:20px;">Batal</button>
+            <button onclick="confirmImportTP()" style="padding:10px 20px; background:var(--accent-green); color:white; border:none; border-radius:8px; cursor:pointer;">Terapkan TP</button>
         </div>
     </div>
 </div>
 
-<div class="save-notif" id="saveNotif">SYSTEM SYNCHRONIZED ✓</div>
+<div class="save-notif" id="saveNotif">TERSIPAN KE SYSTEM ✓</div>
 
 <div class="wrapper">
     <div class="sidebar">
         <div class="brand-title">SIPANDU RPM</div>
-        <p style="font-size: 10px; color: var(--purple-soft); margin-bottom: 25px;">AUTHORITY COMMAND CENTER</p>
-        
         <select id="sidebarMapel" onchange="filterByMapel()" style="margin-bottom: 20px;">
             <option>Matematika</option><option>Bahasa Indonesia</option><option>Pendidikan Pancasila</option>
             <option>IPAS</option><option>PJOK</option><option>Seni Budaya</option>
             <option>Bahasa Inggris</option><option>Pendidikan Agama dan BP</option><option>Mulok Bahasa Jawa</option>
         </select>
-
-        <button class="btn-action btn-new" onclick="createNewRPM()">+ NEW CHAPTER</button>
+        <button onclick="createNewRPM()" style="padding:15px; background:var(--purple-main); color:white; border:none; border-radius:12px; cursor:pointer; font-weight:800;">+ BUAT RPM BARU</button>
         <ul class="rpm-list" id="rpmList"></ul>
     </div>
 
     <div class="main-content">
         <div class="container" id="formContainer" style="display:none;">
             <div style="text-align:center; margin-bottom: 40px;">
-                <h1 style="margin:0; font-size: 28px;">RENCANA PEMBELAJARAN MENDALAM</h1>
-                <p style="color:var(--purple-soft); letter-spacing: 2px; font-size: 12px;">3M INSTRUCTIONAL MODEL</p>
+                <h1 style="margin:0;">RENCANA PEMBELAJARAN MENDALAM</h1>
+                <p style="color:var(--purple-soft); letter-spacing: 2px;">3M INSTRUCTIONAL MODEL</p>
             </div>
 
             <form id="rpmForm" oninput="handleInput()">
@@ -126,7 +90,7 @@
                 <div class="grid-id">
                     <div class="full"><label>Satuan Pendidikan</label><input type="text" id="sekolah"></div>
                     <div class="full"><label>Judul Bab / Topik Utama</label><input type="text" id="bab" oninput="updateSidebarLabel(this.value)"></div>
-                    <div><label>Mata Pelajaran</label><input type="text" id="mapel" readonly style="opacity:0.6; cursor:not-allowed;"></div>
+                    <div><label>Mata Pelajaran</label><input type="text" id="mapel" readonly></div>
                     <div><label>Fase</label><select id="fase"><option>A</option><option>B</option><option>C</option></select></div>
                     <div><label>Kelas</label><select id="kelas"><option>I</option><option>II</option><option>III</option><option>IV</option><option>V</option><option>VI</option></select></div>
                     <div class="full"><label>Alokasi Waktu</label><input type="text" id="alokasi" placeholder="Contoh: 3 Pertemuan (6 JP)"></div>
@@ -135,13 +99,13 @@
                 <h2>II. TUJUAN & INDIKATOR</h2>
                 <div style="position:relative; margin-top:15px;">
                     <label>Tujuan Pembelajaran (TP)</label>
-                    <button type="button" onclick="importDataDariAdmn()" style="position:absolute; right:0; top:0; background:var(--accent-green); color:white; border:none; padding:5px 12px; border-radius:5px; font-size:10px; cursor:pointer;">IMPOR ADMN</button>
+                    <button type="button" onclick="importDataDariAdmn()" style="position:absolute; right:0; top:0; background:var(--accent-green); color:white; border:none; padding:5px 10px; border-radius:5px; font-size:10px; cursor:pointer;">IMPOR ADMN</button>
                     <textarea id="tp" style="height:100px;"></textarea>
                 </div>
                 <div style="margin-top:20px;"><label>Indikator Ketercapaian (IKTP)</label><textarea id="iktp" style="height:80px;"></textarea></div>
 
                 <h2>III. PROFIL LULUSAN (8 DIMENSI)</h2>
-                <div id="profilContainer" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;"></div>
+                <div id="profilContainer" class="profil-grid"></div>
 
                 <h2>IV. PEMANTIK & MAKNA</h2>
                 <div class="grid-id">
@@ -151,7 +115,7 @@
 
                 <h2>V. LANGKAH PEMBELAJARAN (3M)</h2>
                 <div id="pertemuanContainer"></div>
-                <button type="button" class="btn-action" style="background:transparent; color:var(--purple-soft); border:1px solid var(--purple-main); width:100%; margin-top:20px;" onclick="addPertemuan()">+ TAMBAH PERTEMUAN</button>
+                <button type="button" onclick="addPertemuan()" style="width:100%; padding:15px; background:none; border:1px solid var(--purple-main); color:var(--purple-soft); border-radius:12px; margin-top:20px; cursor:pointer;">+ TAMBAH PERTEMUAN</button>
 
                 <h2>VI. DIFERENSIASI & ASESMEN</h2>
                 <div class="grid-id">
@@ -166,13 +130,12 @@
                     <div><label>Kepala Sekolah</label><input type="text" id="ks"></div>
                 </div>
 
-                <button type="button" class="btn-action btn-word" onclick="downloadDoc()">DOWNLOAD SEBAGAI MS WORD (.DOC)</button>
+                <button type="button" class="btn-word" onclick="downloadDoc()">DOWNLOAD SEBAGAI MS WORD (.DOC)</button>
             </form>
         </div>
-
         <div id="emptyState" style="text-align:center; margin-top:200px; opacity:0.3;">
-            <div style="font-size:80px; margin-bottom:20px;">📂</div>
-            <h2>Pilih Bab atau Buat Baru</h2>
+            <div style="font-size:80px;">📂</div>
+            <h2>Pilih atau Buat Baru</h2>
         </div>
     </div>
 </div>
@@ -182,19 +145,18 @@
     let currentId = null;
     let typingTimer;
     let tempTpList = [];
-
     const dimensiList = ["Keimanan & Ketakwaan", "Kewargaan Global", "Penalaran Kritis", "Kreativitas", "Gotong Royong", "Kemandirian", "Kesehatan Fisik/Mental", "Literasi Komunikasi"];
 
     window.onload = () => { initProfil(); filterByMapel(); };
 
     function initProfil() {
         document.getElementById('profilContainer').innerHTML = dimensiList.map((d, i) => `
-            <div class="profil-box" style="background:rgba(255,255,255,0.03); padding:15px; border-radius:12px;">
-                <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-size:13px;">
+            <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:12px;">
+                <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
                     <input type="checkbox" id="chk_${i}" onchange="toggleDim(${i})"> ${d}
                 </label>
                 <div id="inp_${i}" style="display:none; margin-top:10px;">
-                    <textarea id="txt_${i}" placeholder="Aktivitas penguatan..."></textarea>
+                    <textarea id="txt_${i}" placeholder="Bagaimana penguatannya?"></textarea>
                 </div>
             </div>`).join('');
     }
@@ -205,14 +167,14 @@
     }
 
     function filterByMapel() {
-        const selected = document.getElementById('sidebarMapel').value;
+        const sel = document.getElementById('sidebarMapel').value;
         const list = document.getElementById('rpmList');
         list.innerHTML = '';
-        db.filter(x => x.mapel === selected).forEach(item => {
+        db.filter(x => x.mapel === sel).forEach(item => {
             const li = document.createElement('li');
             li.className = `rpm-item ${currentId === item.id ? 'active' : ''}`;
             li.onclick = () => loadRPM(item.id);
-            li.innerHTML = `<span>${item.bab}</span><span style="font-size:18px; opacity:0.5;" onclick="event.stopPropagation(); deleteRPM('${item.id}')">×</span>`;
+            li.innerHTML = `<span>${item.bab}</span><span onclick="event.stopPropagation(); deleteRPM('${item.id}')">×</span>`;
             list.appendChild(li);
         });
     }
@@ -220,7 +182,7 @@
     function createNewRPM() {
         const id = 'rpm_' + Date.now();
         const mapel = document.getElementById('sidebarMapel').value;
-        db.push({ id, mapel: mapel, bab: 'Bab Baru', pertemuan: [{mindful:'', meaningful:'', joyful:'', tanggal:'', jp:''}], profils: {} });
+        db.push({ id, mapel, bab: 'Bab Baru', pertemuan: [{mindful:'', meaningful:'', joyful:'', tanggal:'', jp:''}], profils: {} });
         saveData();
         loadRPM(id);
     }
@@ -229,17 +191,12 @@
         currentId = id;
         const data = db.find(x => x.id === id);
         if(!data) return;
-
         document.getElementById('emptyState').style.display = 'none';
         document.getElementById('formContainer').style.display = 'block';
+        document.getElementById('mapel').value = data.mapel;
         
-        // SAKTI: Sync Mapel Input agar tidak kosong
-        document.getElementById('mapel').value = data.mapel || '';
-
         const fields = ['sekolah','bab','fase','kelas','alokasi','tp','iktp','pemantik','bermakna','diff_umum','as_awal','as_proses','as_akhir','guru','ks'];
-        fields.forEach(f => {
-            if(document.getElementById(f)) document.getElementById(f).value = data[f] || '';
-        });
+        fields.forEach(f => document.getElementById(f).value = data[f] || '');
         
         dimensiList.forEach((_, i) => {
             const has = data.profils && data.profils[i];
@@ -259,10 +216,7 @@
         div.innerHTML = `
             <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
                 <label>PERTEMUAN ${num}</label>
-                <div style="display:flex; gap:10px;">
-                    <input type="text" class="p_tgl" placeholder="Tgl" value="${p.tanggal||''}" style="width:100px;">
-                    <input type="text" class="p_jp" placeholder="JP" value="${p.jp||''}" style="width:50px;">
-                </div>
+                <div style="display:flex; gap:10px;"><input type="text" class="p_tgl" placeholder="Tgl" value="${p.tanggal||''}" style="width:100px;"><input type="text" class="p_jp" placeholder="JP" value="${p.jp||''}" style="width:50px;"></div>
             </div>
             <div class="m-box mindful"><label>MINDFUL</label><textarea class="p_m1">${p.mindful||''}</textarea></div>
             <div class="m-box meaningful"><label>MEANINGFUL</label><textarea class="p_m2" style="height:80px;">${p.meaningful||''}</textarea></div>
@@ -271,78 +225,55 @@
     }
 
     function addPertemuan() { renderPertemuan(document.querySelectorAll('.pertemuan-card').length + 1); saveData(); }
-
     function handleInput() { clearTimeout(typingTimer); typingTimer = setTimeout(saveData, 1000); }
 
     function saveData() {
         if(!currentId) return;
         const idx = db.findIndex(x => x.id === currentId);
-        if(idx === -1) return;
-
         const fields = ['sekolah','bab','mapel','fase','kelas','alokasi','tp','iktp','pemantik','bermakna','diff_umum','as_awal','as_proses','as_akhir','guru','ks'];
-        fields.forEach(f => {
-            if(document.getElementById(f)) db[idx][f] = document.getElementById(f).value;
-        });
-        
+        fields.forEach(f => db[idx][f] = document.getElementById(f).value);
         db[idx].profils = {};
-        dimensiList.forEach((_, i) => { 
-            if(document.getElementById(`chk_${i}`).checked) db[idx].profils[i] = document.getElementById(`txt_${i}`).value; 
-        });
-        
+        dimensiList.forEach((_, i) => { if(document.getElementById(`chk_${i}`).checked) db[idx].profils[i] = document.getElementById(`txt_${i}`).value; });
         db[idx].pertemuan = Array.from(document.querySelectorAll('.pertemuan-card')).map(c => ({
             mindful: c.querySelector('.p_m1').value, meaningful: c.querySelector('.p_m2').value,
             joyful: c.querySelector('.p_m3').value, tanggal: c.querySelector('.p_tgl').value, jp: c.querySelector('.p_jp').value
         }));
-
         localStorage.setItem('rpm_db_v5', JSON.stringify(db));
         const n = document.getElementById('saveNotif'); n.style.display='block'; setTimeout(()=>n.style.display='none', 1000);
     }
 
     function importDataDariAdmn() {
         const raw = localStorage.getItem('sipandu_v1_4');
-        if(!raw) return alert("Data ADMN (Penilaian) belum ada.");
+        if(!raw) return alert("Data ADMN Kosong.");
         const data = JSON.parse(raw);
         const mapelNow = document.getElementById('mapel').value;
         tempTpList = (data.subjects[mapelNow] || {}).tpList || [];
-        
-        if(!tempTpList.length) return alert("Tidak ada TP untuk mata pelajaran ini.");
-        
-        document.getElementById('tpChoiceContainer').innerHTML = tempTpList.map((t, i) => `
-            <label style="display:flex; gap:10px; padding:12px; border-bottom:1px solid #333; cursor:pointer;">
-                <input type="checkbox" class="tp-sel" value="${i}"> <span>${t.text}</span>
-            </label>`).join('');
+        if(!tempTpList.length) return alert("TP Tidak Ditemukan.");
+        document.getElementById('tpChoiceContainer').innerHTML = tempTpList.map((t, i) => `<label style="display:flex; gap:10px; padding:10px; border-bottom:1px solid #333; cursor:pointer;"><input type="checkbox" class="tp-sel" value="${i}"> ${t.text}</label>`).join('');
         document.getElementById('tpModal').style.display = 'flex';
-
-        // Auto-fill Identitas jika masih kosong
-        if(!document.getElementById('sekolah').value) document.getElementById('sekolah').value = data.common.sekolah;
-        if(!document.getElementById('guru').value) document.getElementById('guru').value = data.common.guru;
-        if(!document.getElementById('ks').value) document.getElementById('ks').value = data.common.ks;
+        ['sekolah','guru','ks'].forEach(f => { if(!document.getElementById(f).value) document.getElementById(f).value = data.common[f]; });
     }
 
     function confirmImportTP() {
         const sels = Array.from(document.querySelectorAll('.tp-sel:checked')).map(c => tempTpList[c.value].text);
-        if(sels.length) {
-            const currentVal = document.getElementById('tp').value;
-            document.getElementById('tp').value = (currentVal ? currentVal + "\n" : "") + sels.join("\n");
-            saveData();
-        }
+        document.getElementById('tp').value = (document.getElementById('tp').value ? document.getElementById('tp').value + "\n" : "") + sels.join("\n");
         document.getElementById('tpModal').style.display = 'none';
+        saveData();
     }
 
     function downloadDoc() {
         const data = db.find(x => x.id === currentId);
-        if(!data) return alert("Data tidak valid");
+        if(!data) return;
 
         let profHtml = "";
         dimensiList.forEach((d, i) => { if(data.profils[i]) profHtml += `<tr><td width="30%"><b>${d}</b></td><td>${data.profils[i]}</td></tr>`; });
 
-        let mHtml = "";
+        let p3mHtml = "";
         data.pertemuan.forEach((p, i) => {
-            mHtml += `
-            <tr bgcolor="#f2f2f2"><td colspan="2" align="center"><b>PERTEMUAN ${i+1} (${p.tanggal || '-'})</b></td></tr>
-            <tr><td width="150"><b>MINDFUL</b></td><td>${p.mindful.replace(/\n/g, '<br>')}</td></tr>
-            <tr><td><b>MEANINGFUL</b></td><td>${p.meaningful.replace(/\n/g, '<br>')}</td></tr>
-            <tr><td><b>JOYFUL</b></td><td>${p.joyful.replace(/\n/g, '<br>')}</td></tr>`;
+            p3mHtml += `<tr bgcolor="#f2f2f2"><td colspan="2" align="center"><b>PERTEMUAN ${i+1} (${p.tanggal || '-'}) | ${p.jp || '-'} JP</b></td></tr>
+            <tr><td width="150" bgcolor="#eaffea"><b>MINDFUL</b></td><td>${p.mindful.replace(/\n/g, '<br>')}</td></tr>
+            <tr><td bgcolor="#f0f0ff"><b>MEANINGFUL</b></td><td>${p.meaningful.replace(/\n/g, '<br>')}</td></tr>
+            <tr><td bgcolor="#fff4e5"><b>JOYFUL</b></td><td>${p.joyful.replace(/\n/g, '<br>')}</td></tr>`;
         });
 
         const html = `
@@ -351,58 +282,49 @@
             @page Section1 { size: 21.59cm 33.02cm; margin: 1.5cm; }
             div.Section1 { page: Section1; }
             body { font-family: 'Arial'; font-size: 11pt; }
-            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-            th, td { border: 1px solid black; padding: 6px; vertical-align: top; }
+            table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+            td, th { border: 1px solid black; padding: 6px; vertical-align: top; }
         </style></head>
         <body><div class="Section1">
             <h2 align="center">RENCANA PEMBELAJARAN MENDALAM (RPM)</h2>
             <table>
-                <tr><td width="150">Sekolah</td><td>${data.sekolah}</td></tr>
-                <tr><td>Mapel</td><td>${data.mapel}</td></tr>
-                <tr><td>Kelas/Fase</td><td>${data.kelas} / ${data.fase}</td></tr>
-                <tr><td>Bab</td><td>${data.bab}</td></tr>
+                <tr><td width="150">Sekolah</td><td>${data.sekolah}</td><td width="100">Kelas/Fase</td><td>${data.kelas} / ${data.fase}</td></tr>
+                <tr><td>Mata Pelajaran</td><td>${data.mapel}</td><td>Alokasi</td><td>${data.alokasi}</td></tr>
+                <tr><td>Bab / Topik</td><td colspan="3"><b>${data.bab}</b></td></tr>
             </table>
             <h3>I. KOMPONEN INTI</h3>
             <table>
-                <tr><td width="30%"><b>Tujuan Pembelajaran</b></td><td>${data.tp.replace(/\n/g, '<br>')}</td></tr>
-                <tr><td><b>Indikator</b></td><td>${data.iktp.replace(/\n/g, '<br>')}</td></tr>
-                <tr><td><b>Pemahaman Bermakna</b></td><td>${data.bermakna}</td></tr>
+                <tr><td width="30%"><b>Tujuan Pembelajaran (TP)</b></td><td>${data.tp.replace(/\n/g, '<br>')}</td></tr>
+                <tr><td><b>Indikator (IKTP)</b></td><td>${data.iktp.replace(/\n/g, '<br>')}</td></tr>
+                <tr><td><b>Pemahaman Bermakna</b></td><td>${data.bermakna.replace(/\n/g, '<br>')}</td></tr>
+                <tr><td><b>Pertanyaan Pemantik</b></td><td>${data.pemantik.replace(/\n/g, '<br>')}</td></tr>
             </table>
-            <h3>II. PROFIL LULUSAN</h3>
-            <table>${profHtml}</table>
-            <h3>III. LANGKAH PEMBELAJARAN (3M)</h3>
-            <table>${mHtml}</table>
+            <h3>II. PROFIL LULUSAN (P3/INTERNAL)</h3>
+            <table>${profHtml || '<tr><td colspan="2">-</td></tr>'}</table>
+            <h3>III. STRATEGI 3M (LANGKAH PEMBELAJARAN)</h3>
+            <table>${p3mHtml}</table>
+            <h3>IV. DIFERENSIASI & ASESMEN</h3>
+            <table>
+                <tr><td width="30%"><b>Strategi Diferensiasi</b></td><td>${data.diff_umum.replace(/\n/g, '<br>')}</td></tr>
+                <tr><td><b>Asesmen Awal</b></td><td>${data.as_awal}</td></tr>
+                <tr><td><b>Asesmen Proses</b></td><td>${data.as_proses}</td></tr>
+                <tr><td><b>Asesmen Akhir</b></td><td>${data.as_akhir}</td></tr>
+            </table>
             <br>
             <table style="border:none;">
-                <tr style="border:none;">
-                    <td align="center" style="border:none;">Mengetahui,<br>Kepala Sekolah<br><br><br><b>${data.ks}</b></td>
-                    <td align="center" style="border:none;">Pekalongan, .............<br>Guru Kelas<br><br><br><b>${data.guru}</b></td>
-                </tr>
+                <tr style="border:none;"><td align="center" style="border:none;">Mengetahui,<br>Kepala Sekolah<br><br><br><b>${data.ks}</b></td>
+                <td align="center" style="border:none;">Pekalongan, .............<br>Guru Penyusun<br><br><br><b>${data.guru}</b></td></tr>
             </table>
         </div></body></html>`;
 
         const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `RPM_${data.bab.replace(/[^a-z0-9]/gi, '_')}.doc`;
-        document.body.appendChild(a);
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+        a.download = `RPM_${data.bab.replace(/[/\\?%*:|"<>]/g, '-')}.doc`;
         a.click();
-        document.body.removeChild(a);
     }
 
-    function updateSidebarLabel(v) { 
-        const el = document.querySelector('.rpm-item.active span'); 
-        if(el) el.innerText = v || 'Bab Baru'; 
-    }
-
-    function deleteRPM(id) { 
-        if(confirm('Hapus data ini?')) { 
-            db = db.filter(x => x.id !== id); 
-            localStorage.setItem('rpm_db_v5', JSON.stringify(db)); 
-            location.reload(); 
-        } 
-    }
+    function updateSidebarLabel(v) { const el = document.querySelector('.rpm-item.active span'); if(el) el.innerText = v || 'Bab Baru'; }
+    function deleteRPM(id) { if(confirm('Hapus?')) { db = db.filter(x => x.id !== id); localStorage.setItem('rpm_db_v5', JSON.stringify(db)); location.reload(); } }
 </script>
 </body>
 </html>
