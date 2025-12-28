@@ -12,13 +12,13 @@
     }
     * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
     body { margin: 0; display: flex; background: var(--bg); color: var(--text); }
-
-    .sidebar { width: 280px; height: 100vh; background: var(--sidebar); color: white; position: fixed; overflow-y: auto; z-index: 100; }
+    
+    .sidebar { display: none !important; }
     .sidebar-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid #34495e; }
     .nav-item { padding: 14px 25px; cursor: pointer; font-size: 13px; border-left: 5px solid transparent; transition: 0.3s; color: rgba(255,255,255,0.8); }
     .nav-item.active { background: #2c3e50; border-left-color: var(--accent); color: var(--accent); font-weight: bold; }
 
-    .main { flex-grow: 1; margin-left: 280px; padding: 40px; min-height: 100vh; }
+    .main {  width: 100%; padding: 40px;}
     .page { display: none; max-width: 1100px; margin: auto; }
     .page.active { display: block; }
 
@@ -49,12 +49,36 @@
 </head>
 <body>
 
-<div class="sidebar no-print">
-    <div class="sidebar-header">
-        <h2>SIPANDU GURU</h2>
-        <small>V.1.0 - Teaching Assistant</small>
-    </div>
-    
+<div class="admin-panel">
+  <div class="admin-header">
+    <h2>Judul Panel</h2>
+    <small>Subjudul atau info tambahan</small>
+  </div>
+</div>
+
+<style>
+.admin-panel {
+  background: #1a252f;
+  color: white;
+  padding: 20px 30px;
+  border-radius: 12px;
+  margin: 20px;
+}
+
+.admin-header h2 {
+  margin: 0;
+}
+
+.admin-header small {
+  opacity: 0.8;
+}
+</style>
+
+
+    <h2>SIPANDU GURU</h2>
+    <small>V.1.0 - Teaching Assistant</small>
+  </div>
+</div>
     <div style="padding: 20px;">
         <label style="color:white; font-size:12px">Pilih Mapel:</label>
         <select id="mainMapel" onchange="switchSubject()">
@@ -253,7 +277,6 @@
         });
     }
 
-    // --- TP FUNCTIONS ---
     function renderTPTable(sub) {
         const body = document.getElementById('tpBody'); body.innerHTML = '';
         sub.tpList.forEach((tp, i) => {
@@ -318,7 +341,6 @@
 
     function updateJP(idx, val) { state.subjects[currentMapel].tpList[idx].jp = val; localStorage.setItem('sipandu_v1_4', JSON.stringify(state)); }
 
-    // --- PROTA & PROMES ---
     function renderProtaTable(sub) {
         const body = document.getElementById('protaBody'); body.innerHTML = '';
         sub.tpList.forEach((tp, i) => {
@@ -360,7 +382,6 @@
         renderPromes();
     }
 
-    // --- UTILS ---
     function getBloomLabel(text) {
         const lower = (text || "").toLowerCase();
         for (const [lvl, kkos] of Object.entries(BLOOM_MAP)) { if (kkos.some(kko => lower.includes(kko))) return lvl; }
@@ -458,4 +479,5 @@
     }
 </script>
 </body>
+
 </html>
