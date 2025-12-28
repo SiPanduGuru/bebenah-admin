@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bebenah Admin | Professional</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <title>Bebenah Admin | Enterprise Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
     
     <script>
         const p = prompt("🔐 PIN Akses:");
@@ -13,81 +13,181 @@
 
     <style>
         :root {
-            --bg: #0a0f1e;
-            --sidebar-bg: #111827;
+            /* Palette: Deep Ocean & Emerald Professional */
+            --bg: #060912;
+            --sidebar-bg: #0c1222;
+            --sidebar-item-hover: rgba(16, 185, 129, 0.08);
             --accent: #10b981;
-            --sidebar-w: 260px;
-            --header-h: 60px;
+            --accent-glow: rgba(16, 185, 129, 0.4);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --sidebar-w: 280px;
+            --header-h: 70px;
+            --glass: rgba(255, 255, 255, 0.02);
+            --border: rgba(255, 255, 255, 0.06);
         }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); overflow: hidden; height: 100vh; color: white; }
+
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing: antialiased; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: var(--bg); 
+            overflow: hidden; 
+            height: 100vh; 
+            color: var(--text-main); 
+        }
         
         .layout { display: flex; width: 100vw; height: 100vh; position: relative; }
 
+        /* Sidebar: Sleek Design */
         .sidebar {
             width: var(--sidebar-w);
             background: var(--sidebar-bg);
-            border-right: 1px solid rgba(255,255,255,0.05);
-            display: flex; flex-direction: column;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-right: 1px solid var(--border);
+            display: flex; 
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             flex-shrink: 0;
             z-index: 50;
             height: 100%;
         }
 
         .sidebar-header { 
-            height: var(--header-h); display: flex; align-items: center; 
-            padding: 0 20px; 
+            height: 90px; 
+            display: flex; 
+            align-items: center; 
+            padding: 0 30px; 
         }
-        .logo-text { font-weight: 800; font-size: 20px; color: var(--accent); letter-spacing: 1px; }
 
-        .nav { flex: 1; padding: 15px; overflow-y: auto; }
+        .logo-text { 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800; 
+            font-size: 22px; 
+            color: var(--accent); 
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Nav Items: Professional List */
+        .nav { flex: 1; padding: 10px 18px; overflow-y: auto; }
+
+        .nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #475569;
+            margin: 20px 0 10px 12px;
+            font-weight: 700;
+        }
 
         .item {
-            padding: 14px; margin-bottom: 5px; border-radius: 12px;
-            cursor: pointer; display: flex; align-items: center; gap: 12px;
-            color: #94a3b8; transition: 0.2s; font-size: 14px; font-weight: 500;
+            padding: 12px 16px; 
+            margin-bottom: 6px; 
+            border-radius: 10px;
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 14px;
+            color: var(--text-muted); 
+            transition: all 0.2s ease; 
+            font-size: 14px; 
+            font-weight: 500;
+            border: 1px solid transparent;
         }
-        .item:hover, .item.active { background: rgba(16, 185, 129, 0.1); color: white; }
-        .item.active { border-left: 3px solid var(--accent); }
-        .item i { font-style: normal; font-size: 18px; }
 
-        .content { flex: 1; display: flex; flex-direction: column; min-width: 0; background: #0f172a; position: relative; }
+        .item:hover { 
+            background: var(--sidebar-item-hover); 
+            color: var(--accent);
+        }
+
+        .item.active { 
+            background: rgba(16, 185, 129, 0.1); 
+            color: var(--accent); 
+            font-weight: 600;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .item i { 
+            font-style: normal; 
+            font-size: 20px; 
+            filter: grayscale(1) opacity(0.7);
+            transition: 0.2s;
+        }
+        
+        .item.active i, .item:hover i { filter: grayscale(0) opacity(1); }
+
+        /* Content Area: Focused View */
+        .content { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            min-width: 0; 
+            background: var(--bg); 
+            position: relative; 
+        }
         
         .topbar { 
-            height: var(--header-h); display: flex; align-items: center; gap: 15px; padding: 0 20px; 
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            height: var(--header-h); 
+            display: flex; 
+            align-items: center; 
+            gap: 20px; 
+            padding: 0 30px; 
+            background: rgba(6, 9, 18, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
         }
         
         .toggle-btn {
-            background: transparent; border: 1px solid rgba(255,255,255,0.1); color: white;
-            width: 38px; height: 38px; border-radius: 8px; cursor: pointer; font-size: 18px;
-            display: flex; align-items: center; justify-content: center; transition: 0.2s;
+            background: var(--sidebar-bg); 
+            border: 1px solid var(--border); 
+            color: white;
+            width: 42px; height: 42px; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-size: 20px;
+            display: flex; align-items: center; justify-content: center; 
+            transition: 0.2s;
         }
-        .toggle-btn:hover { background: rgba(255,255,255,0.05); }
 
-        .frame-box { flex: 1; margin: 15px; background: white; border-radius: 16px; overflow: hidden; position: relative; }
+        .toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* Iframe Container: The Focus Point */
+        .frame-box { 
+            flex: 1; 
+            margin: 0; /* Full bleed agar konten awal tidak terhimpit */
+            background: #fff; 
+            overflow: hidden; 
+            position: relative; 
+            transition: 0.3s;
+        }
+        
         iframe { width: 100%; height: 100%; border: none; }
 
         .overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.6); 
-            z-index: 40; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(2px);
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7); 
+            z-index: 40; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(4px);
         }
 
+        /* UI Enhancements */
         @media (min-width: 769px) {
-            .sidebar.collapsed { width: 0; overflow: hidden; opacity: 0; }
+            .sidebar.collapsed { width: 0; overflow: hidden; opacity: 0; transform: translateX(-20px); }
+            /* Memberikan margin tipis jika layar lebar untuk estetika card */
+            .frame-box { margin: 15px; border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
         }
 
         @media (max-width: 768px) {
             .sidebar {
                 position: fixed; left: 0; top: 0; bottom: 0;
                 transform: translateX(-100%);
-                box-shadow: 5px 0 25px rgba(0,0,0,0.5);
+                box-shadow: 20px 0 50px rgba(0,0,0,0.8);
             }
             .sidebar.show-mobile { transform: translateX(0); }
-            
             .overlay.show { opacity: 1; visibility: visible; }
-            .frame-box { margin: 10px; border-radius: 10px; }
+            .frame-box { margin: 0; border-radius: 0; }
+            .topbar { padding: 0 15px; }
         }
     </style>
 </head>
@@ -98,9 +198,14 @@
 
     <aside class="sidebar" id="side">
         <div class="sidebar-header">
-            <h2 class="logo-text">BEBENAH</h2>
+            <h2 class="logo-text">
+                <span style="background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 6px;">B</span>
+                BEBENAH
+            </h2>
         </div>
+        
         <nav class="nav">
+            <div class="nav-label">Main Menu</div>
             <div class="item active" onclick="go('home.html', 'Control Center', this)">
                 <i>🏠</i> Beranda
             </div>
@@ -111,6 +216,7 @@
                 <i>📝</i> Jurnal Guru
             </div>
             
+            <div class="nav-label">Reports</div>
             <div class="item" onclick="go('rpm.html', 'RPM Harian', this)">
                 <i>📊</i> RPM Harian
             </div>
@@ -126,8 +232,12 @@
     <main class="content">
         <header class="topbar">
             <button class="toggle-btn" onclick="toggleSide()">☰</button>
-            <h3 id="ttl" style="font-size: 16px; color: #a78bfa; font-weight: 700;">Control Center</h3>
+            <div style="display: flex; flex-direction: column;">
+                <span style="font-size: 10px; color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">System Status: Online</span>
+                <h3 id="ttl" style="font-size: 18px; color: var(--text-main); font-weight: 700; font-family: 'Plus Jakarta Sans';">Control Center</h3>
+            </div>
         </header>
+        
         <section class="frame-box">
             <iframe id="vf" src="home.html"></iframe>
         </section>
@@ -148,8 +258,15 @@
     }
 
     function go(url, title, el) {
-        document.getElementById('vf').src = url;
-        document.getElementById('ttl').innerText = title;
+        // Efek transisi loading sederhana
+        const vf = document.getElementById('vf');
+        vf.style.opacity = '0';
+        
+        setTimeout(() => {
+            vf.src = url;
+            document.getElementById('ttl').innerText = title;
+            vf.style.opacity = '1';
+        }, 150);
 
         document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
         el.classList.add('active');
@@ -160,14 +277,13 @@
         }
     }
 
-window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-        side.classList.remove('show-mobile');
-        overlay.classList.remove('show');
-    }
-});
-
+    // Auto fix on resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+            side.classList.remove('show-mobile');
+            overlay.classList.remove('show');
+        }
+    });
 </script>
 </body>
 </html>
-
