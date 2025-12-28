@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bebenah Admin | Pro Edition</title>
+    <title>Bebenah Admin | Professional</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
     <script>
         const p = prompt("🔐 Masukkan PIN Akses:");
@@ -16,14 +16,14 @@
             --accent: #10b981;
             --accent-hot: #8b5cf6;
             --sidebar-w: 260px;
-            --sidebar-min: 70px;
+            --sidebar-min: 75px;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); overflow: hidden; height: 100vh; color: white; }
         
         .layout { display: flex; width: 100vw; height: 100vh; }
 
-        /* SIDEBAR DYNAMIC */
+        /* SIDEBAR */
         .sidebar {
             width: var(--sidebar-w);
             background: var(--side);
@@ -31,36 +31,53 @@
             display: flex; flex-direction: column;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            z-index: 10;
         }
         .sidebar.hide { width: var(--sidebar-min); }
 
         .sidebar-header {
-            padding: 25px 15px; display: flex; align-items: center; gap: 15px; overflow: hidden;
+            padding: 25px 18px; display: flex; align-items: center; gap: 15px; overflow: hidden;
         }
         .toggle-btn {
-            min-width: 40px; height: 40px; border-radius: 10px;
+            min-width: 40px; height: 40px; border-radius: 12px;
             background: rgba(255,255,255,0.1); border: none; color: white;
             cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px;
+            transition: 0.3s;
         }
-        .toggle-btn:hover { background: var(--accent-hot); }
+        .toggle-btn:hover { background: var(--accent-hot); transform: rotate(90deg); }
 
-        .nav { flex: 1; padding: 10px; }
+        .nav { flex: 1; padding: 10px; overflow-y: auto; overflow-x: hidden; }
         .item {
-            padding: 15px; margin-bottom: 8px; border-radius: 12px;
+            padding: 15px; margin-bottom: 8px; border-radius: 14px;
             cursor: pointer; display: flex; align-items: center;
             color: #94a3b8; transition: 0.3s; white-space: nowrap;
         }
-        .item i { font-style: normal; font-size: 20px; min-width: 40px; text-align: center; }
+        .item i { font-style: normal; font-size: 22px; min-width: 45px; text-align: center; }
         .item:hover, .item.active { background: rgba(139, 92, 246, 0.15); color: white; }
-        .item.active { border-left: 4px solid var(--accent); }
+        .item.active { border-left: 4px solid var(--accent); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
 
-        .sidebar.hide .txt, .sidebar.hide h2 { display: none; }
+        .sidebar.hide .txt, .sidebar.hide h2 { 
+            opacity: 0; pointer-events: none; transition: 0.2s; 
+        }
 
-        /* CONTENT */
-        .content { flex: 1; display: flex; flex-direction: column; padding: 15px; background: radial-gradient(circle at top right, #1e1b4b, #0a0f1e); }
-        .topbar { height: 50px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; margin-bottom: 10px; }
-        .frame-box { flex: 1; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        /* MAIN CONTENT AREA */
+        .content { 
+            flex: 1; display: flex; flex-direction: column; padding: 12px; 
+            background: radial-gradient(circle at bottom left, #1e1b4b, #0a0f1e);
+            transition: all 0.4s;
+        }
+        .topbar { height: 50px; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; margin-bottom: 8px; }
+        
+        .frame-box { 
+            flex: 1; background: white; border-radius: 24px; 
+            overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
+            border: 1px solid rgba(255,255,255,0.05);
+        }
         iframe { width: 100%; height: 100%; border: none; }
+
+        /* Typography Pop */
+        .logo-text { font-weight: 800; font-size: 18px; color: var(--accent); letter-spacing: 1px; }
+        .page-title { font-size: 18px; font-weight: 700; background: linear-gradient(to right, #34d399, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     </style>
 </head>
 <body>
@@ -69,22 +86,23 @@
     <aside class="sidebar" id="side">
         <div class="sidebar-header">
             <button class="toggle-btn" onclick="toggleSide()">☰</button>
-            <h2 style="font-size: 18px; color: var(--accent); letter-spacing: 1px;">BEBENAH</h2>
+            <h2 class="logo-text">BEBENAH</h2>
         </div>
         <nav class="nav">
-            <div class="item active" onclick="go('home.html', 'Dashboard', this)"><i>🏠</i> <span class="txt">Beranda</span></div>
-            <div class="item" onclick="go('administrasi.html', 'Administrasi', this)"><i>📂</i> <span class="txt">Administrasi</span></div>
-            <div class="item" onclick="go('jurnal.html', 'Jurnal Guru', this)"><i>📝</i> <span class="txt">Jurnal Guru</span></div>
-            <div class="item" onclick="go('rpm.html', 'RPM Harian', this)"><i>📊</i> <span class="txt">RPM Harian</span></div>
-            <div class="item" onclick="go('rpm-umum.html', 'RPM Umum', this)"><i>📑</i> <span class="txt">RPM Umum</span></div>
-            <div class="item" onclick="go('nilai.html', 'Data Nilai', this)"><i>📈</i> <span class="txt">Nilai Siswa</span></div>
+            <div class="item active" onclick="go('home.html', 'Control Center', this)"><i>🏠</i> <span class="txt">Beranda</span></div>
+            <div class="item" onclick="go('administrasi.html', 'Data Repository', this)"><i>📂</i> <span class="txt">Administrasi</span></div>
+            <div class="item" onclick="go('jurnal.html', 'Jurnal Harian', this)"><i>📝</i> <span class="txt">Jurnal Guru</span></div>
+            <div style="height: 1px; background: rgba(255,255,255,0.05); margin: 10px 0;"></div>
+            <div class="item" onclick="go('rpm.html', 'Teaching Matrix (Day)', this)"><i>📊</i> <span class="txt">RPM Harian</span></div>
+            <div class="item" onclick="go('rpm umum.html', 'Teaching Matrix (Gen)', this)"><i>📑</i> <span class="txt">RPM Umum</span></div>
+            <div class="item" onclick="go('nilai.html', 'Academic Analytics', this)"><i>📈</i> <span class="txt">Nilai Siswa</span></div>
         </nav>
     </aside>
 
     <main class="content">
         <header class="topbar">
-            <h3 id="ttl" style="font-size: 18px; font-weight: 700; background: linear-gradient(to right, #34d399, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Dashboard</h3>
-            <div style="font-size: 11px; color: var(--accent); font-weight: 700;">● SYSTEM ACTIVE</div>
+            <h3 id="ttl" class="page-title">Control Center</h3>
+            <div style="font-size: 11px; color: var(--accent); font-weight: 700; letter-spacing: 1px;">● ONLINE SESSION</div>
         </header>
         <section class="frame-box">
             <iframe id="vf" src="home.html"></iframe>
@@ -93,13 +111,19 @@
 </div>
 
 <script>
-    function toggleSide() { document.getElementById('side').classList.toggle('hide'); }
+    function toggleSide() { 
+        document.getElementById('side').classList.toggle('hide'); 
+    }
     function go(u, t, e) {
         document.getElementById('vf').src = u;
         document.getElementById('ttl').innerText = t;
         document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
         e.classList.add('active');
-        if(window.innerWidth < 768) toggleSide();
+        
+        // Auto-close sidebar on mobile after selection
+        if(window.innerWidth < 768) {
+            document.getElementById('side').classList.add('hide');
+        }
     }
 </script>
 </body>
