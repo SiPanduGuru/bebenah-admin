@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bebenah Admin | Premium Glass Fix</title>
+    <title>V.1.0 - Teaching Assistant | Premium Glass Fix</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     
     <script>
@@ -51,11 +51,12 @@
 
         .sidebar.collapsed { margin-left: calc(var(--sidebar-width) * -1); opacity: 0; }
 
-        .sidebar-header { height: 100px; display: flex; align-items: center; padding: 0 35px; }
+        .sidebar-header { height: 100px; display: flex; align-items: center; padding: 0 25px; }
         .logo-text { 
-            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 26px;
+            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 18px;
             background: linear-gradient(to right, #fff, var(--accent-purple));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
 
         .nav { flex: 1; padding: 10px 20px; overflow-y: auto; }
@@ -72,7 +73,7 @@
             color: #fff; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
-        /* CONTENT AREA - DIPERBAIKI */
+        /* CONTENT AREA */
         .content { 
             flex: 1; 
             display: flex; 
@@ -90,7 +91,7 @@
             padding: 0 30px; 
             border-bottom: 1px solid var(--glass-border);
             position: relative;
-            z-index: 110; /* Berada di atas sidebar saat bergeser */
+            z-index: 110;
         }
 
         .toggle-btn {
@@ -106,7 +107,7 @@
             display: flex; 
             align-items: center; 
             justify-content: center;
-            pointer-events: auto; /* Memastikan bisa diklik */
+            pointer-events: auto;
         }
         .toggle-btn:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
 
@@ -134,7 +135,7 @@
 
     <aside class="sidebar" id="side">
         <div class="sidebar-header">
-            <h2 class="logo-text">BEBENAH</h2>
+            <h2 class="logo-text">V.1.0 - Teaching Assistant</h2>
         </div>
         <nav class="nav">
             <div class="nav-label">Dashboard</div>
