@@ -4,91 +4,124 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bebenah Admin | Professional</title>
-    <link rel="manifest" href="./manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
     
     <script>
         if (!sessionStorage.getItem('auth')) {
-            const p = prompt("🔐 Masukkan PIN Akses:");
-            if (p === "2001") { 
-                sessionStorage.setItem('auth', 'true'); 
-            } else { 
-                window.location.href = "https://google.com"; 
-            }
+            const p = prompt("柏 Masukkan PIN Akses:");
+            if (p === "2001") { sessionStorage.setItem('auth', 'true'); } 
+            else { window.location.href = "https://google.com"; }
         }
     </script>
 
     <style>
         :root {
-            --bg: #0a0f1e;
-            --side: linear-gradient(180deg, #111827 0%, #1e1b4b 100%);
-            --accent: #10b981;
+            --bg: #0f172a;
+            --sidebar-bg: #1e293b;
             --sidebar-w: 260px;
+            --accent: #10b981;
+            --text-muted: #94a3b8;
+            --header-h: 64px;
         }
+
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); overflow: hidden; height: 100vh; color: white; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); height: 100vh; overflow: hidden; color: white; }
         
-        .layout { display: flex; width: 100vw; height: 100vh; position: relative; }
+        .layout { display: flex; height: 100%; width: 100%; position: relative; }
 
         .sidebar {
             width: var(--sidebar-w);
-            background: var(--side);
-            height: 100vh;
+            background: var(--sidebar-bg);
+            height: 100%;
             display: flex; flex-direction: column;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 100;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 50;
+            border-right: 1px solid rgba(255,255,255,0.05);
             flex-shrink: 0;
         }
 
-        .sidebar.hide-desk { width: 0; overflow: hidden; }
-
-        .sidebar-header { padding: 25px 20px; font-weight: 800; color: var(--accent); font-size: 20px; }
-        .nav { flex: 1; padding: 10px; }
-        .item {
-            padding: 15px; margin-bottom: 8px; border-radius: 12px;
-            cursor: pointer; display: flex; align-items: center; gap: 12px;
-            color: #94a3b8; transition: 0.2s; white-space: nowrap;
+        .sidebar-header { 
+            height: var(--header-h); display: flex; align-items: center; 
+            padding: 0 24px; font-weight: 800; color: var(--accent); font-size: 20px; letter-spacing: 0.5px;
         }
-        .item.active, .item:hover { background: rgba(16, 185, 129, 0.1); color: white; }
+
+        .nav { flex: 1; padding: 16px; overflow-y: auto; }
         
-        .content { flex: 1; display: flex; flex-direction: column; min-width: 0; background: #0f172a; }
-        .topbar { height: 60px; display: flex; align-items: center; padding: 0 20px; gap: 15px; }
-        .btn-toggle { 
-            width: 40px; height: 40px; background: #1e293b; border: none; 
-            color: white; border-radius: 10px; cursor: pointer; font-size: 20px; 
+        .item {
+            padding: 14px 16px; margin-bottom: 4px; border-radius: 8px;
+            cursor: pointer; display: flex; align-items: center; gap: 12px;
+            color: var(--text-muted); transition: 0.2s; font-size: 14px; font-weight: 500;
+        }
+        
+        .item:hover, .item.active { background: rgba(16, 185, 129, 0.1); color: var(--accent); }
+        .item i { font-style: normal; font-size: 18px; }
+
+        .content { flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative; }
+        
+        .topbar { 
+            height: var(--header-h); display: flex; align-items: center; padding: 0 20px; gap: 16px; 
+            background: var(--bg); border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .frame-box { flex: 1; margin: 0 10px 10px 10px; background: white; border-radius: 20px; overflow: hidden; }
-        iframe { width: 100%; height: 100%; border: none; }
+        .btn-toggle { 
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+            background: transparent; border: 1px solid rgba(255,255,255,0.1); 
+            color: white; border-radius: 8px; cursor: pointer; transition: 0.2s;
+        }
+        .btn-toggle:hover { background: rgba(255,255,255,0.05); }
+
+        .frame-box { 
+            flex: 1; margin: 20px; background: white; border-radius: 16px; 
+            overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+            position: relative;
+        }
+        iframe { width: 100%; height: 100%; border: none; display: block; }
+
+        .overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px);
+            z-index: 40; opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        
+        @media (min-width: 769px) {
+            .sidebar.collapsed { width: 0; overflow: hidden; opacity: 0; }
+        }
 
         @media (max-width: 768px) {
             .sidebar {
-                position: fixed;
-                left: -260px;
-                width: 260px;
+                position: fixed; left: 0; top: 0; bottom: 0;
+                transform: translateX(-100%); 
+                box-shadow: 4px 0 24px rgba(0,0,0,0.5);
             }
-            .sidebar.show-hp { left: 0; }
-            .sidebar.hide-desk { width: 260px; } 
+            
+            .sidebar.mobile-open { transform: translateX(0); }
+        
+            .overlay.show { opacity: 1; visibility: visible; }
+            
+            .frame-box { margin: 10px; border-radius: 12px; }
         }
     </style>
 </head>
 <body>
 
 <div class="layout">
-    <aside class="sidebar" id="side">
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">BEBENAH</div>
         <nav class="nav">
-            <div class="item active" onclick="go('home.html', 'Beranda', this)">🏠 Beranda</div>
-            <div class="item" onclick="go('administrasi.html', 'Administrasi', this)">📂 Administrasi</div>
-            <div class="item" onclick="go('jurnal.html', 'Jurnal Guru', this)">📝 Jurnal Guru</div>
-            <div class="item" onclick="go('rpm.html', 'RPM Harian', this)">📊 RPM Harian</div>
-            <div class="item" onclick="go('nilai.html', 'Nilai Siswa', this)">📈 Nilai Siswa</div>
+            <div class="item active" onclick="go('home.html', 'Beranda', this)"><i>匠</i> Beranda</div>
+            <div class="item" onclick="go('administrasi.html', 'Administrasi', this)"><i>唐</i> Administrasi</div>
+            <div class="item" onclick="go('jurnal.html', 'Jurnal Guru', this)"><i>統</i> Jurnal Guru</div>
+            <div class="item" onclick="go('rpm.html', 'RPM Harian', this)"><i>投</i> RPM Harian</div>
+            <div class="item" onclick="go('nilai.html', 'Nilai Siswa', this)"><i>嶋</i> Nilai Siswa</div>
         </nav>
     </aside>
 
     <main class="content">
         <header class="topbar">
-            <button class="btn-toggle" onclick="toggle()">☰</button>
+            <button class="btn-toggle" onclick="toggleSidebar()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
             <h3 id="ttl">Beranda</h3>
         </header>
         <section class="frame-box">
@@ -98,24 +131,41 @@
 </div>
 
 <script>
-    function toggle() {
-        const s = document.getElementById('side');
-        if (window.innerWidth <= 768) {
-            s.classList.toggle('show-hp');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const isMobile = () => window.innerWidth <= 768;
+
+    function toggleSidebar() {
+        if (isMobile()) {
+            sidebar.classList.toggle('mobile-open');
+            overlay.classList.toggle('show');
         } else {
-            s.classList.toggle('hide-desk');
+            sidebar.classList.toggle('collapsed');
         }
     }
 
-    function go(u, t, e) {
-        document.getElementById('vf').src = u;
-        document.getElementById('ttl').innerText = t;
+    function go(url, title, el) {
+        document.getElementById('vf').src = url;
+        document.getElementById('ttl').innerText = title;
+        
+        // Update kelas active
         document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
-        e.classList.add('active');
-        if (window.innerWidth <= 768) {
-            document.getElementById('side').classList.remove('show-hp');
+        el.classList.add('active');
+
+        if (isMobile()) {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('show');
         }
     }
+    
+    window.addEventListener('resize', () => {
+        if (!isMobile()) {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('show');
+        } else {
+            sidebar.classList.remove('collapsed');
+        }
+    });
 
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js');
