@@ -9,44 +9,38 @@
         body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 15px; color: #333; font-size: 14px; }
         .container { max-width: 1100px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         
-        /* --- BRANDING SIPANDU GURU --- */
+        /* --- BRANDING TEACHING ASSISTANT --- */
         .brand-wrapper { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
         .sipandu-brand { border-left: 4px solid var(--accent); padding-left: 12px; }
         .sipandu-name { font-weight: bold; font-size: 18px; color: var(--primary); margin: 0; line-height: 1.2; }
         .sipandu-sub { font-size: 11px; color: #64748b; margin: 0; }
         .sipandu-tagline { font-size: 10px; color: var(--accent); font-style: italic; margin-top: 2px; }
 
-        /* --- KUTIPAN KHD --- */
+        /* --- QUOTE --- */
         .khd-quote { font-style: italic; color: #64748b; font-size: 12px; border-left: 2px solid #cbd5e1; padding-left: 10px; line-height: 1.4; max-width: 350px; text-align: left; }
 
-        /* Header & Meta */
         .header { text-align: center; border-bottom: 3px double var(--primary); margin-bottom: 20px; padding-bottom: 10px; }
         .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; background: #f1f5f9; padding: 20px; border-radius: 8px; margin-bottom: 25px; }
         label { display: block; font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px; }
         input, select, textarea { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
         
-        /* Tables */
         table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         th { background: #f1f5f9; color: #475569; padding: 12px; border: 1px solid #cbd5e1; font-size: 12px; }
         td { padding: 10px; border: 1px solid #cbd5e1; text-align: center; }
         .text-left { text-align: left; }
 
-        /* Sections */
         .section-header { background: var(--primary); color: white; padding: 10px 15px; margin-top: 25px; border-radius: 6px 6px 0 0; display: flex; justify-content: space-between; align-items: center; }
         .card { border: 1px solid #cbd5e1; border-top: none; padding: 15px; border-radius: 0 0 6px 6px; background: white; margin-bottom: 20px; }
         
-        /* Buttons */
         .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; font-size: 13px; }
         .btn-add { background: var(--accent); color: white; }
         .btn-del { background: #ef4444; color: white; padding: 5px 10px; }
         .btn-nav { background: #64748b; color: white; }
         .no-print { display: inline-flex; gap: 8px; }
 
-        /* Calculation Box */
         .calc-box { background: #fffbeb; border: 1px solid #fef3c7; padding: 15px; border-radius: 8px; margin: 15px 0; }
         .final-score { font-size: 24px; font-weight: 800; color: #1e40af; }
 
-        /* --- NILAI DASAR SECTION --- */
         .nilai-dasar-box { margin-top: 40px; padding: 20px; border: 1px dashed #cbd5e1; border-radius: 8px; background: #fff; page-break-inside: avoid; }
         .nilai-title { font-weight: bold; font-size: 13px; color: var(--primary); margin-bottom: 12px; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
         .nilai-grid { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -68,7 +62,7 @@
 <div class="container">
     <div class="brand-wrapper">
         <div class="sipandu-brand">
-            <div class="sipandu-name">SiPandu Guru</div>
+            <div class="sipandu-name">Teaching Assistant</div>
             <div class="sipandu-sub">Rencana Pembelajaran Mendalam</div>
             <div class="sipandu-tagline">“Menuntun Kodrat Anak”</div>
         </div>
@@ -104,7 +98,7 @@
 
     <div id="listView">
         <div class="section-header">
-            <span>DAFTAR NILAI: <span id="labelMapel">Matematika</span></span>
+            <span>DAFTAR NILAI: <span id="labelMapel">Pendidikan Pancasila</span></span>
             <button class="btn btn-add" onclick="addStudent()">+ Tambah Siswa</button>
         </div>
         <table>
@@ -141,7 +135,7 @@
                 <thead><tr><th width="150">Tanggal</th><th>Keterangan Tugas/TP</th><th width="100">Nilai</th><th width="50" class="no-print"></th></tr></thead>
                 <tbody id="bodyHarian"></tbody>
             </table>
-            <p id="emptyHarian" style="color:gray; font-style:italic; display:none;">Tidak ada nilai harian. Nilai akhir akan diambil 100% dari ASAS.</p>
+            <p id="emptyHarian" style="color:gray; font-style:italic; display:none;">Tidak ada nilai harian.</p>
         </div>
 
         <div class="section-header">
@@ -172,25 +166,9 @@
                     <input type="number" id="det_na_final" oninput="manualSave()" style="text-align:center; font-size:22px; color:#1e40af; font-weight:bold;">
                 </div>
             </div>
-            <p style="font-size:11px; color:#64748b;">*Rumus: NA = (Rerata x 0.7) + (ASAS x 0.3). Jika harian kosong, NA = ASAS.</p>
         </div>
 
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-            <div>
-                <div class="section-header"><span>4. NILAI PRAKTIK</span></div>
-                <div class="card"><input type="number" id="det_praktik" oninput="manualSave()" placeholder="Nilai Praktik/Proyek"></div>
-            </div>
-            <div>
-                <div class="section-header"><span>5. SIKAP</span></div>
-                <div class="card">
-                    <select id="det_sikap" onchange="manualSave()">
-                        <option>Sangat Baik (SB)</option><option selected>Baik (B)</option><option>Cukup (C)</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="section-header"><span>CATATAN PERKEMBANGAN (REFLEKSI)</span></div>
+        <div class="section-header"><span>CATATAN PERKEMBANGAN</span></div>
         <div class="card">
             <textarea id="det_catatan" oninput="manualSave()" rows="3" placeholder="Tulis catatan di sini..."></textarea>
         </div>
@@ -212,9 +190,7 @@
 </div>
 
 <script>
-    const CLIENT_ID = "90571149244-1soeooh8du5bharl911o8ks80tfvp5e7.apps.googleusercontent.com";
-    const API_KEY   = "AQ.Ab8RN6JXzm9QiO2OkLZJ4Bca9KV-dqHBTsvkoliJ7vaLPKez3g";
-    
+    /* JAVASCRIPT LOGIC TETAP SAMA AGAR DATA TETAP AMAN */
     let db = JSON.parse(localStorage.getItem('guru_v2_db')) || { meta: {}, data: {} };
     let currentMapel = "Pendidikan Pancasila";
     let activeIdx = null;
@@ -279,13 +255,9 @@
         document.getElementById('listView').style.display = 'none';
         document.getElementById('detailView').style.display = 'block';
         document.getElementById('det_nama').innerText = s.name;
-        
         document.getElementById('det_asas').value = s.asas;
         document.getElementById('det_na_final').value = s.na;
-        document.getElementById('det_praktik').value = s.praktik;
-        document.getElementById('det_sikap').value = s.sikap;
         document.getElementById('det_catatan').value = s.catatan;
-
         renderSubTable('harian');
         renderSubTable('sumatif');
         updateAll();
@@ -295,7 +267,6 @@
         let s = db.data[currentMapel][activeIdx];
         let body = document.getElementById(type === 'harian' ? 'bodyHarian' : 'bodySumatif');
         body.innerHTML = '';
-        
         s[type].forEach((item, i) => {
             if(type === 'harian') {
                 body.innerHTML += `<tr>
@@ -312,7 +283,6 @@
                 </tr>`;
             }
         });
-        
         if(type === 'harian') document.getElementById('emptyHarian').style.display = s.harian.length ? 'none' : 'block';
     }
 
@@ -338,35 +308,20 @@
         let s = db.data[currentMapel][activeIdx];
         let hAvg = parseFloat(calculateAvg(s.harian)) || 0;
         let asas = parseFloat(document.getElementById('det_asas').value) || 0;
-        
         s.asas = document.getElementById('det_asas').value;
         document.getElementById('calc_harian_val').innerText = hAvg || '-';
-
-        let naFinal = 0;
-        if (hAvg > 0) {
-            naFinal = Math.round((hAvg * 0.7) + (asas * 0.3));
-        } else {
-            naFinal = asas; 
-        }
-
+        let naFinal = hAvg > 0 ? Math.round((hAvg * 0.7) + (asas * 0.3)) : asas;
         document.getElementById('auto_na').innerText = naFinal;
-        
         let naInput = document.getElementById('det_na_final');
-        if (!naInput.dataset.modified) {
-            naInput.value = naFinal;
-            s.na = naFinal;
-        }
+        if (!naInput.dataset.modified) { naInput.value = naFinal; s.na = naFinal; }
         save();
     }
 
     function manualSave() {
         let s = db.data[currentMapel][activeIdx];
         let naInput = document.getElementById('det_na_final');
-        naInput.dataset.modified = "true"; 
-        
+        naInput.dataset.modified = "true";
         s.na = naInput.value;
-        s.praktik = document.getElementById('det_praktik').value;
-        s.sikap = document.getElementById('det_sikap').value;
         s.catatan = document.getElementById('det_catatan').value;
         save();
     }
@@ -383,14 +338,12 @@
     }
 
     function save() { localStorage.setItem('guru_v2_db', JSON.stringify(db)); }
-    
     function delStd(i) { if(confirm("Hapus siswa ini?")) { db.data[currentMapel].splice(i,1); save(); renderList(); } }
-
     function exportData() {
         const blob = new Blob([JSON.stringify(db)], {type: 'application/json'});
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = `Backup_Nilai_${db.meta.kelas || 'Guru'}.json`;
+        a.download = `Backup_Nilai_TA.json`;
         a.click();
     }
 
