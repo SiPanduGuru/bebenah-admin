@@ -2,44 +2,147 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bebenah Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bebenah Admin | Professional</title>
+    <link rel="manifest" href="./manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        const p = prompt("🔐 Masukkan PIN Akses:");
+        if (p !== "2001") { window.location.href = "https://google.com"; }
+    </script>
     <style>
-        :root { --bg: #0a0f1e; --side: #111827; --accent: #10b981; }
-        body { margin:0; font-family: sans-serif; background: var(--bg); display: flex; height: 100vh; overflow: hidden; }
-        .sidebar { width: 260px; background: var(--side); transition: 0.3s; color: white; display: flex; flex-direction: column; }
-        .sidebar.hide { width: 0; overflow: hidden; }
-        .content { flex: 1; display: flex; flex-direction: column; background: #0f172a; }
-        .topbar { padding: 10px; display: flex; align-items: center; color: white; gap: 15px; }
-        .toggle-btn { cursor: pointer; background: #1e293b; border: none; color: white; padding: 10px; border-radius: 8px; }
-        iframe { flex: 1; border: none; background: white; border-radius: 20px 0 0 0; }
-        .nav-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #1e293b; }
-        .nav-item:hover { background: #1e293b; }
+        :root {
+            --bg: #0a0f1e;
+            --side: #111827;
+            --accent: #10b981;
+            --sidebar-w: 260px;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); overflow: hidden; height: 100vh; color: white; }
+        
+        .layout { display: flex; width: 100vw; height: 100vh; position: relative; }
+
+        /* SIDEBAR KIRI (Persis di Gambar) */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--side);
+            border-right: 1px solid rgba(255,255,255,0.05);
+            display: flex; flex-direction: column;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .sidebar-header { padding: 25px 18px; display: flex; align-items: center; gap: 15px; }
+        .logo-text { font-weight: 800; font-size: 18px; color: var(--accent); }
+        
+        .nav { flex: 1; padding: 10px; }
+        .item {
+            padding: 15px; margin-bottom: 8px; border-radius: 14px;
+            cursor: pointer; display: flex; align-items: center;
+            color: #94a3b8; transition: 0.3s;
+        }
+        .item i { font-style: normal; font-size: 20px; min-width: 40px; }
+        .item:hover, .item.active { background: rgba(16, 185, 129, 0.1); color: white; }
+        .item.active { border-left: 4px solid var(--accent); }
+
+        /* KONTEN UTAMA */
+        .content { 
+            flex: 1; display: flex; flex-direction: column; padding: 10px; 
+            background: #0f172a; position: relative;
+        }
+        
+        .topbar { height: 50px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; }
+        .toggle-btn {
+            background: rgba(255,255,255,0.1); border: none; color: white;
+            width: 40px; height: 40px; border-radius: 10px; cursor: pointer; font-size: 20px;
+        }
+
+        .frame-box { 
+            flex: 1; background: white; border-radius: 20px; 
+            overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.4); 
+        }
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* RESPONSIF UNTUK HP (BIAR BISA PORTRAIT) */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: absolute;
+                left: -260px;
+                height: 100%;
+            }
+            .sidebar.active { left: 0; }
+            .content { padding: 5px; }
+            .logo-text { font-size: 15px; }
+        }
     </style>
 </head>
 <body>
+
+<div class="layout">
     <aside class="sidebar" id="side">
-        <div style="padding: 20px; font-weight: bold; color: var(--accent);">BEBENAH</div>
-        <div class="nav-item" onclick="go('home.html')">🏠 Beranda</div>
-        <div class="nav-item" onclick="go('administrasi.html')">📂 Administrasi</div>
-        <div class="nav-item" onclick="go('jurnal.html')">📝 Jurnal Guru</div>
+        <div class="sidebar-header">
+            <button class="toggle-btn" onclick="toggleSide()">☰</button>
+            <h2 class="logo-text">BEBENAH</h2>
+        </div>
+        <nav class="nav">
+            <div class="item active" onclick="go('home.html', 'Control Center', this)"><i>🏠</i> Beranda</div>
+            <div class="item" onclick="go('administrasi.html', 'Data Repository', this)"><i>📂</i> Administrasi</div>
+            <div class="item" onclick="go('jurnal.html', 'Jurnal Guru', this)"><i>📝</i> Jurnal Guru</div>
+            <div class="item" onclick="go('rpm.html', 'RPM Harian', this)"><i>📊</i> RPM Harian</div>
+            <div class="item" onclick="go('rpm umum.html', 'RPM Umum', this)"><i>📑</i> RPM Umum</div>
+            <div class="item" onclick="go('nilai.html', 'Nilai Siswa', this)"><i>📈</i> Nilai Siswa</div>
+        </nav>
     </aside>
 
     <main class="content">
-        <div class="topbar">
-            <button class="toggle-btn" onclick="toggleSide()">☰</button>
-            <span>Control Center</span>
-        </div>
-        <iframe id="vf" src="home.html"></iframe>
+        <header class="topbar">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <button class="toggle-btn" onclick="toggleSide()">☰</button>
+                <h3 id="ttl" style="font-size: 16px; color: #a78bfa;">Control Center</h3>
+            </div>
+            <div style="font-size: 10px; color: var(--accent);">● ONLINE SESSION</div>
+        </header>
+        <section class="frame-box">
+            <iframe id="vf" src="home.html"></iframe>
+        </section>
     </main>
+</div>
 
-    <script>
-        function toggleSide() { 
-            document.getElementById('side').classList.toggle('hide'); 
+<script>
+    function toggleSide() { 
+        const side = document.getElementById('side');
+        // Jika di layar HP
+        if (window.innerWidth <= 768) {
+            side.classList.toggle('active');
+        } else {
+            // Jika di laptop
+            if (side.style.width === "0px") {
+                side.style.width = "260px";
+                side.style.overflow = "visible";
+            } else {
+                side.style.width = "0px";
+                side.style.overflow = "hidden";
+            }
         }
-        function go(url) { 
-            document.getElementById('vf').src = url; 
+    }
+
+    function go(u, t, e) {
+        document.getElementById('vf').src = u;
+        document.getElementById('ttl').innerText = t;
+        document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
+        e.classList.add('active');
+        
+        // Tutup otomatis jika di HP
+        if(window.innerWidth <= 768) {
+            document.getElementById('side').classList.remove('active');
         }
-    </script>
+    }
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js');
+        });
+    }
+</script>
 </body>
 </html>
