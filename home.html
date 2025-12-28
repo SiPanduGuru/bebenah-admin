@@ -1,25 +1,116 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Content</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; padding: 20px; background: #f8fafc; color: #334155; }
-        .box { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        h1 { font-size: 24px; margin-bottom: 10px; color: #0f172a; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bebenah Admin | Professional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        const p = prompt("🔐 PIN:");
+        if (p !== "2001") { window.location.href = "https://google.com"; }
+    </script>
+    <style>
+        :root {
+            --bg: #0a0f1e;
+            --side: #111827;
+            --accent: #10b981;
+            --sidebar-w: 260px;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); overflow: hidden; height: 100vh; color: white; }
+        
+        .layout { display: flex; width: 100vw; height: 100vh; position: relative; }
+
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--side);
+            border-right: 1px solid rgba(255,255,255,0.05);
+            display: flex; 
+            flex-direction: column;
+            transition: 0.3s ease;
+            flex-shrink: 0;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .sidebar.collapsed { width: 0; border: none; }
+
+        .sidebar-header { padding: 25px 18px; width: var(--sidebar-w); }
+        .logo-text { font-weight: 800; font-size: 18px; color: var(--accent); }
+        .nav { flex: 1; padding: 10px; width: var(--sidebar-w); }
+
+        .item {
+            padding: 15px; margin-bottom: 8px; border-radius: 14px;
+            cursor: pointer; display: flex; align-items: center; gap: 10px;
+            color: #94a3b8; transition: 0.3s;
+        }
+        .item:hover, .item.active { background: rgba(16, 185, 129, 0.1); color: white; }
+        .item.active { border-left: 4px solid var(--accent); }
+
+        .content { flex: 1; display: flex; flex-direction: column; padding: 10px; background: #0f172a; min-width: 0; }
+        .topbar { height: 50px; display: flex; align-items: center; gap: 15px; padding: 0 10px; }
+        
+        .toggle-btn {
+            background: rgba(255,255,255,0.1); border: none; color: white;
+            width: 40px; height: 40px; border-radius: 10px; cursor: pointer; font-size: 20px;
+        }
+
+        .frame-box { flex: 1; background: white; border-radius: 20px; overflow: hidden; }
+        iframe { width: 100%; height: 100%; border: none; }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: absolute;
+                left: -260px; /* Ini supaya sidebar sembunyi dulu di HP */
+                height: 100%;
+            }
+            .sidebar.active { left: 0; }
+        }
+    </style>
 </head>
 <body>
-    <div class="box">
-        <h1>👋 Selamat Datang di Control Center</h1>
-        <p>Halaman ini bersih, hanya berisi data. Sidebar ada di luar (di file index.html).</p>
-    </div>
 
-    <div class="box">
-        <h3>Statistik Cepat</h3>
-        <p>📊 Siswa: 1.200 | 👨‍🏫 Guru: 56 | 📂 Dokumen: 128</p>
-    </div>
+<div class="layout">
+    <aside class="sidebar" id="side">
+        <div class="sidebar-header"><h2 class="logo-text">BEBENAH</h2></div>
+        <nav class="nav">
+            <div class="item active" onclick="go('home.html', 'Control Center', this)">🏠 Beranda</div>
+            <div class="item" onclick="go('administrasi.html', 'Data Repository', this)">📂 Administrasi</div>
+            <div class="item" onclick="go('jurnal.html', 'Jurnal Guru', this)">📝 Jurnal Guru</div>
+            <div class="item" onclick="go('rpm.html', 'RPM Harian', this)">📊 RPM Harian</div>
+            <div class="item" onclick="go('rpm umum.html', 'RPM Umum', this)">📑 RPM Umum</div>
+            <div class="item" onclick="go('nilai.html', 'Nilai Siswa', this)">📈 Nilai Siswa</div>
+        </nav>
+    </aside>
+
+    <main class="content">
+        <header class="topbar">
+            <button class="toggle-btn" onclick="toggleSide()">☰</button>
+            <h3 id="ttl" style="font-size: 16px; color: #a78bfa;">Control Center</h3>
+        </header>
+        <section class="frame-box">
+            <iframe id="vf" src="home.html"></iframe>
+        </section>
+    </main>
+</div>
+
+<script>
+    function toggleSide() { 
+        const side = document.getElementById('side');
+        if (window.innerWidth <= 768) {
+            side.classList.toggle('active');
+        } else {
+            side.classList.toggle('collapsed');
+        }
+    }
+
+    function go(u, t, e) {
+        document.getElementById('vf').src = u;
+        document.getElementById('ttl').innerText = t;
+        document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
+        e.classList.add('active');
+        if(window.innerWidth <= 768) { document.getElementById('side').classList.remove('active'); }
+    }
+</script>
 </body>
 </html>
