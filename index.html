@@ -3,171 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bebenah Admin | Focus Mode</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    
+    <title>Bebenah Admin | Pro Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
     <script>
-        const key = "2001";
-        if (prompt("🔐 Identity Verification:") !== key) { window.location.href = "https://github.com"; }
+        const p = prompt("🔐 Masukkan PIN Akses:");
+        if (p !== "2001") { window.location.href = "https://google.com"; }
     </script>
-
     <style>
         :root {
-            --bg-main: #0a0f1e;
-            --sidebar-w: 280px;
-            --sidebar-collapsed: 80px;
+            --bg: #0a0f1e;
+            --side: linear-gradient(180deg, #111827 0%, #1e1b4b 100%);
             --accent: #10b981;
-            --accent-warm: #8b5cf6;
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --accent-hot: #8b5cf6;
+            --sidebar-w: 260px;
+            --sidebar-min: 70px;
         }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); overflow: hidden; height: 100vh; color: white; }
+        
+        .layout { display: flex; width: 100vw; height: 100vh; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg-main); overflow: hidden; height: 100vh; }
-
-        .app-wrapper { display: flex; width: 100vw; height: 100vh; }
-
-        /* --- SIDEBAR DYNAMICS --- */
+        /* SIDEBAR DYNAMIC */
         .sidebar {
             width: var(--sidebar-w);
-            min-width: var(--sidebar-w);
-            background: linear-gradient(180deg, #111827 0%, #1e1b4b 100%);
+            background: var(--side);
             border-right: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            flex-direction: column;
-            transition: var(--transition);
+            display: flex; flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            z-index: 100;
         }
-
-        /* State saat sidebar menciut */
-        .sidebar.collapsed {
-            width: var(--sidebar-collapsed);
-            min-width: var(--sidebar-collapsed);
-        }
-
-        .sidebar.collapsed .brand-text, 
-        .sidebar.collapsed .menu-text {
-            display: none;
-        }
+        .sidebar.hide { width: var(--sidebar-min); }
 
         .sidebar-header {
-            padding: 25px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            overflow: hidden;
+            padding: 25px 15px; display: flex; align-items: center; gap: 15px; overflow: hidden;
         }
-
         .toggle-btn {
-            width: 40px; height: 40px;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: white;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: 0.3s;
+            min-width: 40px; height: 40px; border-radius: 10px;
+            background: rgba(255,255,255,0.1); border: none; color: white;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px;
         }
-        .toggle-btn:hover { background: var(--accent-warm); }
+        .toggle-btn:hover { background: var(--accent-hot); }
 
-        .nav-menu { flex: 1; padding: 20px 15px; }
-
-        .nav-link {
-            padding: 14px;
-            margin-bottom: 8px;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex; align-items: center;
-            color: #94a3b8;
-            transition: var(--transition);
-            white-space: nowrap;
+        .nav { flex: 1; padding: 10px; }
+        .item {
+            padding: 15px; margin-bottom: 8px; border-radius: 12px;
+            cursor: pointer; display: flex; align-items: center;
+            color: #94a3b8; transition: 0.3s; white-space: nowrap;
         }
+        .item i { font-style: normal; font-size: 20px; min-width: 40px; text-align: center; }
+        .item:hover, .item.active { background: rgba(139, 92, 246, 0.15); color: white; }
+        .item.active { border-left: 4px solid var(--accent); }
 
-        .nav-link i { font-style: normal; font-size: 22px; min-width: 45px; text-align: center; }
+        .sidebar.hide .txt, .sidebar.hide h2 { display: none; }
 
-        .nav-link:hover, .nav-link.active {
-            background: rgba(139, 92, 246, 0.15);
-            color: #fff;
-        }
-        .nav-link.active { border-left: 4px solid var(--accent-warm); }
-
-        /* --- CONTENT AREA --- */
-        .main-stage {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-            transition: var(--transition);
-        }
-
-        .top-bar {
-            height: 60px;
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 20px;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        .frame-container {
-            flex: 1;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-
+        /* CONTENT */
+        .content { flex: 1; display: flex; flex-direction: column; padding: 15px; background: radial-gradient(circle at top right, #1e1b4b, #0a0f1e); }
+        .topbar { height: 50px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; margin-bottom: 10px; }
+        .frame-box { flex: 1; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
-<div class="app-wrapper">
-    <aside class="sidebar" id="sidebar">
+<div class="layout">
+    <aside class="sidebar" id="side">
         <div class="sidebar-header">
-            <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
-            <h2 class="brand-text" style="font-size: 18px; color: var(--accent);">BEBENAH</h2>
+            <button class="toggle-btn" onclick="toggleSide()">☰</button>
+            <h2 style="font-size: 18px; color: var(--accent); letter-spacing: 1px;">BEBENAH</h2>
         </div>
-
-        <nav class="nav-menu">
-            <div class="nav-link active" onclick="load('home.html', 'Beranda', this)"><i>🏠</i> <span class="menu-text">Beranda</span></div>
-            <div class="nav-link" onclick="load('administrasi.html', 'Administrasi', this)"><i>📂</i> <span class="menu-text">Administrasi</span></div>
-            <div class="nav-link" onclick="load('jurnal.html', 'Jurnal Guru', this)"><i>📝</i> <span class="menu-text">Jurnal</span></div>
-            <div class="nav-link" onclick="load('rpm.html', 'RPM Harian', this)"><i>📊</i> <span class="menu-text">RPM Harian</span></div>
-            <div class="nav-link" onclick="load('rpm-umum.html', 'RPM Umum', this)"><i>📑</i> <span class="menu-text">RPM Umum</span></div>
-            <div class="nav-link" onclick="load('nilai.html', 'Nilai Siswa', this)"><i>📈</i> <span class="menu-text">Nilai</span></div>
+        <nav class="nav">
+            <div class="item active" onclick="go('home.html', 'Dashboard', this)"><i>🏠</i> <span class="txt">Beranda</span></div>
+            <div class="item" onclick="go('administrasi.html', 'Administrasi', this)"><i>📂</i> <span class="txt">Administrasi</span></div>
+            <div class="item" onclick="go('jurnal.html', 'Jurnal Guru', this)"><i>📝</i> <span class="txt">Jurnal Guru</span></div>
+            <div class="item" onclick="go('rpm.html', 'RPM Harian', this)"><i>📊</i> <span class="txt">RPM Harian</span></div>
+            <div class="item" onclick="go('rpm-umum.html', 'RPM Umum', this)"><i>📑</i> <span class="txt">RPM Umum</span></div>
+            <div class="item" onclick="go('nilai.html', 'Data Nilai', this)"><i>📈</i> <span class="txt">Nilai Siswa</span></div>
         </nav>
     </aside>
 
-    <main class="main-stage">
-        <header class="top-bar">
-            <h3 id="view-title" style="font-size: 16px; opacity: 0.8;">Beranda</h3>
-            <div style="font-size: 11px; color: #475569;">SYSTEM v4.0 ACTIVE</div>
+    <main class="content">
+        <header class="topbar">
+            <h3 id="ttl" style="font-size: 18px; font-weight: 700; background: linear-gradient(to right, #34d399, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Dashboard</h3>
+            <div style="font-size: 11px; color: var(--accent); font-weight: 700;">● SYSTEM ACTIVE</div>
         </header>
-        
-        <section class="frame-container">
-            <iframe id="viewport" src="home.html"></iframe>
+        <section class="frame-box">
+            <iframe id="vf" src="home.html"></iframe>
         </section>
     </main>
 </div>
 
 <script>
-    function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('collapsed');
-    }
-
-    function load(url, title, el) {
-        document.getElementById('viewport').src = url;
-        document.getElementById('view-title').innerText = title;
-        
-        document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-        el.classList.add('active');
-
-        // Optional: Otomatis tutup sidebar di HP kalau menu diklik
-        if(window.innerWidth < 768) {
-            document.getElementById('sidebar').classList.add('collapsed');
-        }
+    function toggleSide() { document.getElementById('side').classList.toggle('hide'); }
+    function go(u, t, e) {
+        document.getElementById('vf').src = u;
+        document.getElementById('ttl').innerText = t;
+        document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
+        e.classList.add('active');
+        if(window.innerWidth < 768) toggleSide();
     }
 </script>
-
 </body>
 </html>
