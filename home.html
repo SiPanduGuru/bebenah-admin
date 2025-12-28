@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bebenah Admin | Professional</title>
     <link rel="manifest" href="./manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -20,59 +20,69 @@
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); overflow: hidden; height: 100vh; color: white; }
         
-        .layout { display: flex; width: 100vw; height: 100vh; position: relative; }
+        .layout { display: flex; width: 100vw; height: 100vh; }
 
-        /* SIDEBAR KIRI (Persis di Gambar) */
+        /* SIDEBAR */
         .sidebar {
             width: var(--sidebar-w);
             background: var(--side);
             border-right: 1px solid rgba(255,255,255,0.05);
             display: flex; flex-direction: column;
-            transition: all 0.3s ease;
-            z-index: 100;
+            transition: all 0.3s ease-in-out;
+            flex-shrink: 0;
+            overflow: hidden;
         }
 
-        .sidebar-header { padding: 25px 18px; display: flex; align-items: center; gap: 15px; }
+        /* KELAS KHUSUS SAAT SIDEBAR DISEMBUNYIKAN */
+        .sidebar.collapsed {
+            width: 0;
+            border: none;
+        }
+
+        .sidebar-header { padding: 25px 18px; display: flex; align-items: center; gap: 15px; min-width: 260px; }
         .logo-text { font-weight: 800; font-size: 18px; color: var(--accent); }
         
-        .nav { flex: 1; padding: 10px; }
+        .nav { flex: 1; padding: 10px; min-width: 260px; }
         .item {
             padding: 15px; margin-bottom: 8px; border-radius: 14px;
             cursor: pointer; display: flex; align-items: center;
             color: #94a3b8; transition: 0.3s;
         }
-        .item i { font-style: normal; font-size: 20px; min-width: 40px; }
         .item:hover, .item.active { background: rgba(16, 185, 129, 0.1); color: white; }
         .item.active { border-left: 4px solid var(--accent); }
 
-        /* KONTEN UTAMA */
+        /* KONTEN */
         .content { 
             flex: 1; display: flex; flex-direction: column; padding: 10px; 
-            background: #0f172a; position: relative;
+            background: #0f172a; min-width: 0; /* Penting agar iframe tidak meluber */
         }
         
-        .topbar { height: 50px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; }
+        .topbar { height: 50px; display: flex; align-items: center; gap: 15px; padding: 0 10px; margin-bottom: 5px; }
         .toggle-btn {
             background: rgba(255,255,255,0.1); border: none; color: white;
             width: 40px; height: 40px; border-radius: 10px; cursor: pointer; font-size: 20px;
+            display: flex; align-items: center; justify-content: center;
         }
+        .toggle-btn:hover { background: var(--accent); }
 
         .frame-box { 
             flex: 1; background: white; border-radius: 20px; 
-            overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.4); 
+            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
         }
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* RESPONSIF UNTUK HP (BIAR BISA PORTRAIT) */
+        /* UNTUK TAMPILAN HP */
         @media (max-width: 768px) {
             .sidebar {
-                position: absolute;
+                position: fixed;
                 left: -260px;
                 height: 100%;
+                z-index: 999;
             }
-            .sidebar.active { left: 0; }
-            .content { padding: 5px; }
-            .logo-text { font-size: 15px; }
+            .sidebar.active {
+                left: 0;
+                width: 260px;
+            }
         }
     </style>
 </head>
@@ -81,7 +91,6 @@
 <div class="layout">
     <aside class="sidebar" id="side">
         <div class="sidebar-header">
-            <button class="toggle-btn" onclick="toggleSide()">☰</button>
             <h2 class="logo-text">BEBENAH</h2>
         </div>
         <nav class="nav">
@@ -96,11 +105,8 @@
 
     <main class="content">
         <header class="topbar">
-            <div style="display:flex; align-items:center; gap:12px;">
-                <button class="toggle-btn" onclick="toggleSide()">☰</button>
-                <h3 id="ttl" style="font-size: 16px; color: #a78bfa;">Control Center</h3>
-            </div>
-            <div style="font-size: 10px; color: var(--accent);">● ONLINE SESSION</div>
+            <button class="toggle-btn" onclick="toggleSide()">☰</button>
+            <h3 id="ttl" style="font-size: 16px; color: #a78bfa;">Control Center</h3>
         </header>
         <section class="frame-box">
             <iframe id="vf" src="home.html"></iframe>
@@ -111,18 +117,12 @@
 <script>
     function toggleSide() { 
         const side = document.getElementById('side');
-        // Jika di layar HP
         if (window.innerWidth <= 768) {
+            // Logika HP: Muncul/Sembunyi melayang
             side.classList.toggle('active');
         } else {
-            // Jika di laptop
-            if (side.style.width === "0px") {
-                side.style.width = "260px";
-                side.style.overflow = "visible";
-            } else {
-                side.style.width = "0px";
-                side.style.overflow = "hidden";
-            }
+            // Logika Laptop: Mengecilkan lebar (Toggle Collapse)
+            side.classList.toggle('collapsed');
         }
     }
 
@@ -132,7 +132,6 @@
         document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
         e.classList.add('active');
         
-        // Tutup otomatis jika di HP
         if(window.innerWidth <= 768) {
             document.getElementById('side').classList.remove('active');
         }
