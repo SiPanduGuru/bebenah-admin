@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rekap Nilai Guru SD - SiPandu Guru</title>
+    <title>V.1.0 - Teaching Assistant | Rekap Nilai</title>
     <style>
         :root { --primary: #2c3e50; --accent: #27ae60; --bg: #f8fafc; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 15px; color: #333; font-size: 14px; }
@@ -206,15 +206,15 @@
             <div class="nilai-item"><span>•</span> Manusiawi</div>
         </div>
         <p style="font-size: 10px; color: #94a3b8; margin-top: 15px; text-align: right;">
-            Sistem Panduan Administrasi (SiPandu Guru) v.2.0
+            V.1.0 - Teaching Assistant
         </p>
     </div>
 </div>
 
 <script>
-       const CLIENT_ID = "90571149244-1soeooh8du5bharl911o8ks80tfvp5e7.apps.googleusercontent.com";
-    	const API_KEY   = "AQ.Ab8RN6JXzm9QiO2OkLZJ4Bca9KV-dqHBTsvkoliJ7vaLPKez3g";
-    /* JAVASCRIPT TETAP SAMA - TIDAK ADA PERUBAHAN LOGIKA */
+    const CLIENT_ID = "90571149244-1soeooh8du5bharl911o8ks80tfvp5e7.apps.googleusercontent.com";
+    const API_KEY   = "AQ.Ab8RN6JXzm9QiO2OkLZJ4Bca9KV-dqHBTsvkoliJ7vaLPKez3g";
+    
     let db = JSON.parse(localStorage.getItem('guru_v2_db')) || { meta: {}, data: {} };
     let currentMapel = "Pendidikan Pancasila";
     let activeIdx = null;
