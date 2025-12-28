@@ -2,14 +2,15 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>SiPandu Home - Command Center</title>
+    <title>SiPandu - Instructional Command</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-main: #0a0a1a;
-            --bg-card: rgba(28, 21, 58, 0.4);
+            --bg-card: rgba(28, 21, 58, 0.3);
             --purple-soft: #a78bfa;
             --purple-dark: #6d28d9;
+            --purple-glow: rgba(167, 139, 250, 0.15);
             --text-muted: #b6b0d8;
         }
 
@@ -17,187 +18,162 @@
             font-family: 'Inter', sans-serif;
             background: radial-gradient(circle at bottom right, #1a1440, #0a0a1a);
             color: white; margin: 0; padding: 40px; min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .dashboard-grid {
-            display: grid; grid-template-columns: 1.2fr 1fr 0.8fr; gap: 25px;
-            max-width: 1400px; margin: auto;
+        .home-wrapper {
+            max-width: 1200px; margin: auto;
+            display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px;
         }
 
-        /* 1. WELCOME & ABOUT (TENTANG SIPANDU) */
-        .welcome-box {
-            grid-column: span 3; padding: 50px;
-            background: linear-gradient(135deg, rgba(109, 40, 217, 0.2), rgba(139, 92, 246, 0.1));
-            border-radius: 30px; border: 1px solid rgba(167, 139, 250, 0.2);
+        /* --- 1. THE REFINED HERO (INSTRUCTIONAL COMMAND) --- */
+        .hero-section {
+            grid-column: span 2; padding: 60px 50px;
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.1), rgba(139, 92, 246, 0.03));
+            border-radius: 40px; border: 1px solid rgba(167, 139, 250, 0.1);
+            position: relative; overflow: hidden;
         }
 
-        h1 { font-family: 'Montserrat'; font-size: 38px; margin: 0; }
-        .vision-text { max-width: 800px; line-height: 1.8; opacity: 0.8; font-size: 15px; margin-top: 20px; }
+        .hero-tag { font-size: 10px; letter-spacing: 6px; color: var(--purple-soft); font-weight: 800; text-transform: uppercase; }
+        h1 { font-family: 'Montserrat'; font-size: 44px; margin: 15px 0; letter-spacing: -1px; }
+        .hero-desc { max-width: 700px; line-height: 1.8; opacity: 0.6; font-size: 15px; font-weight: 300; }
 
-        /* 2. PLANNER & CALENDAR */
+        /* --- 2. THE POETIC STATUS BAR --- */
+        .status-grid { grid-column: span 2; display: flex; gap: 20px; }
+        .stat-card {
+            flex: 1; background: var(--bg-card); padding: 30px 20px; border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.05); text-align: center;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .stat-card:hover { border-color: var(--purple-soft); background: rgba(167, 139, 250, 0.05); }
+        .stat-val { font-size: 32px; font-weight: 800; display: block; color: var(--purple-soft); text-shadow: 0 0 15px var(--purple-glow); }
+        .stat-lab { font-size: 9px; opacity: 0.4; letter-spacing: 2px; text-transform: uppercase; margin-top: 8px; font-weight: 700; }
+
+        /* --- 3. RECENT LOG SUMMARY --- */
         .card {
-            background: var(--bg-card); backdrop-filter: blur(20px);
-            padding: 25px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05);
+            background: var(--bg-card); backdrop-filter: blur(15px);
+            padding: 35px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);
         }
+        h2 { font-family: 'Montserrat'; font-size: 11px; letter-spacing: 3px; color: var(--purple-soft); margin-bottom: 30px; opacity: 0.8; }
 
-        .calendar-grid {
-            display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center;
+        .summary-item {
+            padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.03);
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .cal-day { padding: 10px; font-size: 11px; background: rgba(255,255,255,0.03); border-radius: 8px; cursor: pointer; }
-        .cal-day:hover { background: var(--purple-dark); }
-        .cal-today { border: 1px solid var(--purple-soft); color: var(--purple-soft); font-weight: bold; }
+        .summary-item:last-child { border: none; }
 
-        /* 3. REFLEKSI INTERAKTIF */
-        .reflection-tool { display: flex; flex-direction: column; gap: 15px; }
-        .mood-btn { 
-            flex: 1; padding: 10px; border: 1px solid rgba(255,255,255,0.1); 
-            background: none; color: white; border-radius: 10px; cursor: pointer; font-size: 18px;
+        /* --- 4. QUICK NAV WITH ALIEN GLOW --- */
+        .quick-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        .nav-box {
+            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 25px; border-radius: 22px; text-align: center; cursor: pointer; 
+            transition: all 0.4s ease; position: relative;
         }
-        .mood-btn.active { background: var(--purple-dark); border-color: var(--purple-soft); }
-
-        textarea.ref-box {
-            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px; color: white; padding: 15px; font-family: inherit; resize: none;
+        .nav-box:hover { 
+            background: rgba(109, 40, 217, 0.1); 
+            transform: translateY(-8px); 
+            border-color: var(--purple-soft);
+            box-shadow: 0 15px 30px var(--purple-glow);
         }
+        .nav-box span { display: block; font-size: 24px; margin-bottom: 12px; filter: grayscale(0.5); }
+        .nav-box:hover span { filter: grayscale(0); }
+        .nav-box label { font-size: 11px; font-weight: 800; cursor: pointer; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .nav-box:hover label { color: white; }
 
-        /* TABS / BUTTONS */
-        .btn-action {
-            background: var(--purple-dark); color: white; border: none;
-            padding: 12px; border-radius: 12px; width: 100%; cursor: pointer; font-weight: bold;
-        }
+        .motto-footer { grid-column: span 2; text-align: center; opacity: 0.2; font-size: 11px; margin-top: 40px; letter-spacing: 2px; }
 
-        h2 { font-family: 'Montserrat'; font-size: 13px; text-transform: uppercase; color: var(--purple-soft); margin-bottom: 20px; }
-
-        @media (max-width: 1100px) { .dashboard-grid { grid-template-columns: 1fr; } .welcome-box { grid-column: span 1; } }
     </style>
 </head>
 <body>
 
-    <div class="dashboard-grid">
-        
-        <div class="welcome-box">
-            <span style="font-size: 11px; letter-spacing: 4px; color: var(--purple-soft); font-weight: 800;">COMMAND CENTER</span>
-            <h1>SiPandu <span>Authority</span></h1>
-            <p class="vision-text">
-                <strong>Apa itu SiPandu?</strong> SiPandu bukan sekadar aplikasi administrasi. Ia adalah <em>Cognitive Assistant</em> bagi pendidik untuk mentransformasi beban administratif menjadi data reflektif. 
-                Di sini, perencanaan (RPM), jurnal, dan delapan dimensi profil lulusan bersatu dalam satu kendali. 
-                Dirancang untuk membantu Anda memimpin kelas dengan kejelasan visi dan struktur yang presisi.
+    <div class="home-wrapper">
+        <section class="hero-section">
+            <span class="hero-tag">Professional Teaching System</span>
+            <h1>Selamat Datang, <br><span id="userName" style="color:var(--purple-soft)">Professional Educator</span></h1>
+            <p class="hero-desc">
+                SiPandu mengintegrasikan struktur administrasi ke dalam alur kerja instruksional yang organik. 
+                Sederhanakan dokumentasi, pertegas visi pembelajaran, dan pertahankan integritas setiap dimensi profil siswa.
             </p>
+            <div style="margin-top: 35px; font-size: 11px; font-weight: 800; letter-spacing: 2px; color: #4caf50;">
+                <span style="opacity:0.5; color: white;">OPERATIONAL STATUS:</span> READY
+            </div>
+        </section>
+
+        <div class="status-grid">
+            <div class="stat-card">
+                <span class="stat-val" id="countRPM">0</span>
+                <span class="stat-lab">Planning Matrix</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-val" id="countAgenda">0</span>
+                <span class="stat-lab">Logged Activities</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-val">FULL</span>
+                <span class="stat-lab">Profile Integrity</span>
+            </div>
         </div>
 
         <div class="card">
-            <h2>📅 Planner & Schedule</h2>
-            <div id="calendarHeader" style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:12px;">
-                <strong id="monthYear">Desember 2025</strong>
+            <h2>Activity Snapshot</h2>
+            <div id="logSummary">
+                <p style="opacity:0.3; font-size: 13px; font-style: italic;">Monitoring system logs...</p>
             </div>
-            <div class="calendar-grid" id="calendarBody">
+        </div>
+
+        <div class="card">
+            <h2>Command Shortcuts</h2>
+            <div class="quick-nav">
+                <div class="nav-box" onclick="parent.go('rpm.html', 'Tactical RPM', this)">
+                    <span>📊</span>
+                    <label>Rancangan RPM</label>
                 </div>
-            <div style="margin-top:20px;">
-                <label style="font-size:11px; color:var(--purple-soft);">Agenda Cepat:</label>
-                <input type="text" id="quickAgenda" placeholder="Klik tanggal atau tulis di sini..." 
-                       style="width:100%; background:none; border:none; border-bottom:1px solid #444; color:white; padding:10px 0;">
-                <button class="btn-action" style="margin-top:15px;" onclick="addAgenda()">Simpan ke Jurnal</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>🧠 Daily Reflection</h2>
-            <div class="reflection-tool">
-                <p style="font-size:11px; opacity:0.6;">Bagaimana performa instruksional hari ini?</p>
-                <div style="display:flex; gap:10px;">
-                    <button class="mood-btn" onclick="setMood('🔥', this)">🔥</button>
-                    <button class="mood-btn" onclick="setMood('🌟', this)">🌟</button>
-                    <button class="mood-btn" onclick="setMood('🧘', this)">🧘</button>
-                    <button class="mood-btn" onclick="setMood('⏳', this)">⏳</button>
+                <div class="nav-box" onclick="parent.go('administrasi.html', 'Data Center', this)">
+                    <span>📝</span>
+                    <label>Agenda Harian</label>
                 </div>
-                <textarea class="ref-box" id="dailyRef" rows="5" placeholder="Insight menarik apa yang ditemukan di kelas hari ini?"></textarea>
-                <button class="btn-action" onclick="saveReflection()">Log Reflection</button>
+                <div class="nav-box" onclick="parent.go('administrasi.html', 'Reflective Room', this)">
+                    <span>🧠</span>
+                    <label>Refleksi Guru</label>
+                </div>
+                <div class="nav-box" onclick="alert('Module Analytics: Locked')">
+                    <span>📡</span>
+                    <label>Integrasi Data</label>
+                </div>
             </div>
         </div>
 
-        <div class="card">
-            <h2>🎯 Progress Monitor</h2>
-            <div style="margin-bottom:20px;">
-                <div style="font-size:24px; font-weight:800;" id="countRPM">0</div>
-                <div style="font-size:10px; opacity:0.5;">RPM COMPLETED</div>
-            </div>
-            <div style="margin-bottom:20px;">
-                <div style="font-size:24px; font-weight:800;" id="countAgenda">0</div>
-                <div style="font-size:10px; opacity:0.5;">JOURNAL ENTRIES</div>
-            </div>
-            <hr style="opacity:0.1;">
-            <p style="font-size:11px; color:var(--purple-soft); font-style:italic;">
-                "Struktur membebaskan kreativitas. Teruslah memandu."
-            </p>
+        <div class="motto-footer">
+            THE SIPANDU INSTRUCTIONAL COMMAND // VER 2.0 // 2025
         </div>
-
     </div>
 
     <script>
-        let selectedMood = '🧘';
-        let selectedDate = new Date().getDate();
-
-        function initCalendar() {
-            const body = document.getElementById('calendarBody');
-            const days = ['S','S','R','K','J','S','M'];
-            body.innerHTML = days.map(d => `<div style="font-weight:800; opacity:0.3; font-size:10px;">${d}</div>`).join('');
-            
-            for(let i=1; i<=31; i++) {
-                const isToday = i === new Date().getDate() ? 'cal-today' : '';
-                body.innerHTML += `<div class="cal-day ${isToday}" onclick="selectDate(${i})">${i}</div>`;
-            }
-        }
-
-        function selectDate(d) {
-            selectedDate = d;
-            document.getElementById('quickAgenda').placeholder = `Agenda untuk tgl ${d}...`;
-        }
-
-        function setMood(m, btn) {
-            selectedMood = m;
-            document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        }
-
-        function saveReflection() {
-            const text = document.getElementById('dailyRef').value;
-            if(!text) return alert("Tuliskan sesuatu untuk direfleksikan.");
-            
-            const adminStore = JSON.parse(localStorage.getItem('sipandu_authority_master')) || { jurnal: [] };
-            adminStore.jurnal.push({
-                tgl: `${selectedDate} Des 2025`,
-                kegiatan: `[REFLEKSI ${selectedMood}] ${text}`,
-                solusi: 'Input via Home Reflection'
-            });
-            
-            localStorage.setItem('sipandu_authority_master', JSON.stringify(adminStore));
-            alert("Refleksi tersimpan di Jurnal Administrasi!");
-            document.getElementById('dailyRef').value = '';
-            loadStats();
-        }
-
-        function addAgenda() {
-            const act = document.getElementById('quickAgenda').value;
-            if(!act) return;
-            const adminStore = JSON.parse(localStorage.getItem('sipandu_authority_master')) || { jurnal: [] };
-            adminStore.jurnal.push({
-                tgl: `${selectedDate} Des 2025`,
-                kegiatan: act,
-                solusi: '-'
-            });
-            localStorage.setItem('sipandu_authority_master', JSON.stringify(adminStore));
-            document.getElementById('quickAgenda').value = '';
-            loadStats();
-        }
-
-        function loadStats() {
-            const adminStore = JSON.parse(localStorage.getItem('sipandu_authority_master')) || { jurnal: [] };
+        function loadHomeData() {
+            const adminStore = JSON.parse(localStorage.getItem('sipandu_authority_master')) || { common: {}, jurnal: [] };
             const rpmStore = JSON.parse(localStorage.getItem('rpm_db_v5')) || [];
+
+            if(adminStore.common.guru) {
+                document.getElementById('userName').innerText = adminStore.common.guru;
+            }
+
             document.getElementById('countRPM').innerText = rpmStore.length;
             document.getElementById('countAgenda').innerText = adminStore.jurnal.length;
-        }
 
-        window.onload = () => { initCalendar(); loadStats(); };
+            if(adminStore.jurnal.length > 0) {
+                const recent = adminStore.jurnal.slice(-3).reverse();
+                document.getElementById('logSummary').innerHTML = recent.map(j => `
+                    <div class="summary-item">
+                        <div>
+                            <div style="font-size: 9px; color: var(--purple-soft); font-weight: 900; opacity: 0.7;">${j.tgl || 'TIMESTAMP'}</div>
+                            <div style="font-size: 13px; margin-top: 6px; font-weight: 300; opacity: 0.9;">${j.kegiatan}</div>
+                        </div>
+                        <div style="font-size: 14px; opacity: 0.2;">●</div>
+                    </div>
+                `).join('');
+            }
+        }
+        window.onload = loadHomeData;
     </script>
 </body>
 </html>
