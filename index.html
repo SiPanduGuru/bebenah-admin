@@ -125,6 +125,14 @@
             document.getElementById('side').classList.add('hide');
         }
     }
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('Sistem Offline Aktif!'))
+        .catch(err => console.log('Gagal Aktif', err));
+    });
+  }
 </script>
 </body>
 </html>
+
