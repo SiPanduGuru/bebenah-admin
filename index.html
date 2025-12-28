@@ -160,14 +160,14 @@
         }
     }
 
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 768) {
-            side.classList.remove('show-mobile');
-            overlay.classList.remove('show');
-        } else {
-            side.classList.remove('collapsed');
-        }
-    });
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+        side.classList.remove('show-mobile');
+        overlay.classList.remove('show');
+    }
+});
+
 </script>
 </body>
 </html>
+
