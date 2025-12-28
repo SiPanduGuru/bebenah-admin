@@ -2,161 +2,232 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiPandu - Welcome Sanctuary</title>
+    <title>SiPandu Home - Executive Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-deep: #0a0a1a;
-            --purple-main: #6d28d9;
+            --bg-main: #0a0a1a;
+            --bg-card: rgba(28, 21, 58, 0.4);
             --purple-soft: #a78bfa;
-            --purple-glow: rgba(167, 139, 250, 0.15);
             --text-muted: #b6b0d8;
         }
 
         body {
-            margin: 0; padding: 0;
             font-family: 'Inter', sans-serif;
             background: radial-gradient(circle at bottom right, #1a1440, #0a0a1a);
-            color: white;
+            color: white; margin: 0; padding: 40px;
             min-height: 100vh;
-            display: flex; align-items: center; justify-content: center;
-            overflow-x: hidden;
         }
 
-        /* AMBIENT LIGHTS */
-        .blob {
-            position: absolute; width: 400px; height: 400px;
-            background: var(--purple-glow);
-            filter: blur(80px); border-radius: 50%; z-index: 0;
-            animation: float 10s infinite alternate;
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            max-width: 1200px;
+            margin: auto;
         }
 
-        @keyframes float {
-            from { transform: translate(-20%, -20%); }
-            to { transform: translate(20%, 20%); }
+        /* WELCOME SECTION UPGRADED */
+        .welcome-box {
+            grid-column: span 2;
+            padding: 50px 40px;
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.2), rgba(139, 92, 246, 0.1));
+            border-radius: 30px;
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            margin-bottom: 10px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .container {
-            max-width: 900px; width: 90%;
-            padding: 60px; z-index: 1;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
-            animation: fadeIn 1.2s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Glow effect in welcome box */
+        .welcome-box::after {
+            content: ''; position: absolute; top: -50%; right: -10%; width: 300px; height: 300px;
+            background: rgba(167, 139, 250, 0.1); filter: blur(80px); border-radius: 50%;
         }
 
         .header-tag {
             font-size: 11px; font-weight: 800; letter-spacing: 4px;
             color: var(--purple-soft); text-transform: uppercase;
-            margin-bottom: 20px; display: block;
+            margin-bottom: 15px; display: block; opacity: 0.8;
         }
 
-        h1 {
-            font-family: 'Montserrat', sans-serif; font-size: 48px;
-            margin: 0; line-height: 1.1; font-weight: 800;
+        h1 { font-family: 'Montserrat'; font-size: 42px; margin: 0; line-height: 1.2; }
+        h1 span { color: var(--purple-soft); }
+
+        .vision-text {
+            max-width: 700px; line-height: 1.8; opacity: 0.85; 
+            font-size: 15px; margin-top: 20px; font-weight: 300;
         }
 
-        h1 span { color: var(--purple-soft); text-shadow: 0 0 30px var(--purple-glow); }
-
-        .sub-headline {
-            font-size: 18px; color: var(--text-muted);
-            margin: 25px 0 40px 0; line-height: 1.6; font-weight: 300;
+        .motto {
+            margin-top: 25px; font-style: italic; font-size: 13px;
+            color: var(--purple-soft); opacity: 0.7; letter-spacing: 1px;
         }
 
-        .grid-features {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 25px; margin-top: 50px;
-        }
-
-        .feature-card {
-            background: rgba(255,255,255,0.03);
-            padding: 25px; border-radius: 20px;
+        /* CARD STYLE */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            padding: 25px;
+            border-radius: 24px;
             border: 1px solid rgba(255,255,255,0.05);
             transition: 0.3s;
         }
+        .card:hover { border-color: rgba(167, 139, 250, 0.3); transform: translateY(-5px); }
 
-        .feature-card:hover {
-            background: rgba(167, 139, 250, 0.08);
-            transform: translateY(-5px);
-            border-color: rgba(167, 139, 250, 0.2);
+        h2 { 
+            font-family: 'Montserrat'; font-size: 13px; 
+            text-transform: uppercase; letter-spacing: 2px;
+            color: var(--purple-soft); margin-bottom: 20px;
+            display: flex; align-items: center; gap: 10px;
         }
 
-        .feature-card h3 {
-            font-family: 'Montserrat', sans-serif; font-size: 14px;
-            margin: 0 0 10px 0; color: #fff; letter-spacing: 1px;
+        /* 8 DIMENSI MINI LIST */
+        .dimensi-mini {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
-
-        .feature-card p {
-            font-size: 12px; color: var(--text-muted); margin: 0;
-            line-height: 1.5;
+        .dimensi-item {
+            background: rgba(255,255,255,0.03);
+            padding: 12px; border-radius: 12px;
+            font-size: 11px; border-left: 3px solid var(--purple-soft);
+            transition: 0.3s;
         }
+        .dimensi-item:hover { background: rgba(167, 139, 250, 0.1); }
 
-        .footer-note {
-            margin-top: 60px; padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.05);
+        /* AGENDA / JURNAL PREVIEW */
+        .agenda-list { margin-top: 15px; }
+        .agenda-item {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
             display: flex; justify-content: space-between; align-items: center;
         }
+        .agenda-item:last-child { border: none; }
+        .date-tag { font-size: 10px; font-weight: 800; color: var(--purple-soft); }
+        .task-text { font-size: 13px; margin-top: 5px; display: block; opacity: 0.9; }
 
-        .quote { font-style: italic; opacity: 0.5; font-size: 13px; }
-        
-        .cta-box {
-            font-size: 11px; font-weight: 800; letter-spacing: 1px;
-            color: var(--purple-soft);
+        .stat-badge {
+            background: var(--purple-soft); color: #000;
+            padding: 2px 8px; border-radius: 5px; font-size: 9px; font-weight: 900;
         }
 
-        @media (max-width: 768px) {
-            h1 { font-size: 32px; }
-            .grid-features { grid-template-columns: 1fr; }
-            .container { padding: 30px; }
+        .stats-container {
+            grid-column: span 2; display: flex; justify-content: space-around; 
+            text-align: center; padding: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .welcome-box { grid-column: span 1; padding: 30px; }
+            h1 { font-size: 28px; }
+            .stats-container { flex-direction: column; gap: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="blob"></div>
-
-    <main class="container">
-        <span class="header-tag">Teaching Assistant Authority System</span>
-        <h1>Selamat Datang di <span>SiPandu</span></h1>
+    <div class="dashboard-grid">
         
-        <p class="sub-headline">
-            Sistem terpadu untuk merancang, mengelola, dan mengawasi proses pembelajaran 
-            secara terstruktur, reflektif, dan berkelanjutan. 
-            Satu ekosistem kerja profesional yang rapi, efisien, dan manusiawi.
-        </p>
+        <div class="welcome-box">
+            <span class="header-tag">Teaching Assistant Authority System</span>
+            <h1>Selamat Datang di <span>SiPandu</span>, <br><span id="namaGuru" style="color:white; font-size: 0.8em; opacity: 0.9;">Guru Penggerak</span></h1>
+            
+            <p class="vision-text">
+                SiPandu adalah partner berpikir Anda dalam merancang, mengelola, dan mengawasi 
+                proses pembelajaran secara terstruktur, reflektif, dan berkelanjutan. 
+                Satukan perencanaan, administrasi, dan evaluasi dalam satu ekosistem kerja yang rapi dan efisien.
+            </p>
 
-        <div class="grid-features">
-            <div class="feature-card">
-                <h3>📊 PLANNING MATRIX</h3>
-                <p>Merancang alur pembelajaran berbasis tujuan (TP), materi, dan refleksi mendalam.</p>
+            <p class="motto">Teach with structure. Lead with clarity.</p>
+        </div>
+
+        <div class="card stats-container">
+            <div>
+                <div style="font-size: 28px; font-weight: 800; color: var(--purple-soft);" id="countRPM">0</div>
+                <div style="font-size: 10px; opacity: 0.5; letter-spacing: 1px; margin-top: 5px;">RPM TERSIMPAN</div>
             </div>
-            <div class="feature-card">
-                <h3>📝 REFLECTIVE LOG</h3>
-                <p>Merekam proses dinamika kelas dan insight pasca pembelajaran secara real-time.</p>
+            <div style="border-left: 1px solid rgba(255,255,255,0.1);"></div>
+            <div>
+                <div style="font-size: 28px; font-weight: 800; color: var(--purple-soft);" id="countMapel">0</div>
+                <div style="font-size: 10px; opacity: 0.5; letter-spacing: 1px; margin-top: 5px;">MATA PELAJARAN</div>
             </div>
-            <div class="feature-card">
-                <h3>📂 REPOSITORY</h3>
-                <p>Pusat kendali identitas, administrasi, dan dokumen dalam satu akses aman.</p>
-            </div>
-            <div class="feature-card">
-                <h3>📈 ANALYTICS</h3>
-                <p>Memantau perkembangan capaian siswa secara objektif dan berkelanjutan.</p>
+            <div style="border-left: 1px solid rgba(255,255,255,0.1);"></div>
+            <div>
+                <div style="font-size: 28px; font-weight: 800; color: var(--purple-soft);">ACTIVE</div>
+                <div style="font-size: 10px; opacity: 0.5; letter-spacing: 1px; margin-top: 5px;">SYSTEM STATUS</div>
             </div>
         </div>
 
-        <div class="footer-note">
-            <div class="quote">"Teach with structure. Lead with clarity."</div>
-            <div class="cta-box">SYSTEM READY TO EXECUTE _</div>
+        <div class="card">
+            <h2>📝 Jurnal & Agenda Terbaru</h2>
+            <div id="agendaPreview" class="agenda-list">
+                <div class="agenda-item">
+                    <div>
+                        <span class="date-tag">STATUS</span>
+                        <span class="task-text">Menunggu sinkronisasi data administrasi...</span>
+                    </div>
+                    <span class="stat-badge">IDLE</span>
+                </div>
+            </div>
+            <button onclick="parent.go('administrasi.html', 'Data Repository', this)" style="background:none; border:none; color:var(--purple-soft); font-size:11px; cursor:pointer; margin-top:20px; font-weight:bold; letter-spacing: 1px;">KONTROL AGENDA PENUH →</button>
         </div>
-    </main>
 
+        <div class="card">
+            <h2>🎯 8 Dimensi Profil</h2>
+            <div class="dimensi-mini">
+                <div class="dimensi-item">Beriman & Bertakwa</div>
+                <div class="dimensi-item">Berkebinekaan Global</div>
+                <div class="dimensi-item">Bergotong Royong</div>
+                <div class="dimensi-item">Mandiri</div>
+                <div class="dimensi-item">Bernalar Kritis</div>
+                <div class="dimensi-item">Kreatif</div>
+                <div class="dimensi-item">Komunikatif</div>
+                <div class="dimensi-item">Sehat Jasmani Rohani</div>
+            </div>
+            <p style="font-size: 10px; opacity: 0.5; margin-top: 25px; line-height: 1.6; font-style: italic;">
+                "SiPandu bukan menggantikan peran guru. Ia memperkuatnya."
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        function loadDashboardData() {
+            // 1. Ambil data dari key Master Administrasi
+            const adminStore = JSON.parse(localStorage.getItem('sipandu_authority_master')) || {};
+            
+            // Set Nama Guru
+            if(adminStore.common && adminStore.common.guru) {
+                document.getElementById('namaGuru').innerText = adminStore.common.guru;
+            }
+
+            // 2. Preview Jurnal (Ambil 3 terakhir)
+            if(adminStore.jurnal && adminStore.jurnal.length > 0) {
+                const preview = adminStore.jurnal.slice(-3).reverse();
+                const container = document.getElementById('agendaPreview');
+                container.innerHTML = preview.map(j => `
+                    <div class="agenda-item">
+                        <div>
+                            <span class="date-tag">${j.tgl || 'LOG'}</span>
+                            <span class="task-text">${j.kegiatan || 'Tanpa keterangan'}</span>
+                        </div>
+                        <span class="stat-badge">LULUS</span>
+                    </div>
+                `).join('');
+            }
+
+            // 3. Stats RPM (Ambil dari key RPM)
+            const rpmStore = JSON.parse(localStorage.getItem('rpm_db_v5')) || [];
+            document.getElementById('countRPM').innerText = rpmStore.length;
+
+            // 4. Stats Mapel
+            if(adminStore.subjects) {
+                document.getElementById('countMapel').innerText = Object.keys(adminStore.subjects).length;
+            }
+        }
+
+        window.onload = loadDashboardData;
+    </script>
 </body>
 </html>
