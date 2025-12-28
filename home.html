@@ -2,127 +2,73 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>SiPandu Home - Executive Dashboard</title>
+    <title>SiPandu Home - Command Center</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-main: #0a0a1a;
             --bg-card: rgba(28, 21, 58, 0.4);
             --purple-soft: #a78bfa;
+            --purple-dark: #6d28d9;
             --text-muted: #b6b0d8;
         }
 
         body {
             font-family: 'Inter', sans-serif;
             background: radial-gradient(circle at bottom right, #1a1440, #0a0a1a);
-            color: white; margin: 0; padding: 40px;
-            min-height: 100vh;
+            color: white; margin: 0; padding: 40px; min-height: 100vh;
         }
 
         .dashboard-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
-            max-width: 1200px;
-            margin: auto;
+            display: grid; grid-template-columns: 1.2fr 1fr 0.8fr; gap: 25px;
+            max-width: 1400px; margin: auto;
         }
 
-        /* WELCOME SECTION UPGRADED */
+        /* 1. WELCOME & ABOUT (TENTANG SIPANDU) */
         .welcome-box {
-            grid-column: span 2;
-            padding: 50px 40px;
+            grid-column: span 3; padding: 50px;
             background: linear-gradient(135deg, rgba(109, 40, 217, 0.2), rgba(139, 92, 246, 0.1));
-            border-radius: 30px;
-            border: 1px solid rgba(167, 139, 250, 0.2);
-            margin-bottom: 10px;
-            position: relative;
-            overflow: hidden;
+            border-radius: 30px; border: 1px solid rgba(167, 139, 250, 0.2);
         }
 
-        /* Glow effect in welcome box */
-        .welcome-box::after {
-            content: ''; position: absolute; top: -50%; right: -10%; width: 300px; height: 300px;
-            background: rgba(167, 139, 250, 0.1); filter: blur(80px); border-radius: 50%;
-        }
+        h1 { font-family: 'Montserrat'; font-size: 38px; margin: 0; }
+        .vision-text { max-width: 800px; line-height: 1.8; opacity: 0.8; font-size: 15px; margin-top: 20px; }
 
-        .header-tag {
-            font-size: 11px; font-weight: 800; letter-spacing: 4px;
-            color: var(--purple-soft); text-transform: uppercase;
-            margin-bottom: 15px; display: block; opacity: 0.8;
-        }
-
-        h1 { font-family: 'Montserrat'; font-size: 42px; margin: 0; line-height: 1.2; }
-        h1 span { color: var(--purple-soft); }
-
-        .vision-text {
-            max-width: 700px; line-height: 1.8; opacity: 0.85; 
-            font-size: 15px; margin-top: 20px; font-weight: 300;
-        }
-
-        .motto {
-            margin-top: 25px; font-style: italic; font-size: 13px;
-            color: var(--purple-soft); opacity: 0.7; letter-spacing: 1px;
-        }
-
-        /* CARD STYLE */
+        /* 2. PLANNER & CALENDAR */
         .card {
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            padding: 25px;
-            border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
-        }
-        .card:hover { border-color: rgba(167, 139, 250, 0.3); transform: translateY(-5px); }
-
-        h2 { 
-            font-family: 'Montserrat'; font-size: 13px; 
-            text-transform: uppercase; letter-spacing: 2px;
-            color: var(--purple-soft); margin-bottom: 20px;
-            display: flex; align-items: center; gap: 10px;
+            background: var(--bg-card); backdrop-filter: blur(20px);
+            padding: 25px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* 8 DIMENSI MINI LIST */
-        .dimensi-mini {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+        .calendar-grid {
+            display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center;
         }
-        .dimensi-item {
-            background: rgba(255,255,255,0.03);
-            padding: 12px; border-radius: 12px;
-            font-size: 11px; border-left: 3px solid var(--purple-soft);
-            transition: 0.3s;
-        }
-        .dimensi-item:hover { background: rgba(167, 139, 250, 0.1); }
+        .cal-day { padding: 10px; font-size: 11px; background: rgba(255,255,255,0.03); border-radius: 8px; cursor: pointer; }
+        .cal-day:hover { background: var(--purple-dark); }
+        .cal-today { border: 1px solid var(--purple-soft); color: var(--purple-soft); font-weight: bold; }
 
-        /* AGENDA / JURNAL PREVIEW */
-        .agenda-list { margin-top: 15px; }
-        .agenda-item {
-            padding: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            display: flex; justify-content: space-between; align-items: center;
+        /* 3. REFLEKSI INTERAKTIF */
+        .reflection-tool { display: flex; flex-direction: column; gap: 15px; }
+        .mood-btn { 
+            flex: 1; padding: 10px; border: 1px solid rgba(255,255,255,0.1); 
+            background: none; color: white; border-radius: 10px; cursor: pointer; font-size: 18px;
         }
-        .agenda-item:last-child { border: none; }
-        .date-tag { font-size: 10px; font-weight: 800; color: var(--purple-soft); }
-        .task-text { font-size: 13px; margin-top: 5px; display: block; opacity: 0.9; }
+        .mood-btn.active { background: var(--purple-dark); border-color: var(--purple-soft); }
 
-        .stat-badge {
-            background: var(--purple-soft); color: #000;
-            padding: 2px 8px; border-radius: 5px; font-size: 9px; font-weight: 900;
+        textarea.ref-box {
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px; color: white; padding: 15px; font-family: inherit; resize: none;
         }
 
-        .stats-container {
-            grid-column: span 2; display: flex; justify-content: space-around; 
-            text-align: center; padding: 30px;
+        /* TABS / BUTTONS */
+        .btn-action {
+            background: var(--purple-dark); color: white; border: none;
+            padding: 12px; border-radius: 12px; width: 100%; cursor: pointer; font-weight: bold;
         }
 
-        @media (max-width: 900px) {
-            .dashboard-grid { grid-template-columns: 1fr; }
-            .welcome-box { grid-column: span 1; padding: 30px; }
-            h1 { font-size: 28px; }
-            .stats-container { flex-direction: column; gap: 20px; }
-        }
+        h2 { font-family: 'Montserrat'; font-size: 13px; text-transform: uppercase; color: var(--purple-soft); margin-bottom: 20px; }
+
+        @media (max-width: 1100px) { .dashboard-grid { grid-template-columns: 1fr; } .welcome-box { grid-column: span 1; } }
     </style>
 </head>
 <body>
@@ -130,104 +76,128 @@
     <div class="dashboard-grid">
         
         <div class="welcome-box">
-            <span class="header-tag">Teaching Assistant Authority System</span>
-            <h1>Selamat Datang di <span>SiPandu</span>, <br><span id="namaGuru" style="color:white; font-size: 0.8em; opacity: 0.9;">Guru Penggerak</span></h1>
-            
+            <span style="font-size: 11px; letter-spacing: 4px; color: var(--purple-soft); font-weight: 800;">COMMAND CENTER</span>
+            <h1>SiPandu <span>Authority</span></h1>
             <p class="vision-text">
-                SiPandu adalah partner berpikir Anda dalam merancang, mengelola, dan mengawasi 
-                proses pembelajaran secara terstruktur, reflektif, dan berkelanjutan. 
-                Satukan perencanaan, administrasi, dan evaluasi dalam satu ekosistem kerja yang rapi dan efisien.
+                <strong>Apa itu SiPandu?</strong> SiPandu bukan sekadar aplikasi administrasi. Ia adalah <em>Cognitive Assistant</em> bagi pendidik untuk mentransformasi beban administratif menjadi data reflektif. 
+                Di sini, perencanaan (RPM), jurnal, dan delapan dimensi profil lulusan bersatu dalam satu kendali. 
+                Dirancang untuk membantu Anda memimpin kelas dengan kejelasan visi dan struktur yang presisi.
             </p>
-
-            <p class="motto">Teach with structure. Lead with clarity.</p>
-        </div>
-
-        <div class="card stats-container">
-            <div>
-                <div style="font-size: 28px; font-weight: 800; color: var(--purple-soft);" id="countRPM">0</div>
-                <div style="font-size: 10px; opacity: 0.5; letter-spacing: 1px; margin-top: 5px;">RPM TERSIMPAN</div>
-            </div>
-            <div style="border-left: 1px solid rgba(255,255,255,0.1);"></div>
-            <div>
-                <div style="font-size: 28px; font-weight: 800; color: var(--purple-soft);" id="countMapel">0</div>
-                <div style="font-size: 10px; opacity: 0.5; letter-spacing: 1px; margin-top: 5px;">MATA PELAJARAN</div>
-            </div>
-            <div style="border-left: 1px solid rgba(255,255,255,0.1);"></div>
-            <div>
-                <div style="font-size: 28px; font-weight: 800; color: var(--purple-soft);">ACTIVE</div>
-                <div style="font-size: 10px; opacity: 0.5; letter-spacing: 1px; margin-top: 5px;">SYSTEM STATUS</div>
-            </div>
         </div>
 
         <div class="card">
-            <h2>📝 Jurnal & Agenda Terbaru</h2>
-            <div id="agendaPreview" class="agenda-list">
-                <div class="agenda-item">
-                    <div>
-                        <span class="date-tag">STATUS</span>
-                        <span class="task-text">Menunggu sinkronisasi data administrasi...</span>
-                    </div>
-                    <span class="stat-badge">IDLE</span>
+            <h2>📅 Planner & Schedule</h2>
+            <div id="calendarHeader" style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:12px;">
+                <strong id="monthYear">Desember 2025</strong>
+            </div>
+            <div class="calendar-grid" id="calendarBody">
                 </div>
+            <div style="margin-top:20px;">
+                <label style="font-size:11px; color:var(--purple-soft);">Agenda Cepat:</label>
+                <input type="text" id="quickAgenda" placeholder="Klik tanggal atau tulis di sini..." 
+                       style="width:100%; background:none; border:none; border-bottom:1px solid #444; color:white; padding:10px 0;">
+                <button class="btn-action" style="margin-top:15px;" onclick="addAgenda()">Simpan ke Jurnal</button>
             </div>
-            <button onclick="parent.go('administrasi.html', 'Data Repository', this)" style="background:none; border:none; color:var(--purple-soft); font-size:11px; cursor:pointer; margin-top:20px; font-weight:bold; letter-spacing: 1px;">KONTROL AGENDA PENUH →</button>
         </div>
 
         <div class="card">
-            <h2>🎯 8 Dimensi Profil</h2>
-            <div class="dimensi-mini">
-                <div class="dimensi-item">Beriman & Bertakwa</div>
-                <div class="dimensi-item">Berkebinekaan Global</div>
-                <div class="dimensi-item">Bergotong Royong</div>
-                <div class="dimensi-item">Mandiri</div>
-                <div class="dimensi-item">Bernalar Kritis</div>
-                <div class="dimensi-item">Kreatif</div>
-                <div class="dimensi-item">Komunikatif</div>
-                <div class="dimensi-item">Sehat Jasmani Rohani</div>
+            <h2>🧠 Daily Reflection</h2>
+            <div class="reflection-tool">
+                <p style="font-size:11px; opacity:0.6;">Bagaimana performa instruksional hari ini?</p>
+                <div style="display:flex; gap:10px;">
+                    <button class="mood-btn" onclick="setMood('🔥', this)">🔥</button>
+                    <button class="mood-btn" onclick="setMood('🌟', this)">🌟</button>
+                    <button class="mood-btn" onclick="setMood('🧘', this)">🧘</button>
+                    <button class="mood-btn" onclick="setMood('⏳', this)">⏳</button>
+                </div>
+                <textarea class="ref-box" id="dailyRef" rows="5" placeholder="Insight menarik apa yang ditemukan di kelas hari ini?"></textarea>
+                <button class="btn-action" onclick="saveReflection()">Log Reflection</button>
             </div>
-            <p style="font-size: 10px; opacity: 0.5; margin-top: 25px; line-height: 1.6; font-style: italic;">
-                "SiPandu bukan menggantikan peran guru. Ia memperkuatnya."
+        </div>
+
+        <div class="card">
+            <h2>🎯 Progress Monitor</h2>
+            <div style="margin-bottom:20px;">
+                <div style="font-size:24px; font-weight:800;" id="countRPM">0</div>
+                <div style="font-size:10px; opacity:0.5;">RPM COMPLETED</div>
+            </div>
+            <div style="margin-bottom:20px;">
+                <div style="font-size:24px; font-weight:800;" id="countAgenda">0</div>
+                <div style="font-size:10px; opacity:0.5;">JOURNAL ENTRIES</div>
+            </div>
+            <hr style="opacity:0.1;">
+            <p style="font-size:11px; color:var(--purple-soft); font-style:italic;">
+                "Struktur membebaskan kreativitas. Teruslah memandu."
             </p>
         </div>
 
     </div>
 
     <script>
-        function loadDashboardData() {
-            // 1. Ambil data dari key Master Administrasi
-            const adminStore = JSON.parse(localStorage.getItem('sipandu_authority_master')) || {};
+        let selectedMood = '🧘';
+        let selectedDate = new Date().getDate();
+
+        function initCalendar() {
+            const body = document.getElementById('calendarBody');
+            const days = ['S','S','R','K','J','S','M'];
+            body.innerHTML = days.map(d => `<div style="font-weight:800; opacity:0.3; font-size:10px;">${d}</div>`).join('');
             
-            // Set Nama Guru
-            if(adminStore.common && adminStore.common.guru) {
-                document.getElementById('namaGuru').innerText = adminStore.common.guru;
-            }
-
-            // 2. Preview Jurnal (Ambil 3 terakhir)
-            if(adminStore.jurnal && adminStore.jurnal.length > 0) {
-                const preview = adminStore.jurnal.slice(-3).reverse();
-                const container = document.getElementById('agendaPreview');
-                container.innerHTML = preview.map(j => `
-                    <div class="agenda-item">
-                        <div>
-                            <span class="date-tag">${j.tgl || 'LOG'}</span>
-                            <span class="task-text">${j.kegiatan || 'Tanpa keterangan'}</span>
-                        </div>
-                        <span class="stat-badge">LULUS</span>
-                    </div>
-                `).join('');
-            }
-
-            // 3. Stats RPM (Ambil dari key RPM)
-            const rpmStore = JSON.parse(localStorage.getItem('rpm_db_v5')) || [];
-            document.getElementById('countRPM').innerText = rpmStore.length;
-
-            // 4. Stats Mapel
-            if(adminStore.subjects) {
-                document.getElementById('countMapel').innerText = Object.keys(adminStore.subjects).length;
+            for(let i=1; i<=31; i++) {
+                const isToday = i === new Date().getDate() ? 'cal-today' : '';
+                body.innerHTML += `<div class="cal-day ${isToday}" onclick="selectDate(${i})">${i}</div>`;
             }
         }
 
-        window.onload = loadDashboardData;
+        function selectDate(d) {
+            selectedDate = d;
+            document.getElementById('quickAgenda').placeholder = `Agenda untuk tgl ${d}...`;
+        }
+
+        function setMood(m, btn) {
+            selectedMood = m;
+            document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function saveReflection() {
+            const text = document.getElementById('dailyRef').value;
+            if(!text) return alert("Tuliskan sesuatu untuk direfleksikan.");
+            
+            const adminStore = JSON.parse(localStorage.getItem('sipandu_authority_master')) || { jurnal: [] };
+            adminStore.jurnal.push({
+                tgl: `${selectedDate} Des 2025`,
+                kegiatan: `[REFLEKSI ${selectedMood}] ${text}`,
+                solusi: 'Input via Home Reflection'
+            });
+            
+            localStorage.setItem('sipandu_authority_master', JSON.stringify(adminStore));
+            alert("Refleksi tersimpan di Jurnal Administrasi!");
+            document.getElementById('dailyRef').value = '';
+            loadStats();
+        }
+
+        function addAgenda() {
+            const act = document.getElementById('quickAgenda').value;
+            if(!act) return;
+            const adminStore = JSON.parse(localStorage.getItem('sipandu_authority_master')) || { jurnal: [] };
+            adminStore.jurnal.push({
+                tgl: `${selectedDate} Des 2025`,
+                kegiatan: act,
+                solusi: '-'
+            });
+            localStorage.setItem('sipandu_authority_master', JSON.stringify(adminStore));
+            document.getElementById('quickAgenda').value = '';
+            loadStats();
+        }
+
+        function loadStats() {
+            const adminStore = JSON.parse(localStorage.getItem('sipandu_authority_master')) || { jurnal: [] };
+            const rpmStore = JSON.parse(localStorage.getItem('rpm_db_v5')) || [];
+            document.getElementById('countRPM').innerText = rpmStore.length;
+            document.getElementById('countAgenda').innerText = adminStore.jurnal.length;
+        }
+
+        window.onload = () => { initCalendar(); loadStats(); };
     </script>
 </body>
 </html>
