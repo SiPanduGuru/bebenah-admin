@@ -7,81 +7,73 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
     
     <script>
-        if (!sessionStorage.getItem('auth')) {
-            const p = prompt("柏 Masukkan PIN Akses:");
-            if (p === "2001") { sessionStorage.setItem('auth', 'true'); } 
-            else { window.location.href = "https://google.com"; }
-        }
+        const p = prompt("🔐 PIN Akses:");
+        if (p !== "2001") { window.location.href = "https://google.com"; }
     </script>
 
     <style>
         :root {
-            --bg: #0f172a;
-            --sidebar-bg: #1e293b;
-            --sidebar-w: 260px;
+            --bg: #0a0f1e;
+            --sidebar-bg: #111827;
             --accent: #10b981;
-            --text-muted: #94a3b8;
-            --header-h: 64px;
+            --sidebar-w: 260px;
+            --header-h: 60px;
         }
-
         * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); height: 100vh; overflow: hidden; color: white; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); overflow: hidden; height: 100vh; color: white; }
         
-        .layout { display: flex; height: 100%; width: 100%; position: relative; }
+        .layout { display: flex; width: 100vw; height: 100vh; position: relative; }
 
         .sidebar {
             width: var(--sidebar-w);
             background: var(--sidebar-bg);
-            height: 100%;
-            display: flex; flex-direction: column;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 50;
             border-right: 1px solid rgba(255,255,255,0.05);
+            display: flex; flex-direction: column;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             flex-shrink: 0;
+            z-index: 50;
+            height: 100%;
         }
 
         .sidebar-header { 
             height: var(--header-h); display: flex; align-items: center; 
-            padding: 0 24px; font-weight: 800; color: var(--accent); font-size: 20px; letter-spacing: 0.5px;
+            padding: 0 20px; 
         }
+        .logo-text { font-weight: 800; font-size: 20px; color: var(--accent); letter-spacing: 1px; }
 
-        .nav { flex: 1; padding: 16px; overflow-y: auto; }
-        
+        .nav { flex: 1; padding: 15px; overflow-y: auto; }
+
         .item {
-            padding: 14px 16px; margin-bottom: 4px; border-radius: 8px;
+            padding: 14px; margin-bottom: 5px; border-radius: 12px;
             cursor: pointer; display: flex; align-items: center; gap: 12px;
-            color: var(--text-muted); transition: 0.2s; font-size: 14px; font-weight: 500;
+            color: #94a3b8; transition: 0.2s; font-size: 14px; font-weight: 500;
         }
-        
-        .item:hover, .item.active { background: rgba(16, 185, 129, 0.1); color: var(--accent); }
+        .item:hover, .item.active { background: rgba(16, 185, 129, 0.1); color: white; }
+        .item.active { border-left: 3px solid var(--accent); }
         .item i { font-style: normal; font-size: 18px; }
 
-        .content { flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative; }
+        .content { flex: 1; display: flex; flex-direction: column; min-width: 0; background: #0f172a; position: relative; }
         
         .topbar { 
-            height: var(--header-h); display: flex; align-items: center; padding: 0 20px; gap: 16px; 
-            background: var(--bg); border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .btn-toggle { 
-            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-            background: transparent; border: 1px solid rgba(255,255,255,0.1); 
-            color: white; border-radius: 8px; cursor: pointer; transition: 0.2s;
-        }
-        .btn-toggle:hover { background: rgba(255,255,255,0.05); }
-
-        .frame-box { 
-            flex: 1; margin: 20px; background: white; border-radius: 16px; 
-            overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
-            position: relative;
-        }
-        iframe { width: 100%; height: 100%; border: none; display: block; }
-
-        .overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px);
-            z-index: 40; opacity: 0; visibility: hidden; transition: 0.3s;
+            height: var(--header-h); display: flex; align-items: center; gap: 15px; padding: 0 20px; 
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         
+        .toggle-btn {
+            background: transparent; border: 1px solid rgba(255,255,255,0.1); color: white;
+            width: 38px; height: 38px; border-radius: 8px; cursor: pointer; font-size: 18px;
+            display: flex; align-items: center; justify-content: center; transition: 0.2s;
+        }
+        .toggle-btn:hover { background: rgba(255,255,255,0.05); }
+
+        .frame-box { flex: 1; margin: 15px; background: white; border-radius: 16px; overflow: hidden; position: relative; }
+        iframe { width: 100%; height: 100%; border: none; }
+
+        .overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.6); 
+            z-index: 40; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(2px);
+        }
+
         @media (min-width: 769px) {
             .sidebar.collapsed { width: 0; overflow: hidden; opacity: 0; }
         }
@@ -89,58 +81,52 @@
         @media (max-width: 768px) {
             .sidebar {
                 position: fixed; left: 0; top: 0; bottom: 0;
-                transform: translateX(-100%); 
-                box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+                transform: translateX(-100%);
+                box-shadow: 5px 0 25px rgba(0,0,0,0.5);
             }
+            .sidebar.show-mobile { transform: translateX(0); }
             
-            .sidebar.mobile-open { transform: translateX(0); }
-        
             .overlay.show { opacity: 1; visibility: visible; }
-            
-            .frame-box { margin: 10px; border-radius: 12px; }
+            .frame-box { margin: 10px; border-radius: 10px; }
         }
     </style>
 </head>
 <body>
 
 <div class="layout">
-    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+    <div class="overlay" id="overlay" onclick="toggleSide()"></div>
 
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">BEBENAH</div>
+    <aside class="sidebar" id="side">
+        <div class="sidebar-header">
+            <h2 class="logo-text">BEBENAH</h2>
+        </div>
         <nav class="nav">
-            <div class="item active" onclick="go('home.html', 'Beranda', this)">
+            <div class="item active" onclick="go('home.html', 'Control Center', this)">
                 <i>🏠</i> Beranda
             </div>
-            
-            <div class="item" onclick="go('administrasi.html', 'Administrasi', this)">
+            <div class="item" onclick="go('administrasi.html', 'Data Repository', this)">
                 <i>📂</i> Administrasi
             </div>
-            
             <div class="item" onclick="go('jurnal.html', 'Jurnal Guru', this)">
-                <i>📖</i> Jurnal Guru
-            </div>
-
-            <div class="item" onclick="go('rpm umum.html', 'RPM Umum', this)">
-                <i>📋</i> RPM Umum
+                <i>📝</i> Jurnal Guru
             </div>
             
             <div class="item" onclick="go('rpm.html', 'RPM Harian', this)">
-                <i>📅</i> RPM Harian
+                <i>📊</i> RPM Harian
             </div>
-            
+            <div class="item" onclick="go('rpm umum.html', 'RPM Umum', this)">
+                <i>📑</i> RPM Umum
+            </div>
             <div class="item" onclick="go('nilai.html', 'Nilai Siswa', this)">
-                <i>🎓</i> Nilai Siswa
+                <i>📈</i> Nilai Siswa
             </div>
         </nav>
     </aside>
 
     <main class="content">
         <header class="topbar">
-            <button class="btn-toggle" onclick="toggleSidebar()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-            </button>
-            <h3 id="ttl">Beranda</h3>
+            <button class="toggle-btn" onclick="toggleSide()">☰</button>
+            <h3 id="ttl" style="font-size: 16px; color: #a78bfa; font-weight: 700;">Control Center</h3>
         </header>
         <section class="frame-box">
             <iframe id="vf" src="home.html"></iframe>
@@ -149,46 +135,39 @@
 </div>
 
 <script>
-    const sidebar = document.getElementById('sidebar');
+    const side = document.getElementById('side');
     const overlay = document.getElementById('overlay');
-    const isMobile = () => window.innerWidth <= 768;
 
-    function toggleSidebar() {
-        if (isMobile()) {
-            sidebar.classList.toggle('mobile-open');
+    function toggleSide() { 
+        if (window.innerWidth <= 768) {
+            side.classList.toggle('show-mobile');
             overlay.classList.toggle('show');
         } else {
-            sidebar.classList.toggle('collapsed');
+            side.classList.toggle('collapsed');
         }
     }
 
     function go(url, title, el) {
         document.getElementById('vf').src = url;
         document.getElementById('ttl').innerText = title;
-        
-        // Update kelas active
+
         document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
         el.classList.add('active');
 
-        if (isMobile()) {
-            sidebar.classList.remove('mobile-open');
+        if(window.innerWidth <= 768) { 
+            side.classList.remove('show-mobile');
             overlay.classList.remove('show');
         }
     }
-    
+
     window.addEventListener('resize', () => {
-        if (!isMobile()) {
-            sidebar.classList.remove('mobile-open');
+        if (window.innerWidth > 768) {
+            side.classList.remove('show-mobile');
             overlay.classList.remove('show');
         } else {
-            sidebar.classList.remove('collapsed');
+            side.classList.remove('collapsed');
         }
     });
-
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js');
-    }
 </script>
 </body>
 </html>
-
