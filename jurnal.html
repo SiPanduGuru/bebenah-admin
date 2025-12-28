@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>SiPandu Guru — Jurnal Harian Pembelajaran</title>
+    <style>
+        :root { --primary: #2c3e50; --accent: #2980b9; --bg: #f4f7f6; --success: #27ae60; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        
+        /* --- BRANDING SIPANDU GURU --- */
+        .brand {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .brand-title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--primary);
+        }
+        .brand-sub {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 2px;
+        }
+        .brand-tagline {
+            font-size: 11px;
+            font-style: italic;
+            color: var(--success);
+            margin-top: 4px;
+        }
+
+        /* --- NILAI DASAR BOX --- */
+        .nilai-box {
+            background: #fdfefe;
+            border: 1px dashed #ccd;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+        .nilai-box strong { color: var(--primary); text-transform: uppercase; font-size: 11px; }
+        .nilai-box ul {
+            margin: 8px 0 0 18px;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 5px;
+        }
+        .nilai-box li {
+            margin-bottom: 4px;
+            list-style-type: circle;
+        }
+
+        .header { text-align: center; border-bottom: 3px double var(--primary); margin-bottom: 25px; padding-bottom: 10px; position: relative; }
+        h1 { margin: 0; color: var(--primary); font-size: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .status-save { position: absolute; top: 0; right: 0; font-size: 10px; color: var(--success); opacity: 0; transition: 0.5s; font-weight: bold; }
+        
+        .grid-id { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px; border: 1px solid #ddd; }
+        .full-width { grid-column: span 2; }
+        
+        label { display: block; font-weight: bold; font-size: 11px; margin-bottom: 4px; color: #333; text-transform: uppercase; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; box-sizing: border-box; }
+        input:focus, select:focus { border-color: var(--accent); outline: none; background: #fffdfb; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { background: #34495e; color: white; border: 1px solid #222; padding: 10px; font-size: 11px; text-transform: uppercase; }
+        td { border: 1px solid #ccc; padding: 5px; background: #fff; }
+
+        .hint-footer { font-size: 10.5px; color: #7f8c8d; font-style: italic; margin-top: 10px; background: #fcfcfc; padding: 8px; border-left: 3px solid #ddd; }
+
+        .btn-add { background: var(--success); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin-top: 15px; font-weight: bold; transition: 0.3s; }
+        .btn-add:hover { background: #219150; }
+        
+        .btn-download { width: 100%; padding: 15px; background: #e67e22; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3); }
+        .btn-download:hover { background: #d35400; }
+        
+        .option-box { margin: 20px 0; padding: 12px; background: #fffde7; border-radius: 8px; border: 1px solid #ffe082; display: flex; align-items: center; }
+        .option-box input { width: 18px; height: 18px; margin-right: 10px; }
+        
+        .date-picker-area { background: #ebf5fb; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #aed6f1; text-align: center; }
+        #targetDate { width: auto; font-weight: bold; font-size: 16px; border: 2px solid var(--accent); }
+
+        /* --- KUTIPAN KHD --- */
+        .quote-box {
+            margin-top: 25px;
+            padding-left: 12px;
+            border-left: 3px solid #ddd;
+            font-size: 12px;
+            font-style: italic;
+            color: #7f8c8d;
+        }
+
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="brand">
+            <div class="brand-title">SiPandu Guru</div>
+            <div class="brand-sub">Edisi Jurnal Harian Pembelajaran</div>
+            <div class="brand-tagline">“Menuntun Kodrat Anak”</div>
+        </div>
+        
+        <span id="saveStatus" class="status-save">✓ TERSIMPAN OTOMATIS</span>
+        <h1>JURNAL HARIAN GURU</h1>
+        <p style="margin:5px 0; font-size: 14px; color: #7f8c8d;">Bukti Pelaksanaan Pembelajaran Kurikulum Merdeka</p>
+    </div>
+
+    <div class="nilai-box">
+        <strong>Nilai Dasar Pendidik</strong>
+        <ul>
+            <li><b>Integritas</b> — jujur pada proses</li>
+            <li><b>Profesional</b> — tanggung jawab penuh</li>
+            <li><b>Berpihak pada Anak</b> — prioritas murid</li>
+            <li><b>Reflektif</b> — belajar dari praktik</li>
+            <li><b>Manusiawi</b> — mendidik dengan hati</li>
+        </ul>
+    </div>
+
+    <div class="date-picker-area no-print">
+        <label>PILIH TANGGAL JURNAL</label>
+        <input type="date" id="targetDate" onchange="loadJournalByDate()">
+        <p style="font-size: 11px; margin-top: 5px; color: #5dade2;">*Data setiap tanggal tersimpan secara terpisah.</p>
+    </div>
+
+    <form id="jurnalForm">
+        <div class="grid-id">
+            <div class="full-width"><label>Satuan Pendidikan</label><input type="text" id="sekolah" oninput="autoSave()" placeholder="Nama Sekolah"></div>
+            <div class="full-width"><label>Nama Guru</label><input type="text" id="guru" oninput="autoSave()" placeholder="Nama Lengkap & Gelar"></div>
+            <div><label>Hari / Tanggal (Format Cetak)</label><input type="text" id="tanggalDisplay" oninput="autoSave()" placeholder="Contoh: Senin, 1 Januari 2025"></div>
+            <div>
+                <label>Kelas</label>
+                <select id="kelas" onchange="autoSave()">
+                    <option value="">- Pilih -</option>
+                    <option>I</option><option>II</option><option>III</option><option>IV</option><option>V</option><option>VI</option>
+                </select>
+            </div>
+            <div>
+                <label>Fase</label>
+                <select id="fase" onchange="autoSave()">
+                    <option value="">- Pilih -</option>
+                    <option>A</option><option>B</option><option>C</option>
+                </select>
+            </div>
+        </div>
+
+        <table id="tableJurnal">
+            <thead>
+                <tr>
+                    <th width="30">NO</th>
+                    <th width="220">MATA PELAJARAN</th>
+                    <th>MATERI / TOPIK</th>
+                    <th width="180">CATATAN (opsional)</th>
+                    <th width="60">PARAF</th>
+                    <th width="40" class="no-print">AKSI</th>
+                </tr>
+            </thead>
+            <tbody id="bodyJurnal"></tbody>
+        </table>
+        
+        <button type="button" class="btn-add no-print" onclick="addRow()">+ TAMBAH MAPEL</button>
+
+        <div class="hint-footer">
+            * Data di atas disimpan otomatis di browser ini. Gunakan tombol download di bawah untuk mencetak ke Word (F4).
+        </div>
+
+        <div class="option-box no-print">
+            <input type="checkbox" id="checkKS" checked>
+            <label for="checkKS" style="cursor:pointer"><b>Sertakan tanda tangan Kepala Sekolah</b></label>
+        </div>
+
+        <button type="button" class="btn-download no-print" onclick="generateWord()">📥 DOWNLOAD JURNAL F4 (.DOC)</button>
+    </form>
+
+    <div class="quote-box">
+        “Mendidik adalah menuntun segala kodrat yang ada pada anak-anak.” — Ki Hajar Dewantara
+    </div>
+</div>
+
+<script>
+       const CLIENT_ID = "90571149244-1soeooh8du5bharl911o8ks80tfvp5e7.apps.googleusercontent.com";
+    	const API_KEY   = "AQ.Ab8RN6JXzm9QiO2OkLZJ4Bca9KV-dqHBTsvkoliJ7vaLPKez3g";
+    /* LOGIKA JAVASCRIPT TETAP SAMA SEPERTI ASLINYA */
+    const mapelList = ["Pendidikan Pancasila", "Bahasa Indonesia", "Matematika", "Ilmu Pengetahuan Alam dan Sosial (IPAS)", "Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)", "Seni Budaya", "Muatan Lokal", "Bahasa Inggris", "Pendidikan Agama dan Budi Pekerti", "Kokurikuler"];
+
+    window.onload = () => {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('targetDate').value = today;
+        loadJournalByDate();
+    };
+
+    function loadJournalByDate() {
+        const dateKey = document.getElementById('targetDate').value;
+        const allData = JSON.parse(localStorage.getItem('jurnal_db')) || {};
+        const savedJournal = allData[dateKey] || null;
+
+        document.getElementById('bodyJurnal').innerHTML = '';
+
+        if (savedJournal) {
+            document.getElementById('sekolah').value = savedJournal.sekolah || "";
+            document.getElementById('guru').value = savedJournal.guru || "";
+            document.getElementById('tanggalDisplay').value = savedJournal.tanggalDisplay || "";
+            document.getElementById('kelas').value = savedJournal.kelas || "";
+            document.getElementById('fase').value = savedJournal.fase || "";
+
+            savedJournal.entries.forEach(entry => {
+                createRow(entry.mapel, entry.topik, entry.catatan);
+            });
+        } else {
+            const lastData = Object.values(allData).pop();
+            if(lastData) {
+                document.getElementById('sekolah').value = lastData.sekolah;
+                document.getElementById('guru').value = lastData.guru;
+            }
+            document.getElementById('tanggalDisplay').value = formatTanggalIndo(dateKey);
+            document.getElementById('kelas').value = "";
+            document.getElementById('fase').value = "";
+            addRow();
+        }
+    }
+
+    function addRow() {
+        createRow("", "", "");
+        autoSave();
+    }
+
+    function createRow(mapel, topik, catatan) {
+        const tbody = document.getElementById('bodyJurnal');
+        const count = tbody.rows.length + 1;
+        const row = tbody.insertRow();
+        
+        let options = '<option value="">- Kosong -</option>';
+        mapelList.forEach(m => {
+            const selected = (m === mapel) ? 'selected' : '';
+            options += `<option value="${m}" ${selected}>${m}</option>`;
+        });
+        
+        row.innerHTML = `
+            <td align="center">${count}</td>
+            <td><select class="m_mapel" onchange="autoSave()">${options}</select></td>
+            <td><input type="text" class="m_topik" value="${topik}" oninput="autoSave()" placeholder="Topik hari ini..."></td>
+            <td><input type="text" class="m_catatan" value="${catatan}" oninput="autoSave()" placeholder="..."></td>
+            <td align="center"><small style="color:#eee; font-size:8px;">Paraf</small></td>
+            <td align="center" class="no-print"><button type="button" style="background:#e74c3c;color:#fff;border:none;padding:5px;cursor:pointer;border-radius:3px;" onclick="removeRow(this)">X</button></td>
+        `;
+    }
+
+    function removeRow(btn) {
+        btn.parentElement.parentElement.remove();
+        document.querySelectorAll('#bodyJurnal tr').forEach((tr, i) => { tr.cells[0].innerText = i + 1; });
+        autoSave();
+    }
+
+    function autoSave() {
+        const dateKey = document.getElementById('targetDate').value;
+        const allData = JSON.parse(localStorage.getItem('jurnal_db')) || {};
+
+        const entries = [];
+        document.querySelectorAll('#bodyJurnal tr').forEach(tr => {
+            entries.push({
+                mapel: tr.querySelector('.m_mapel').value,
+                topik: tr.querySelector('.m_topik').value,
+                catatan: tr.querySelector('.m_catatan').value
+            });
+        });
+
+        allData[dateKey] = {
+            sekolah: document.getElementById('sekolah').value,
+            guru: document.getElementById('guru').value,
+            tanggalDisplay: document.getElementById('tanggalDisplay').value,
+            kelas: document.getElementById('kelas').value,
+            fase: document.getElementById('fase').value,
+            entries: entries
+        };
+
+        localStorage.setItem('jurnal_db', JSON.stringify(allData));
+        
+        const status = document.getElementById('saveStatus');
+        status.style.opacity = 1;
+        setTimeout(() => { status.style.opacity = 0; }, 1000);
+    }
+
+    function formatTanggalIndo(dateStr) {
+        if(!dateStr) return "";
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateStr).toLocaleDateString('id-ID', options);
+    }
+
+    function generateWord() {
+        const val = (id) => document.getElementById(id).value;
+        const isKSChecked = document.getElementById('checkKS').checked;
+        
+        let tableHtml = "";
+        document.querySelectorAll('#bodyJurnal tr').forEach((tr, index) => {
+            tableHtml += `
+                <tr>
+                    <td align="center" style="height:45px">${index+1}</td>
+                    <td style="padding: 8px;">${tr.querySelector('.m_mapel').value}</td>
+                    <td style="padding: 8px;">${tr.querySelector('.m_topik').value}</td>
+                    <td style="padding: 8px;">${tr.querySelector('.m_catatan').value}</td>
+                    <td align="center"></td>
+                </tr>`;
+        });
+
+        let sigSection = `
+            <table style="border:none; margin-top:30px; width:100%">
+                <tr>
+                    <td width="50%" style="border:none; text-align:center">
+                        ${isKSChecked ? `Mengetahui,<br>Kepala Sekolah<br><br><br><br><br>( _______________________ )<br>NIP.` : ''}
+                    </td>
+                    <td width="50%" style="border:none; text-align:center">
+                        Pekalongan, ${val('tanggalDisplay').split(',').pop()}<br>
+                        Guru Kelas / Mapel<br><br><br><br><br>
+                        ( <b>${val('guru')}</b> )<br>
+                        NIP.
+                    </td>
+                </tr>
+            </table>`;
+
+        const htmlContent = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><meta charset='utf-8'><style>
+            @page { size: 21.5cm 33.0cm; margin: 1.5cm 2.0cm 1.5cm 1.5cm; }
+            body { font-family: 'Arial', sans-serif; font-size: 11pt; }
+            .title { text-align: center; font-weight: bold; font-size: 14pt; text-transform: uppercase; }
+            table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+            th { border: 1px solid black; padding: 8px; font-size: 10pt; background-color: #f2f2f2; }
+            td { border: 1px solid black; padding: 5px; font-size: 10pt; vertical-align: middle; }
+            .no-border td { border: none !important; padding: 2px; }
+        </style></head>
+        <body>
+            <div class="title">JURNAL HARIAN GURU</div>
+            <center style="font-size:11pt">KURIKULUM MERDEKA</center><br>
+            <table class="no-border">
+                <tr><td width="150">Satuan Pendidikan</td><td>: ${val('sekolah')}</td></tr>
+                <tr><td>Kelas / Fase</td><td>: ${val('kelas')} / ${val('fase')}</td></tr>
+                <tr><td>Hari / Tanggal</td><td>: ${val('tanggalDisplay')}</td></tr>
+                <tr><td>Nama Guru</td><td>: ${val('guru')}</td></tr>
+            </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="30">NO</th>
+                        <th width="150">MATA PELAJARAN</th>
+                        <th>MATERI / TOPIK</th>
+                        <th width="150">CATATAN</th>
+                        <th width="60">PARAF</th>
+                    </tr>
+                </thead>
+                ${tableHtml}
+            </table>
+            ${sigSection}
+        </body></html>`;
+
+        const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Jurnal_Guru_${val('tanggalDisplay')}.doc`;
+        link.click();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiPandu RPM - Rencana Harian</title>
+    <style>
+        :root { 
+            --primary: #2c3e50; --accent: #27ae60; --sidebar: #1a252f; 
+            --bg: #f4f7f6; --white: #ffffff; --text: #333; --danger: #e74c3c;
+            --info: #3498db;
+        }
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { margin: 0; background: var(--bg); color: var(--text); padding: 20px; }
+        
+        .container { max-width: 1000px; margin: auto; }
+        .header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border-top: 5px solid var(--accent); }
+        
+        h1 { font-size: 20px; color: var(--primary); margin: 0; }
+        label { font-size: 11px; font-weight: bold; text-transform: uppercase; color: #666; display: block; margin-top: 15px; }
+        
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; margin-top: 5px; font-size: 14px; }
+        
+        /* NotebookLM Special Box */
+        .ai-paste-area { background: #f0f7ff; border: 2px dashed var(--info); padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        
+        .btn { padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-info { background: var(--info); color: white; }
+        .btn-outline { background: transparent; border: 1px solid #ddd; color: #666; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; font-size: 13px; }
+        th { background: var(--primary); color: white; }
+
+        .print-only { display: none; }
+
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block; }
+            body { background: white; padding: 0; }
+            .card { box-shadow: none; border: none; padding: 0; }
+            .container { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-nav no-print">
+        <h1>📔 SiPandu RPM <small>(Rencana Harian)</small></h1>
+        <div>
+            <button class="btn btn-outline" onclick="window.location.href='index.html'">🏠 Dashboard Utama</button>
+            <button class="btn btn-primary" onclick="window.print()">🖨️ Cetak Jurnal</button>
+        </div>
+    </div>
+
+    <div class="card no-print">
+        <div class="ai-paste-area">
+            <label>✨ Smart Paste (Tempel Hasil NotebookLM di Sini)</label>
+            <textarea id="aiInput" placeholder="Contoh: Pertemuan 1 membahas tentang... Langkah-langkahnya: 1. Pembukaan... 2. Inti..." rows="4"></textarea>
+            <button class="btn btn-info" style="margin-top:10px; width:100%" onclick="processAI()">🪄 Rapikan & Masukkan ke Daftar</button>
+        </div>
+
+        <div class="grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+            <div>
+                <label>Tanggal</label>
+                <input type="date" id="tgl">
+            </div>
+            <div>
+                <label>Mata Pelajaran</label>
+                <select id="mapel">
+                    <option>Bahasa Indonesia</option>
+                    <option>Matematika</option>
+                    <option>Pendidikan Pancasila</option>
+                    <option>IPAS</option>
+                    <option>PABP</option>
+                </select>
+            </div>
+            <div>
+                <label>Kelas</label>
+                <input type="text" id="kls" placeholder="Contoh: IV-A">
+            </div>
+        </div>
+
+        <label>Tujuan Pembelajaran / Materi</label>
+        <input type="text" id="tp" placeholder="Apa yang dipelajari hari ini?">
+
+        <label>Ringkasan Aktivitas (Pembukaan, Inti, Penutup)</label>
+        <textarea id="kegiatan" rows="3" placeholder="Detail langkah pembelajaran..."></textarea>
+
+        <button class="btn btn-primary" style="margin-top:20px" onclick="tambahJurnal()">➕ Simpan ke Jurnal</button>
+    </div>
+
+    <div class="card">
+        <h2 style="text-align:center; font-size:18px; text-decoration: underline;">JURNAL HARIAN & RENCANA PELAKSANAAN MENGAJAR</h2>
+        <table id="tabelRPM">
+            <thead>
+                <tr>
+                    <th width="100">Hari/Tgl</th>
+                    <th width="120">Mapel/Kelas</th>
+                    <th>Tujuan & Materi</th>
+                    <th>Kegiatan Pembelajaran</th>
+                    <th width="50" class="no-print">Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="isiJurnal">
+                </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+       const CLIENT_ID = "90571149244-1soeooh8du5bharl911o8ks80tfvp5e7.apps.googleusercontent.com";
+    	const API_KEY   = "AQ.Ab8RN6JXzm9QiO2OkLZJ4Bca9KV-dqHBTsvkoliJ7vaLPKez3g";
+    let listRPM = [];
+
+    // Muat data saat mulai
+    window.onload = () => {
+        const saved = localStorage.getItem('sipandu_rpm_data');
+        if (saved) {
+            listRPM = JSON.parse(saved);
+            renderTabel();
+        }
+        document.getElementById('tgl').valueAsDate = new Date();
+    };
+
+    // Fungsi "Magic" NotebookLM
+    function processAI() {
+        const input = document.getElementById('aiInput').value;
+        if(!input) return alert("Tempel dulu hasil dari NotebookLM!");
+
+        // Logika sederhana memisahkan teks
+        // Anda bisa kustomisasi sesuai cara NotebookLM memberi jawaban
+        document.getElementById('kegiatan').value = input;
+        
+        // Coba deteksi materi secara otomatis (opsional)
+        if(input.includes("Materi:")) {
+            const materi = input.split("Materi:")[1].split("\n")[0];
+            document.getElementById('tp').value = materi.trim();
+        }
+        
+        alert("Berhasil ditarik! Silakan cek kembali dan klik 'Simpan ke Jurnal'.");
+    }
+
+    function tambahJurnal() {
+        const data = {
+            id: Date.now(),
+            tgl: document.getElementById('tgl').value,
+            mapel: document.getElementById('mapel').value,
+            kls: document.getElementById('kls').value,
+            tp: document.getElementById('tp').value,
+            kegiatan: document.getElementById('kegiatan').value
+        };
+
+        if(!data.tp) return alert("Isi minimal Tujuan Pembelajaran!");
+
+        listRPM.unshift(data); // Tambah ke paling atas
+        saveData();
+        renderTabel();
+        
+        // Reset form
+        document.getElementById('tp').value = '';
+        document.getElementById('kegiatan').value = '';
+        document.getElementById('aiInput').value = '';
+    }
+
+    function renderTabel() {
+        const tbody = document.getElementById('isiJurnal');
+        tbody.innerHTML = '';
+
+        listRPM.forEach((item, index) => {
+            const tglIndo = new Date(item.tgl).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            tbody.innerHTML += `
+                <tr>
+                    <td>${tglIndo}</td>
+                    <td><b>${item.mapel}</b><br>Kelas: ${item.kls}</td>
+                    <td>${item.tp}</td>
+                    <td style="white-space: pre-line;">${item.kegiatan}</td>
+                    <td class="no-print">
+                        <button onclick="hapusRPM(${item.id})" style="background:none; border:none; color:red; cursor:pointer;">🗑️</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    function hapusRPM(id) {
+        if(confirm('Hapus rencana ini?')) {
+            listRPM = listRPM.filter(i => i.id !== id);
+            saveData();
+            renderTabel();
+        }
+    }
+
+    function saveData() {
+        localStorage.setItem('sipandu_rpm_data', JSON.stringify(listRPM));
+    }
+</script>
+
+</body>
+</html>

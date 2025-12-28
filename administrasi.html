@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiPandu Guru V.1.0 - Teaching Assistant</title>
+<style>
+    :root { 
+        --primary: #2c3e50; --accent: #27ae60; --sidebar: #1a252f; 
+        --bg: #f4f7f6; --white: #ffffff; --text: #333; --danger: #e74c3c;
+        --gold: #f1c40f; --info: #3498db; --bloom-bg: #ebf5fb;
+    }
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+    body { margin: 0; display: flex; background: var(--bg); color: var(--text); }
+
+    .sidebar { width: 280px; height: 100vh; background: var(--sidebar); color: white; position: fixed; overflow-y: auto; z-index: 100; }
+    .sidebar-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid #34495e; }
+    .nav-item { padding: 14px 25px; cursor: pointer; font-size: 13px; border-left: 5px solid transparent; transition: 0.3s; color: rgba(255,255,255,0.8); }
+    .nav-item.active { background: #2c3e50; border-left-color: var(--accent); color: var(--accent); font-weight: bold; }
+
+    .main { flex-grow: 1; margin-left: 280px; padding: 40px; min-height: 100vh; }
+    .page { display: none; max-width: 1100px; margin: auto; }
+    .page.active { display: block; }
+
+    .card { background: var(--white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); margin-bottom: 25px; border: 1px solid #e0e6ed; }
+    input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; margin-top: 8px; font-size: 14px; }
+    .input-error { border: 2px solid var(--danger) !important; background: #fff5f5; }
+    
+    .btn-action { background: var(--accent); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 15px; display: inline-flex; align-items: center; gap: 8px; }
+    
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
+    th { background: var(--primary); padding: 12px; border: 1px solid #e5e7eb; color: white; }
+    td { border: 1px solid #e5e7eb; padding: 10px; vertical-align: top; text-align: center; }
+    .week-cell { cursor: pointer; width: 20px; height: 25px; border: 1px solid #ddd; }
+    .week-cell.checked { background: var(--accent) !important; }
+    .bloom-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; background: var(--bloom-bg); color: #2980b9; margin-top: 5px; font-weight: bold; }
+    .char-counter { font-size: 10px; font-weight: bold; float: right; margin-top: 5px; }
+    
+    .materi-chip { display: inline-block; padding: 3px 8px; margin: 2px; border-radius: 12px; background: #eee; font-size: 10px; cursor: pointer; }
+    .materi-chip.active { background: var(--accent); color: white; }
+
+    @media print {
+        .sidebar, .no-print, .btn-action, .char-counter { display: none !important; }
+        .main { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+        .page { display: none !important; }
+        .page.active { display: block !important; }
+    }
+</style>    
+</head>
+<body>
+
+<div class="sidebar no-print">
+    <div class="sidebar-header">
+        <h2>SIPANDU GURU</h2>
+        <small>V.1.0 - Teaching Assistant</small>
+    </div>
+    
+    <div style="padding: 20px;">
+        <label style="color:white; font-size:12px">Pilih Mapel:</label>
+        <select id="mainMapel" onchange="switchSubject()">
+            <option>Pendidikan Agama dan BP</option>
+            <option>Pendidikan Pancasila</option>
+            <option>Bahasa Indonesia</option>
+            <option>Matematika</option>
+            <option>Seni Budaya</option>
+            <option>IPAS</option>
+            <option>PJOK</option>
+            <option>Bahasa Inggris</option>
+            <option>Mulok Bahasa Jawa</option>
+            <option value="custom">-- Tambah Mapel Lain --</option>
+        </select>
+    </div>
+
+    <div class="nav-menu">
+        <div class="nav-item active" onclick="showPage('identitas')">📘 1. Identitas & TTD</div>
+        <div class="nav-item" onclick="showPage('cp_sec')">📗 2. CP & Elemen</div>
+        <div class="nav-item" onclick="showPage('tp_sec')">📙 3. Tujuan (TP)</div>
+        <div class="nav-item" onclick="showPage('atp_sec')">📕 4. ATP & Materi</div>
+        <div class="nav-item" onclick="showPage('prota_sec')">📒 5. PROTA</div>
+        <div class="nav-item" onclick="showPage('promes_sec')">📓 6. PROMES</div>
+    </div>
+</div>
+
+<div class="main">
+    <div id="identitas" class="page active">
+        <div class="card">
+            <h1>DATA IDENTITAS & TTD</h1>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div><label>Nama Sekolah</label><input type="text" id="sekolah" oninput="saveAll()"></div>
+                <div><label>Tahun Pelajaran</label><input type="text" id="tapel" value="2025/2026" oninput="saveAll()"></div>
+                <div><label>Fase</label><select id="fase" onchange="saveAll()"><option value="A">Fase A</option><option value="B" selected>Fase B</option><option value="C">Fase C</option></select></div>
+                <div><label>Kelas</label><select id="kelas" onchange="saveAll()"><option>I</option><option>II</option><option>III</option><option selected>IV</option><option>V</option><option>VI</option></select></div>
+                <div><label>Nama Guru</label><input type="text" id="guru" oninput="saveAll()"></div>
+                <div><label>NIP Guru</label><input type="text" id="nip" oninput="saveAll()"></div>
+                <div><label>Nama Kepala Sekolah</label><input type="text" id="ks" oninput="saveAll()"></div>
+                <div><label>NIP Kepala Sekolah</label><input type="text" id="ks_nip" oninput="saveAll()"></div>
+            </div>
+            <div style="margin-top:20px; padding:15px; background:#f9f9f9; border-radius:8px">
+                <input type="checkbox" id="showTtd" onchange="saveAll()" style="width:auto; margin:0"> 
+                <label for="showTtd" style="font-weight:bold; cursor:pointer"> Munculkan Kolom Tanda Tangan di Dokumen</label>
+            </div>
+        </div>
+    </div>
+
+    <div id="cp_sec" class="page">
+        <div class="card">
+            <h1>CAPAIAN PEMBELAJARAN (CP)</h1>
+            <div id="elemenContainer"></div>
+            <button class="btn-action" onclick="addElemen()">+ Tambah Elemen</button>
+            <button class="btn-action" style="background:var(--primary)" onclick="generateTP()">✨ Proses ke TP & Auto-Bloom</button>
+        </div>
+    </div>
+
+    <div id="tp_sec" class="page">
+        <div class="card">
+            <h1>DAFTAR TUJUAN PEMBELAJARAN (TP)</h1>
+            <div id="tpExportArea">
+                <div class="header-tp"></div>
+                <table id="tpTable">
+                    <thead><tr><th>No</th><th width="150">Elemen</th><th>Deskripsi TP</th><th width="80">Smt</th><th class="no-print">Aksi</th></tr></thead>
+                    <tbody id="tpBody"></tbody>
+                </table>
+                <div class="ttd-tp"></div>
+            </div>
+            <button class="btn-action" onclick="addTPRow()">+ Tambah TP Manual</button>
+            <button class="btn-action btn-info" onclick="exportToWord('tpExportArea', 'DAFTAR_TP')">💾 Ekspor ke Word</button>
+        </div>
+    </div>
+
+    <div id="atp_sec" class="page">
+        <div class="card">
+            <h1>ALUR TUJUAN PEMBELAJARAN (ATP)</h1>
+            <div class="no-print" style="margin-bottom:20px; padding:15px; background:#e8f4fd; border-radius:8px">
+                <label><b>Input Master Bab/Materi (Pisahkan dengan koma):</b></label>
+                <textarea id="masterMateriInput" onchange="updateMasterMateri(this.value)" placeholder="Contoh: Bab 1: Bilangan, Bab 2: Aljabar..."></textarea>
+            </div>
+            <div id="atpExportArea">
+                <div class="header-atp"></div>
+                <table id="atpTable">
+                    <thead><tr><th>No</th><th>Elemen</th><th>Tujuan Pembelajaran</th><th>Materi / Bab</th><th width="60">JP</th></tr></thead>
+                    <tbody id="atpBody"></tbody>
+                </table>
+                <div class="ttd-atp"></div>
+            </div>
+            <button class="btn-action btn-info" onclick="exportToWord('atpExportArea', 'ATP')">💾 Ekspor ke Word</button>
+        </div>
+    </div>
+
+    <div id="prota_sec" class="page">
+        <div class="card">
+            <h1>PROGRAM TAHUNAN (PROTA)</h1>
+            <div id="protaExportArea">
+                <div class="header-prota"></div>
+                <table id="protaTable">
+                    <thead><tr><th>No</th><th>Tujuan Pembelajaran</th><th>Materi</th><th>Smt</th><th>JP</th></tr></thead>
+                    <tbody id="protaBody"></tbody>
+                </table>
+                <div class="ttd-prota"></div>
+            </div>
+            <button class="btn-action btn-info" onclick="exportToWord('protaExportArea', 'PROTA')">💾 Ekspor ke Word</button>
+        </div>
+    </div>
+
+    <div id="promes_sec" class="page">
+        <div class="card">
+            <h1>PROGRAM SEMESTER (PROMES)</h1>
+            <button class="btn-action" onclick="toggleSemester()">🔄 Pindah ke Smt <span id="nextSmtText">2</span></button>
+            <div id="promesExportArea">
+                <div class="header-promes"></div>
+                <div style="overflow-x:auto;">
+                    <table id="promesTable"><thead id="promesHead"></thead><tbody id="promesBody"></tbody></table>
+                </div>
+                <div class="ttd-promes"></div>
+            </div>
+            <button class="btn-action btn-info" onclick="exportToWord('promesExportArea', 'PROMES')">💾 Ekspor ke Word</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const BLOOM_MAP = {
+        'C1': ['mengenal', 'menyebutkan', 'mengingat', 'menghafal'],
+        'C2': ['memahami', 'menjelaskan', 'mengidentifikasi', 'mengklasifikasikan'],
+        'C3': ['menerapkan', 'menggunakan', 'mempraktikkan', 'mendemonstrasikan'],
+        'C4': ['menganalisis', 'membandingkan', 'membedakan', 'menghubungkan'],
+        'C5': ['mengevaluasi', 'menilai', 'menyimpulkan'],
+        'C6': ['menciptakan', 'merancang', 'membuat', 'menyusun']
+    };
+
+    let state = {
+        common: { sekolah: '', guru: '', nip: '', ks: '', ks_nip: '', fase: 'B', kelas: 'IV', tapel: '2025/2026', showTtd: false },
+        subjects: {},
+        currentSmt: 1
+    };
+
+    let currentMapel = "Bahasa Indonesia";
+
+    window.onload = () => {
+        const saved = localStorage.getItem('sipandu_v1_4');
+        if (saved) state = JSON.parse(saved);
+        loadIdentitas();
+        switchSubject();
+    };
+
+    function switchSubject() {
+        const sel = document.getElementById('mainMapel');
+        if(sel.value === 'custom') {
+            const newMapel = prompt("Masukkan Nama Mata Pelajaran Baru:");
+            if(newMapel) {
+                const opt = document.createElement("option"); opt.text = newMapel; opt.selected = true;
+                sel.add(opt, sel.options[sel.length-1]); currentMapel = newMapel;
+            } else { sel.selectedIndex = 0; currentMapel = sel.value; }
+        } else { currentMapel = sel.value; }
+
+        if (!state.subjects[currentMapel]) {
+            state.subjects[currentMapel] = { elemenList: [{name: '', cp: ''}], tpList: [], materiMaster: '' };
+        }
+        document.getElementById('masterMateriInput').value = state.subjects[currentMapel].materiMaster || '';
+        renderElemen();
+        renderAll();
+    }
+
+    function saveAll() {
+        const fields = ['sekolah','guru','nip','ks','ks_nip','fase','kelas','tapel'];
+        fields.forEach(id => { 
+            const el = document.getElementById(id);
+            if(el) state.common[id] = el.value; 
+        });
+        state.common.showTtd = document.getElementById('showTtd').checked;
+        localStorage.setItem('sipandu_v1_4', JSON.stringify(state)); 
+        renderAll();
+    }
+
+    function renderAll() {
+        const sub = state.subjects[currentMapel];
+        renderTPTable(sub);
+        renderATPTable(sub);
+        renderProtaTable(sub);
+        renderPromes();
+
+        const ttdHtml = createTtd();
+        const headerCommon = createHeader(false);
+        const headerSmt = createHeader(true);
+
+        document.querySelector('.header-tp').innerHTML = headerCommon;
+        document.querySelector('.header-atp').innerHTML = headerCommon;
+        document.querySelector('.header-prota').innerHTML = headerCommon;
+        document.querySelector('.header-promes').innerHTML = headerSmt;
+
+        document.querySelectorAll('[class^="ttd-"]').forEach(t => {
+            t.innerHTML = ttdHtml;
+            t.style.display = state.common.showTtd ? 'block' : 'none';
+        });
+    }
+
+    // --- TP FUNCTIONS ---
+    function renderTPTable(sub) {
+        const body = document.getElementById('tpBody'); body.innerHTML = '';
+        sub.tpList.forEach((tp, i) => {
+            const charCount = tp.text.length;
+            body.innerHTML += `<tr>
+                <td>${i+1}</td>
+                <td><input id="el-${i}" value="${tp.elemen}"></td>
+                <td>
+                    <textarea id="txt-${i}" class="${charCount > 100 ? 'input-error' : ''}" 
+                        oninput="document.getElementById('cnt-${i}').innerText = this.value.length + '/100'">${tp.text}</textarea>
+                    <span class="bloom-badge">Bloom: ${tp.bloom}</span>
+                    <span id="cnt-${i}" class="char-counter">${charCount}/100</span>
+                </td>
+                <td><select id="smt-${i}"><option value="1" ${tp.smt==1?'selected':''}>1</option><option value="2" ${tp.smt==2?'selected':''}>2</option></select></td>
+                <td class="no-print">
+                    <button onclick="saveTPManual(${i})" style="background:#3498db; color:white; border:none; padding:5px; border-radius:4px; cursor:pointer">💾</button>
+                    <button onclick="deleteTP(${i})" style="background:#e74c3c; color:white; border:none; padding:5px; border-radius:4px; cursor:pointer">X</button>
+                </td>
+            </tr>`;
+        });
+    }
+
+    function saveTPManual(idx) {
+        const tp = state.subjects[currentMapel].tpList[idx];
+        tp.elemen = document.getElementById(`el-${idx}`).value;
+        tp.text = document.getElementById(`txt-${idx}`).value;
+        tp.smt = document.getElementById(`smt-${idx}`).value;
+        tp.bloom = getBloomLabel(tp.text);
+        saveAll();
+        alert("Baris " + (idx+1) + " tersimpan!");
+    }
+
+    // --- ATP FUNCTIONS ---
+    function updateMasterMateri(val) { state.subjects[currentMapel].materiMaster = val; saveAll(); }
+
+    function renderATPTable(sub) {
+        const body = document.getElementById('atpBody'); body.innerHTML = '';
+        const mList = (sub.materiMaster || '').split(',').map(s => s.trim()).filter(s => s !== "");
+
+        sub.tpList.forEach((tp, i) => {
+            if (!tp.selectedMateri) tp.selectedMateri = [];
+            let chips = mList.map(m => {
+                const active = tp.selectedMateri.includes(m) ? 'active' : '';
+                return `<span class="materi-chip ${active}" onclick="toggleMat(${i}, '${m}')">${m}</span>`;
+            }).join('');
+
+            body.innerHTML += `<tr>
+                <td>${i+1}</td><td>${tp.elemen}</td><td>${tp.text}</td>
+                <td><div class="no-print">${chips}</div><div style="font-weight:bold; color:var(--primary); margin-top:5px">${tp.selectedMateri.join(', ')}</div></td>
+                <td><input type="number" value="${tp.jp || 0}" style="width:50px; text-align:center" onchange="updateJP(${i}, this.value)"></td>
+            </tr>`;
+        });
+    }
+
+    function toggleMat(idx, mat) {
+        let tp = state.subjects[currentMapel].tpList[idx];
+        if(!tp.selectedMateri) tp.selectedMateri = [];
+        if(tp.selectedMateri.includes(mat)) tp.selectedMateri = tp.selectedMateri.filter(x => x !== mat);
+        else tp.selectedMateri.push(mat);
+        saveAll();
+    }
+
+    function updateJP(idx, val) { state.subjects[currentMapel].tpList[idx].jp = val; localStorage.setItem('sipandu_v1_4', JSON.stringify(state)); }
+
+    // --- PROTA & PROMES ---
+    function renderProtaTable(sub) {
+        const body = document.getElementById('protaBody'); body.innerHTML = '';
+        sub.tpList.forEach((tp, i) => {
+            const mat = (tp.selectedMateri && tp.selectedMateri.length > 0) ? tp.selectedMateri.join(', ') : '-';
+            body.innerHTML += `<tr><td>${i+1}</td><td>${tp.text}</td><td>${mat}</td><td>${tp.smt}</td><td>${tp.jp} JP</td></tr>`;
+        });
+    }
+
+    function renderPromes() {
+        const body = document.getElementById('promesBody');
+        const head = document.getElementById('promesHead');
+        const sub = state.subjects[currentMapel];
+        if (!sub || !sub.tpList) return;
+
+        const months = state.currentSmt == 1 ? ["Juli", "Agt", "Sep", "Okt", "Nov", "Des"] : ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun"];
+        let h1 = `<tr><th rowspan="2">No</th><th rowspan="2">TP</th><th rowspan="2">JP</th>`;
+        let h2 = `<tr>`;
+        months.forEach(m => { h1 += `<th colspan="5">${m}</th>`; for(let i=1; i<=5; i++) h2 += `<th style="font-size:7px;">${i}</th>`; });
+        head.innerHTML = h1 + "</tr>" + h2 + "</tr>";
+
+        body.innerHTML = '';
+        sub.tpList.filter(t => t.smt == state.currentSmt).forEach((tp, i) => {
+            const gIdx = sub.tpList.indexOf(tp);
+            if (!tp.checklists) tp.checklists = { 1: Array(30).fill(false), 2: Array(30).fill(false) };
+            let cells = '';
+            for(let w=0; w<30; w++) {
+                const chk = tp.checklists[state.currentSmt][w] ? 'checked' : '';
+                cells += `<td class="week-cell ${chk}" onclick="toggleCheck(${gIdx}, ${w})"></td>`;
+            }
+            body.innerHTML += `<tr><td>${i+1}</td><td style="text-align:left">${tp.text}</td><td>${tp.jp}</td>${cells}</tr>`;
+        });
+    }
+
+    function toggleCheck(idx, week) {
+        const tp = state.subjects[currentMapel].tpList[idx];
+        if (!tp.checklists) tp.checklists = { 1: Array(30).fill(false), 2: Array(30).fill(false) };
+        tp.checklists[state.currentSmt][week] = !tp.checklists[state.currentSmt][week];
+        localStorage.setItem('sipandu_v1_4', JSON.stringify(state));
+        renderPromes();
+    }
+
+    // --- UTILS ---
+    function getBloomLabel(text) {
+        const lower = (text || "").toLowerCase();
+        for (const [lvl, kkos] of Object.entries(BLOOM_MAP)) { if (kkos.some(kko => lower.includes(kko))) return lvl; }
+        return "C3";
+    }
+
+    function createHeader(showSemester) {
+        const c = state.common;
+        let smtRow = showSemester ? `<tr><td style="border:none;">Semester</td><td style="border:none;">:</td><td style="border:none;">${state.currentSmt}</td></tr>` : '';
+        return `<div style="text-align:center; border-bottom:3px double #000; padding-bottom:10px; margin-bottom:15px">
+            <div style="font-size:16pt; font-weight:bold; text-transform:uppercase">${c.sekolah || 'NAMA SEKOLAH'}</div>
+            <div>Tahun Pelajaran: ${c.tapel}</div>
+        </div>
+        <table style="width:100%; border:none; font-size:10pt; text-align:left">
+            <tr><td style="border:none; width:15%">Mata Pelajaran</td><td style="border:none;">: ${currentMapel}</td><td style="border:none; width:15%">Kelas</td><td style="border:none;">: ${c.fase}/${c.kelas}</td></tr>
+            ${smtRow}
+        </table>`;
+    }
+
+    function createTtd() {
+        const c = state.common;
+        return `<div style="display:flex; justify-content:space-between; margin-top:30px; text-align:left">
+            <div>Mengetahui,<br>Kepala Sekolah<br><br><br><br><b>${c.ks || '(................)'}</b><br>NIP. ${c.ks_nip || '................'}</div>
+            <div>Guru Kelas,<br><br><br><br><br><b>${c.guru || '(................)'}</b><br>NIP. ${c.nip || '................'}</div>
+        </div>`;
+    }
+
+    function generateTP() {
+        const sub = state.subjects[currentMapel];
+        let jumlahTP = 0;
+        sub.elemenList.forEach(el => {
+            if(!el.cp) return;
+            el.cp.split('.').forEach(s => {
+                const clean = s.trim();
+                if(clean.length > 10) {
+                    sub.tpList.push({ elemen: el.name || 'Elemen', text: clean + '.', smt: 1, materi: '', jp: 4, bloom: getBloomLabel(clean), checklists: { 1: Array(30).fill(false), 2: Array(30).fill(false) } });
+                    jumlahTP++;
+                }
+            });
+        });
+        saveAll();
+        
+        if(jumlahTP > 0) {
+            alert("✨ BERHASIL!\n" + jumlahTP + " Tujuan Pembelajaran (TP) telah berhasil dibuat otomatis.\n\nSilakan periksa di menu '3. Tujuan (TP)'.");
+        } else {
+            alert("⚠️ PERINGATAN!\nTidak ada TP yang dibuat. Pastikan isi Capaian Pembelajaran (CP) sudah diisi dengan benar.");
+        }
+        
+        showPage('tp_sec');
+    }
+
+    function loadIdentitas() {
+        ['sekolah','guru','nip','ks','ks_nip','fase','kelas','tapel'].forEach(id => { 
+            const el = document.getElementById(id); if(el) el.value = state.common[id] || ''; 
+        });
+        document.getElementById('showTtd').checked = state.common.showTtd;
+    }
+
+    function showPage(id) { 
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); 
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); 
+        document.getElementById(id).classList.add('active'); 
+        const nav = document.querySelector(`.nav-item[onclick="showPage('${id}')"]`);
+        if(nav) nav.classList.add('active');
+    }
+
+    function addElemen() { state.subjects[currentMapel].elemenList.push({name: '', cp: ''}); renderElemen(); }
+    function renderElemen() {
+        const container = document.getElementById('elemenContainer'); container.innerHTML = '';
+        state.subjects[currentMapel].elemenList.forEach((el, i) => { 
+            container.innerHTML += `<div class="card">
+                <input value="${el.name}" placeholder="Nama Elemen" oninput="state.subjects['${currentMapel}'].elemenList[${i}].name=this.value; saveAll()">
+                <textarea oninput="state.subjects['${currentMapel}'].elemenList[${i}].cp=this.value; saveAll()">${el.cp}</textarea>
+            </div>`; 
+        });
+    }
+
+    function addTPRow() { 
+        state.subjects[currentMapel].tpList.push({ elemen: '-', text: '', smt: 1, jp: 2, bloom: 'C3', checklists: { 1: Array(30).fill(false), 2: Array(30).fill(false) } }); 
+        renderAll(); 
+    }
+    function deleteTP(idx) { if(confirm('Hapus?')) { state.subjects[currentMapel].tpList.splice(idx,1); saveAll(); } }
+    function toggleSemester() { 
+        state.currentSmt = state.currentSmt === 1 ? 2 : 1; 
+        document.getElementById('nextSmtText').innerText = state.currentSmt === 1 ? 2 : 1; 
+        renderAll(); 
+    }
+    
+    function exportToWord(id, filename) {
+        const area = document.getElementById(id); const clone = area.cloneNode(true);
+        clone.querySelectorAll('td.week-cell').forEach(td => { if(td.classList.contains('checked')) { td.innerText = "V"; td.style.backgroundColor = "#27ae60"; } });
+        const html = `<html><head><meta charset="utf-8"><style>table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid black; padding: 5px; font-size: 10pt; }</style></head><body>${clone.innerHTML}</body></html>`;
+        const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+        const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = filename + ".doc"; link.click();
+    }
+</script>
+</body>
+</html>
