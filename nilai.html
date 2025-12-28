@@ -8,43 +8,34 @@
         :root { --primary: #2c3e50; --accent: #27ae60; --bg: #f8fafc; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 15px; color: #333; font-size: 14px; }
         .container { max-width: 1100px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        
         .brand-wrapper { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
         .sipandu-brand { border-left: 4px solid var(--accent); padding-left: 12px; }
         .sipandu-name { font-weight: bold; font-size: 18px; color: var(--primary); margin: 0; line-height: 1.2; }
         .sipandu-sub { font-size: 11px; color: #64748b; margin: 0; }
         .sipandu-tagline { font-size: 10px; color: var(--accent); font-style: italic; margin-top: 2px; }
-
         .khd-quote { font-style: italic; color: #64748b; font-size: 12px; border-left: 2px solid #cbd5e1; padding-left: 10px; line-height: 1.4; max-width: 350px; text-align: left; }
-
         .header { text-align: center; border-bottom: 3px double var(--primary); margin-bottom: 20px; padding-bottom: 10px; }
         .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; background: #f1f5f9; padding: 20px; border-radius: 8px; margin-bottom: 25px; }
         label { display: block; font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px; }
         input, select, textarea { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
-        
         table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         th { background: #f1f5f9; color: #475569; padding: 12px; border: 1px solid #cbd5e1; font-size: 12px; }
         td { padding: 10px; border: 1px solid #cbd5e1; text-align: center; }
         .text-left { text-align: left; }
-
         .section-header { background: var(--primary); color: white; padding: 10px 15px; margin-top: 25px; border-radius: 6px 6px 0 0; display: flex; justify-content: space-between; align-items: center; }
         .card { border: 1px solid #cbd5e1; border-top: none; padding: 15px; border-radius: 0 0 6px 6px; background: white; margin-bottom: 20px; }
-        
         .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; font-size: 13px; }
         .btn-add { background: var(--accent); color: white; }
         .btn-del { background: #ef4444; color: white; padding: 5px 10px; }
         .btn-nav { background: #64748b; color: white; }
         .no-print { display: inline-flex; gap: 8px; }
-
         .calc-box { background: #fffbeb; border: 1px solid #fef3c7; padding: 15px; border-radius: 8px; margin: 15px 0; }
         .final-score { font-size: 24px; font-weight: 800; color: #1e40af; }
-
-        .nilai-dasar-box { margin-top: 40px; padding: 20px; border: 1px dashed #cbd5e1; border-radius: 8px; background: #fff; page-break-inside: avoid; position: relative; }
+        .nilai-dasar-box { margin-top: 40px; padding: 20px; border: 1px dashed #cbd5e1; border-radius: 8px; background: #fff; page-break-inside: avoid; }
         .nilai-title { font-weight: bold; font-size: 13px; color: var(--primary); margin-bottom: 12px; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
         .nilai-grid { display: flex; flex-wrap: wrap; gap: 10px; }
         .nilai-item { background: #f8fafc; padding: 6px 12px; border-radius: 4px; border: 1px solid #e2e8f0; font-size: 11px; color: #475569; font-weight: 600; }
         .nilai-item span { color: var(--accent); margin-right: 5px; }
-
         @media print {
             .no-print, .btn, .btn-del { display: none !important; }
             body { background: white; padding: 0; }
@@ -165,11 +156,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="section-header"><span>CATATAN PERKEMBANGAN</span></div>
-        <div class="card">
-            <textarea id="det_catatan" oninput="manualSave()" rows="3" placeholder="Tulis catatan di sini..."></textarea>
-        </div>
     </div>
 
     <div class="nilai-dasar-box">
@@ -254,7 +240,6 @@
         document.getElementById('det_nama').innerText = s.name;
         document.getElementById('det_asas').value = s.asas;
         document.getElementById('det_na_final').value = s.na;
-        document.getElementById('det_catatan').value = s.catatan;
         renderSubTable('harian');
         renderSubTable('sumatif');
         updateAll();
@@ -319,7 +304,6 @@
         let naInput = document.getElementById('det_na_final');
         naInput.dataset.modified = "true";
         s.na = naInput.value;
-        s.catatan = document.getElementById('det_catatan').value;
         save();
     }
 
@@ -340,7 +324,7 @@
         const blob = new Blob([JSON.stringify(db)], {type: 'application/json'});
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = `Backup_Nilai_TA.json`;
+        a.download = `Backup_TA.json`;
         a.click();
     }
 
