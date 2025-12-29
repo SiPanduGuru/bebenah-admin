@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>SiPandu - Instructional Command</title>
+    <title>SiPandu - Personal Workspace</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -26,7 +26,7 @@
             display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px;
         }
 
-        /* --- 1. THE REFINED HERO (INSTRUCTIONAL COMMAND) --- */
+        /* --- 1. THE REFINED HERO (PERSONAL WORKSPACE) --- */
         .hero-section {
             grid-column: span 2; padding: 60px 50px;
             background: linear-gradient(135deg, rgba(109, 40, 217, 0.1), rgba(139, 92, 246, 0.03));
@@ -34,8 +34,12 @@
             position: relative; overflow: hidden;
         }
 
+        /* REVISI 1: Tag lebih personal */
         .hero-tag { font-size: 10px; letter-spacing: 6px; color: var(--purple-soft); font-weight: 800; text-transform: uppercase; }
+        
         h1 { font-family: 'Montserrat'; font-size: 44px; margin: 15px 0; letter-spacing: -1px; }
+        
+        /* REVISI 3: Deskripsi membumi */
         .hero-desc { max-width: 700px; line-height: 1.8; opacity: 0.6; font-size: 15px; font-weight: 300; }
 
         /* --- 2. THE POETIC STATUS BAR --- */
@@ -54,6 +58,8 @@
             background: var(--bg-card); backdrop-filter: blur(15px);
             padding: 35px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);
         }
+        
+        /* REVISI 6: Header Akses Cepat */
         h2 { font-family: 'Montserrat'; font-size: 11px; letter-spacing: 3px; color: var(--purple-soft); margin-bottom: 30px; opacity: 0.8; }
 
         .summary-item {
@@ -88,41 +94,44 @@
 
     <div class="home-wrapper">
         <section class="hero-section">
-            <span class="hero-tag">Professional Teaching System</span>
-            <h1>Selamat Datang, <br><span id="userName" style="color:var(--purple-soft)">Professional Educator</span></h1>
+            <span class="hero-tag">Personal Teaching Space</span>
+            
+            <h1>Selamat Datang, <br><span id="userName" style="color:var(--purple-soft)">Ruang Kerja Pribadi</span></h1>
+            
             <p class="hero-desc">
-                SiPandu mengintegrasikan struktur administrasi ke dalam alur kerja instruksional yang organik. 
-                Sederhanakan dokumentasi, pertegas visi pembelajaran, dan pertahankan integritas setiap dimensi profil siswa.
+                SiPandu membantu guru menata administrasi dan perencanaan pembelajaran
+                dalam satu alur kerja pribadi. Fokus pada kerapian dokumen, kejelasan tujuan, dan refleksi praktik mengajar.
             </p>
+            
             <div style="margin-top: 35px; font-size: 11px; font-weight: 800; letter-spacing: 2px; color: #4caf50;">
-                <span style="opacity:0.5; color: white;">OPERATIONAL STATUS:</span> READY
+                <span style="opacity:0.5; color: white;">STATUS RUANG KERJA:</span> SIAP
             </div>
         </section>
 
         <div class="status-grid">
             <div class="stat-card">
                 <span class="stat-val" id="countRPM">0</span>
-                <span class="stat-lab">Planning Matrix</span>
+                <span class="stat-lab">Total RPM</span>
             </div>
             <div class="stat-card">
                 <span class="stat-val" id="countAgenda">0</span>
-                <span class="stat-lab">Logged Activities</span>
+                <span class="stat-lab">Agenda Tercatat</span>
             </div>
             <div class="stat-card">
-                <span class="stat-val">FULL</span>
-                <span class="stat-lab">Profile Integrity</span>
+                <span class="stat-val">AMAN</span>
+                <span class="stat-lab">Integritas Data</span>
             </div>
         </div>
 
         <div class="card">
             <h2>Activity Snapshot</h2>
             <div id="logSummary">
-                <p style="opacity:0.3; font-size: 13px; font-style: italic;">Monitoring system logs...</p>
+                <p style="opacity:0.3; font-size: 13px; font-style: italic;">Memuat catatan aktivitas...</p>
             </div>
         </div>
 
         <div class="card">
-            <h2>Command Shortcuts</h2>
+            <h2>Akses Cepat</h2>
             <div class="quick-nav">
                 <div class="nav-box" onclick="parent.go('rpm.html', 'Tactical RPM', this)">
                     <span>📊</span>
@@ -138,13 +147,13 @@
                 </div>
                 <div class="nav-box" onclick="alert('Module Analytics: Locked')">
                     <span>📡</span>
-                    <label>Integrasi Data</label>
+                    <label>Keterpaduan Dokumen</label>
                 </div>
             </div>
         </div>
 
         <div class="motto-footer">
-            THE SIPANDU INSTRUCTIONAL COMMAND // VER 2.0 // 2025
+            SiPandu — Personal Teaching Workspace // v2.0
         </div>
     </div>
 
@@ -153,6 +162,8 @@
             const adminStore = JSON.parse(localStorage.getItem('sipandu_authority_master')) || { common: {}, jurnal: [] };
             const rpmStore = JSON.parse(localStorage.getItem('rpm_db_v5')) || [];
 
+            // Mengisi Nama Guru (Jika ada di local storage, ganti tulisan 'Ruang Kerja Pribadi')
+            // Jika belum ada data guru, biarkan default 'Ruang Kerja Pribadi' agar estetik
             if(adminStore.common.guru) {
                 document.getElementById('userName').innerText = adminStore.common.guru;
             }
@@ -171,6 +182,8 @@
                         <div style="font-size: 14px; opacity: 0.2;">●</div>
                     </div>
                 `).join('');
+            } else {
+                 document.getElementById('logSummary').innerHTML = `<p style="opacity:0.3; font-size: 13px; font-style: italic;">Belum ada aktivitas tercatat.</p>`;
             }
         }
         window.onload = loadHomeData;
