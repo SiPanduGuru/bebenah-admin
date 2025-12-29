@@ -3,45 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiPandu Nilai v3.0 - Flow Master</title>
+    <title>SiPandu Nilai v3.1 - Auto Calculator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         :root {
-            /* THEME: Slate & Blue (Professional) */
             --bg: #f1f5f9;
             --sidebar: #0f172a;
             --white: #ffffff;
             --text: #334155;
             --border: #cbd5e1;
             
-            --primary: #2563eb;       /* Biru Utama */
-            --accent: #0ea5e9;        /* Cyan */
-            --success: #10b981;       /* Hijau */
-            --danger: #ef4444;        /* Merah */
-            --warning: #f59e0b;       /* Kuning */
+            --primary: #2563eb;       
+            --harian-bg: #eff6ff;     /* Biru Muda (Zona 70%) */
+            --harian-border: #bfdbfe;
+            --sas-bg: #fff7ed;        /* Oranye Muda (Zona 30%) */
+            --sas-border: #fed7aa;
+            
+            --success: #10b981;       
+            --danger: #ef4444;        
         }
 
         * { box-sizing: border-box; font-family: 'Segoe UI', Inter, sans-serif; }
         
         body { margin: 0; display: flex; background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
 
-        /* SIDEBAR (NAVIGASI) */
+        /* SIDEBAR */
         .sidebar { 
             width: 260px; background: var(--sidebar); color: white; 
             display: flex; flex-direction: column; flex-shrink: 0;
             border-right: 1px solid #334155;
         }
         .brand { padding: 20px; border-bottom: 1px solid #1e293b; }
-        .brand h2 { margin: 0; font-size: 18px; color: var(--accent); }
+        .brand h2 { margin: 0; font-size: 18px; color: #38bdf8; }
         .brand small { opacity: 0.6; font-size: 11px; }
 
         .class-info { padding: 15px 20px; background: #1e293b; }
-        .class-info label { font-size: 10px; text-transform: uppercase; color: #94a3b8; font-weight: bold; }
         .class-info input { background: transparent; border: none; color: white; font-weight: bold; font-size: 16px; width: 100%; outline: none; }
 
         .nav-list { flex: 1; overflow-y: auto; padding: 10px 0; }
-        .nav-group-title { padding: 10px 20px 5px; font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: bold; letter-spacing: 0.5px; }
-        
         .nav-item { 
             padding: 10px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
             border-left: 3px solid transparent; color: #cbd5e1; transition: 0.2s; font-size: 13px;
@@ -52,8 +51,6 @@
         .sidebar-footer { padding: 20px; border-top: 1px solid #1e293b; }
         .btn-manage { width: 100%; padding: 10px; background: #334155; border: 1px solid #475569; color: white; border-radius: 6px; cursor: pointer; font-size: 12px; transition: 0.2s; }
         .btn-manage:hover { background: #475569; border-color: #64748b; }
-        .btn-add-mapel { background: var(--primary); border-color: var(--primary); margin-top: 10px; font-weight: bold; }
-        .btn-add-mapel:hover { background: #1d4ed8; }
 
         /* MAIN AREA */
         .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: white; }
@@ -69,48 +66,67 @@
         .actions { display: flex; gap: 10px; }
         .btn { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 6px; }
         .btn-primary { background: var(--primary); color: white; }
-        .btn-success { background: var(--success); color: white; }
-        .btn-outline { background: white; border: 1px solid var(--border); color: var(--text); }
-        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-harian { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+        .btn-sas { background: #ffedd5; color: #9a3412; border: 1px solid #fdba74; }
         
-        /* TABLE AREA (EXCEL GRID) */
+        /* TABLE AREA */
         .grid-container { flex: 1; overflow: auto; padding: 0; position: relative; }
         
         table { border-collapse: separate; border-spacing: 0; min-width: 100%; }
         
         thead { position: sticky; top: 0; z-index: 10; }
-        th { 
-            background: #f8fafc; color: var(--text); padding: 12px 10px; 
+        
+        /* Super Header (70% vs 30%) */
+        .super-header th { 
+            text-align: center; padding: 5px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        .zone-harian { background: var(--harian-bg); color: #1e3a8a; border-right: 1px solid var(--harian-border); }
+        .zone-sas { background: var(--sas-bg); color: #7c2d12; border-right: 1px solid var(--sas-border); }
+        .zone-final { background: #f0fdf4; color: #14532d; }
+
+        /* Sub Header */
+        .sub-header th { 
+            background: #f8fafc; color: var(--text); padding: 10px; 
             font-size: 12px; font-weight: 700; text-align: left; border-bottom: 2px solid var(--border); border-right: 1px solid #e2e8f0; 
             white-space: nowrap;
         }
         
         /* Sticky First Columns */
-        th:nth-child(1), td:nth-child(1) { position: sticky; left: 0; z-index: 11; width: 40px; text-align: center; border-right: 1px solid #cbd5e1; }
-        th:nth-child(2), td:nth-child(2) { position: sticky; left: 40px; z-index: 11; min-width: 250px; border-right: 2px solid #cbd5e1; }
-        td:nth-child(1), td:nth-child(2) { background: #fff; z-index: 5; }
-        th:nth-child(1), th:nth-child(2) { z-index: 15; background: #f1f5f9; }
+        .sticky-col { position: sticky; left: 0; z-index: 12; background: #fff; border-right: 1px solid #cbd5e1; }
+        .sticky-col-2 { position: sticky; left: 40px; z-index: 12; background: #fff; border-right: 2px solid #cbd5e1; }
+        
+        /* Headers Sticky Z-Index Fix */
+        thead tr:nth-child(1) th { z-index: 15; } /* Super header */
+        thead tr:nth-child(2) th { z-index: 14; } /* Sub header */
+        thead tr:nth-child(1) th.sticky-col, thead tr:nth-child(1) th.sticky-col-2 { z-index: 20; background: #f1f5f9; } 
+        thead tr:nth-child(2) th.sticky-col, thead tr:nth-child(2) th.sticky-col-2 { z-index: 19; background: #f1f5f9; }
 
         td { border-bottom: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; padding: 0; height: 35px; }
         
-        /* Clean Input Cells */
+        /* Input Cells */
         td input { 
             width: 100%; height: 100%; border: none; padding: 0 10px; 
             font-size: 13px; outline: none; background: transparent; 
             text-align: center;
         }
         td input:focus { background: #eff6ff; box-shadow: inset 0 0 0 2px var(--primary); }
-        td:nth-child(2) input { text-align: left; font-weight: 500; } /* Nama Siswa Align Left */
         
-        /* Column Header Editable */
+        /* Highlight Zones in Body */
+        .bg-harian { background: #f8fafc; }
+        .bg-sas { background: #fffaf0; }
+
+        /* Calculation Columns */
+        .cell-calc { font-weight: bold; display: flex; align-items: center; justify-content: center; height: 100%; font-size: 12px; }
+        .val-harian { color: #2563eb; background: #eff6ff; }
+        .val-sas { color: #ea580c; background: #fff7ed; }
+        .val-final { color: #166534; background: #dcfce7; font-size: 14px; }
+
+        /* Column Header Controls */
         .col-header { display: flex; align-items: center; justify-content: space-between; gap: 5px; }
         .col-name { cursor: text; padding: 2px 5px; border-radius: 4px; }
-        .col-name:hover { background: #e2e8f0; }
-        .col-del { color: #ef4444; cursor: pointer; font-size: 14px; visibility: hidden; }
+        .col-name:hover { background: rgba(0,0,0,0.05); }
+        .col-del { color: #ef4444; cursor: pointer; visibility: hidden; font-size: 14px; }
         th:hover .col-del { visibility: visible; }
-
-        /* Average Column */
-        .cell-avg { background: #f0fdf4; font-weight: bold; color: #166534; display: flex; align-items: center; justify-content: center; height: 100%; }
 
         /* MODAL */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
@@ -118,13 +134,6 @@
         textarea { width: 100%; height: 150px; padding: 10px; border: 1px solid var(--border); border-radius: 6px; margin: 15px 0; font-family: monospace; }
         
         .toast { position: fixed; bottom: 20px; right: 20px; background: #1e293b; color: white; padding: 10px 20px; border-radius: 50px; font-size: 12px; display: none; z-index: 2000; }
-
-        @media print {
-            .sidebar, .toolbar, .no-print { display: none; }
-            .grid-container { overflow: visible; }
-            td input { text-align: center; }
-            td:nth-child(2) input { text-align: left; }
-        }
     </style>
 </head>
 <body>
@@ -134,19 +143,18 @@
 <div class="sidebar">
     <div class="brand">
         <h2>SiPandu Nilai</h2>
-        <small>V 3.0 • Flow Master</small>
+        <small>V 3.1 • Auto Calculator</small>
     </div>
     <div class="class-info">
-        <label>KELAS / FASE</label>
-        <input type="text" id="className" value="Kelas IV - B" onchange="updateMeta()">
+        <label>KELAS</label>
+        <input type="text" id="className" value="Kelas IV" onchange="updateMeta()">
     </div>
     
-    <div class="nav-list" id="mapelList">
-        </div>
+    <div class="nav-list" id="mapelList"></div>
 
     <div class="sidebar-footer">
-        <button class="btn-manage" onclick="openStudentModal()">👥 Kelola Siswa (Global)</button>
-        <button class="btn-manage btn-add-mapel" onclick="addMapel()">+ Mapel Baru</button>
+        <button class="btn-manage" onclick="openStudentModal()">👥 Kelola Siswa</button>
+        <button class="btn-manage" onclick="addMapel()" style="margin-top:10px; background:var(--primary); border:none;">+ Mapel Baru</button>
     </div>
 </div>
 
@@ -154,11 +162,12 @@
     <div class="toolbar">
         <div class="page-title">
             <h1 id="headerMapel">Mapel</h1>
-            <span id="headerDesc">Rekapitulasi Nilai Kelas</span>
+            <span id="headerDesc">Rumus: (Rata Harian x 70%) + (SAS x 30%) = NA</span>
         </div>
         <div class="actions">
-            <button class="btn btn-outline" onclick="addColumn()">+ Kolom Nilai</button>
-            <button class="btn btn-primary" onclick="downloadExcel()">📥 Download Excel</button>
+            <button class="btn btn-harian" onclick="addCol('harian')">+ Tugas/Bab (70%)</button>
+            <button class="btn btn-sas" onclick="addCol('sas')">+ Kolom SAS (30%)</button>
+            <button class="btn btn-primary" onclick="downloadExcel()">📥 Excel</button>
         </div>
     </div>
 
@@ -172,37 +181,38 @@
 
 <div id="studentModal" class="modal">
     <div class="modal-content">
-        <h3 style="margin-top:0">Database Siswa (Global)</h3>
-        <p style="font-size:12px; color:#64748b;">
-            Masukkan daftar siswa satu kelas di sini. <br>
-            Daftar ini akan otomatis dipakai di <b>SEMUA MATA PELAJARAN</b>.
-        </p>
-        <textarea id="bulkStudents" placeholder="Ahmad&#10;Budi&#10;Citra&#10;Dinda..."></textarea>
+        <h3 style="margin-top:0">Database Siswa</h3>
+        <p style="font-size:12px; color:#64748b;">Daftar ini berlaku untuk SEMUA MAPEL.</p>
+        <textarea id="bulkStudents" placeholder="Ahmad&#10;Budi&#10;Citra..."></textarea>
         <div style="text-align:right; display:flex; justify-content:flex-end; gap:10px;">
             <button class="btn btn-outline" onclick="document.getElementById('studentModal').style.display='none'">Batal</button>
-            <button class="btn btn-primary" onclick="saveStudents()">Simpan & Sinkron</button>
+            <button class="btn btn-primary" onclick="saveStudents()">Simpan</button>
         </div>
     </div>
 </div>
 
 <script>
-    // --- DATABASE AWAL (MAPEL WAJIB + TAMBAHAN) ---
-    // Struktur default sesuai request: Agama, Pancasila, B.Indo, MTK, IPAS, Seni, PJOK, Inggris, Mulok
+    // --- DATABASE STRUCTURE v3.1 ---
+    // mapels: { 
+    //    'MTK': { 
+    //       colsHarian: ['Tgs 1', 'Bab 1', 'Remidi'], 
+    //       colsSAS: ['Ujian Tulis'], 
+    //       scores: { 0: {'Tgs 1': 80} } 
+    //    } 
+    // }
+
     const defaultMapels = {
-        'Pend. Agama & BP': { columns: ['TP 1', 'TP 2', 'Sumatif'], scores: {} },
-        'Pend. Pancasila': { columns: ['TP 1', 'TP 2', 'Sumatif'], scores: {} },
-        'Bahasa Indonesia': { columns: ['Menyimak', 'Membaca', 'Menulis'], scores: {} },
-        'Matematika': { columns: ['Bab 1', 'Bab 2', 'Sumatif'], scores: {} },
-        'IPAS': { columns: ['Bab 1', 'Bab 2', 'Proyek'], scores: {} },
-        'Seni & Budaya': { columns: ['Karya', 'Praktik', 'Teori'], scores: {} },
-        'PJOK': { columns: ['Praktik', 'Teori', 'Kesehatan'], scores: {} },
-        'Bahasa Inggris': { columns: ['Unit 1', 'Unit 2', 'Sumatif'], scores: {} },
-        'Mulok': { columns: ['Tugas', 'Praktik', 'Ujian'], scores: {} }
+        'Pend. Agama': { colsHarian: ['Tugas 1', 'Bab 1', 'Bab 2'], colsSAS: ['Sumatif Akhir'], scores: {} },
+        'B. Indonesia': { colsHarian: ['Menyimak', 'Bab 1', 'Bab 2'], colsSAS: ['Sumatif Akhir'], scores: {} },
+        'Matematika': { colsHarian: ['Tugas 1', 'Bab 1', 'Bab 2'], colsSAS: ['Sumatif Akhir'], scores: {} },
+        'IPAS': { colsHarian: ['Tugas 1', 'Bab 1', 'Bab 2'], colsSAS: ['Sumatif Akhir'], scores: {} },
+        'Seni': { colsHarian: ['Karya', 'Praktik'], colsSAS: ['Sumatif Akhir'], scores: {} },
+        'PJOK': { colsHarian: ['Praktik', 'Teori'], colsSAS: ['Sumatif Akhir'], scores: {} },
+        'Pancasila': { colsHarian: ['Tugas 1', 'Bab 1'], colsSAS: ['Sumatif Akhir'], scores: {} }
     };
 
-    // Load DB atau Init Baru
-    let db = JSON.parse(localStorage.getItem('sipandu_v3_plus_db')) || {
-        meta: { className: 'Kelas IV - A' },
+    let db = JSON.parse(localStorage.getItem('sipandu_v3_1_db')) || {
+        meta: { className: 'Kelas IV' },
         students: [],
         mapels: defaultMapels
     };
@@ -216,53 +226,187 @@
     };
 
     function saveDB() {
-        localStorage.setItem('sipandu_v3_plus_db', JSON.stringify(db));
+        localStorage.setItem('sipandu_v3_1_db', JSON.stringify(db));
         showToast();
     }
 
-    // --- LOGIKA SIDEBAR ---
+    // --- RENDER SIDEBAR ---
     function renderSidebar() {
         const list = document.getElementById('mapelList');
         list.innerHTML = '';
-        
-        // Render semua mapel yang ada di DB
         Object.keys(db.mapels).forEach(m => {
             const div = document.createElement('div');
             div.className = `nav-item ${m === activeMapel ? 'active' : ''}`;
             div.onclick = () => loadMapel(m);
-            
-            // Tombol hapus hanya muncul jika bukan mapel yang sedang aktif (untuk keamanan UX)
-            // Tapi user minta bisa edit mapel, jadi kita kasih tombol hapus kecil
-            const delBtn = `<span onclick="event.stopPropagation(); deleteMapel('${m}')" style="font-size:10px; color:#ef4444; opacity:0.6; padding:0 5px;">✕</span>`;
-            
+            const delBtn = `<span onclick="event.stopPropagation(); deleteMapel('${m}')" style="font-size:10px; color:#ef4444; opacity:0.6;">✕</span>`;
             div.innerHTML = `<span>${m}</span> ${m !== activeMapel ? delBtn : ''}`;
             list.appendChild(div);
         });
     }
 
-    // Fitur "Add Mapel Kosong Sepuasnya"
+    // --- RENDER TABLE ---
+    function loadMapel(name) {
+        activeMapel = name;
+        document.getElementById('headerMapel').innerText = name;
+        renderSidebar(); 
+        renderTable();
+    }
+
+    function renderTable() {
+        const thead = document.getElementById('tableHead');
+        const tbody = document.getElementById('tableBody');
+        const data = db.mapels[activeMapel];
+
+        // 1. Header Logic
+        // Row 1: Super Headers
+        let h1 = `<tr class="super-header">
+            <th class="sticky-col" rowspan="2" style="width:40px">No</th>
+            <th class="sticky-col-2" rowspan="2" style="min-width:200px">Nama Siswa</th>
+            <th class="zone-harian" colspan="${data.colsHarian.length + 1}">NILAI HARIAN (70%)</th>
+            <th class="zone-sas" colspan="${data.colsSAS.length + 1}">SUMATIF AKHIR (30%)</th>
+            <th class="zone-final" rowspan="2" style="width:60px">NA</th>
+        </tr>`;
+
+        // Row 2: Sub Headers
+        let h2 = `<tr class="sub-header">`;
+        
+        // Harian Columns
+        data.colsHarian.forEach((col, i) => {
+            h2 += `<th><div class="col-header">
+                <span class="col-name" contenteditable="true" onblur="renameCol('harian', ${i}, this.innerText)">${col}</span>
+                <span class="col-del" onclick="deleteCol('harian', ${i})">×</span>
+            </div></th>`;
+        });
+        h2 += `<th style="background:#eff6ff; color:#1e40af; font-size:11px;">RATA</th>`;
+
+        // SAS Columns
+        data.colsSAS.forEach((col, i) => {
+            h2 += `<th><div class="col-header">
+                <span class="col-name" contenteditable="true" onblur="renameCol('sas', ${i}, this.innerText)">${col}</span>
+                <span class="col-del" onclick="deleteCol('sas', ${i})">×</span>
+            </div></th>`;
+        });
+        h2 += `<th style="background:#fff7ed; color:#9a3412; font-size:11px;">RATA</th>`;
+        
+        h2 += `</tr>`;
+        thead.innerHTML = h1 + h2;
+
+        // 2. Body Logic
+        let bHtml = '';
+        if (db.students.length === 0) {
+            bHtml = `<tr><td colspan="100" style="text-align:center; padding:40px; color:#94a3b8;">Belum ada siswa.</td></tr>`;
+        } else {
+            db.students.forEach((studentName, sIdx) => {
+                if (!data.scores[sIdx]) data.scores[sIdx] = {};
+                const sScores = data.scores[sIdx]; 
+                
+                let row = `<tr>
+                    <td class="sticky-col" style="text-align:center; background:#fff;">${sIdx + 1}</td>
+                    <td class="sticky-col-2" style="padding-left:10px; font-weight:500;">${studentName}</td>`;
+                
+                // Calc Harian
+                let sumH = 0, countH = 0;
+                data.colsHarian.forEach(col => {
+                    const val = sScores[col] || '';
+                    if(val) { sumH += parseFloat(val); countH++; }
+                    row += `<td class="bg-harian"><input type="number" value="${val}" onchange="updateScore(${sIdx}, '${col}', this.value)"></td>`;
+                });
+                const avgH = countH > 0 ? (sumH/countH) : 0;
+                row += `<td class="cell-calc val-harian">${countH>0 ? Math.round(avgH) : '-'}</td>`;
+
+                // Calc SAS
+                let sumS = 0, countS = 0;
+                data.colsSAS.forEach(col => {
+                    const val = sScores[col] || '';
+                    if(val) { sumS += parseFloat(val); countS++; }
+                    row += `<td class="bg-sas"><input type="number" value="${val}" onchange="updateScore(${sIdx}, '${col}', this.value)"></td>`;
+                });
+                const avgS = countS > 0 ? (sumS/countS) : 0;
+                row += `<td class="cell-calc val-sas">${countS>0 ? Math.round(avgS) : '-'}</td>`;
+
+                // Calc Final (NA)
+                // Formula: (Harian * 70%) + (SAS * 30%)
+                // Jika salah satu kosong, gunakan yang ada (opsional), tapi biasanya harus dua-duanya
+                let na = '-';
+                if(countH > 0 && countS > 0) {
+                    na = Math.round((avgH * 0.7) + (avgS * 0.3));
+                } else if (countH > 0) {
+                    na = Math.round(avgH); // Fallback jika belum SAS
+                }
+                
+                row += `<td class="cell-calc val-final">${na}</td></tr>`;
+                bHtml += row;
+            });
+        }
+        tbody.innerHTML = bHtml;
+    }
+
+    // --- ACTIONS ---
+    function updateScore(studentIdx, colName, val) {
+        db.mapels[activeMapel].scores[studentIdx][colName] = val;
+        saveDB();
+        renderTable(); // Re-render to update calculations immediately
+    }
+
+    function addCol(type) {
+        const name = prompt(type === 'harian' ? "Nama Tugas/Bab/Remidi:" : "Nama Ujian:");
+        if(!name) return;
+        
+        const target = type === 'harian' ? db.mapels[activeMapel].colsHarian : db.mapels[activeMapel].colsSAS;
+        if(target.includes(name)) { alert("Nama kolom sudah ada!"); return; }
+        
+        target.push(name);
+        saveDB();
+        renderTable();
+    }
+
+    function renameCol(type, idx, newName) {
+        const target = type === 'harian' ? db.mapels[activeMapel].colsHarian : db.mapels[activeMapel].colsSAS;
+        const oldName = target[idx];
+        
+        if(newName && newName !== oldName) {
+            target[idx] = newName;
+            // Migrate scores
+            Object.keys(db.mapels[activeMapel].scores).forEach(sIdx => {
+                const sData = db.mapels[activeMapel].scores[sIdx];
+                if(sData[oldName]) {
+                    sData[newName] = sData[oldName];
+                    delete sData[oldName];
+                }
+            });
+            saveDB();
+        }
+    }
+
+    function deleteCol(type, idx) {
+        if(!confirm("Hapus kolom nilai ini?")) return;
+        const target = type === 'harian' ? db.mapels[activeMapel].colsHarian : db.mapels[activeMapel].colsSAS;
+        const colName = target[idx];
+        target.splice(idx, 1);
+        
+        // Cleanup scores
+        Object.values(db.mapels[activeMapel].scores).forEach(sData => {
+            delete sData[colName];
+        });
+        saveDB();
+        renderTable();
+    }
+
+    // --- MAPEL & STUDENT MANAGER ---
     function addMapel() {
-        const name = prompt("Nama Mata Pelajaran Baru (Bebas):");
-        if (name) {
-            if (db.mapels[name]) {
-                alert("Mapel sudah ada!");
-                return;
-            }
-            // Init mapel baru dengan kolom standar
-            db.mapels[name] = { columns: ['TP 1', 'TP 2', 'Sumatif'], scores: {} };
+        const name = prompt("Nama Mata Pelajaran:");
+        if(name && !db.mapels[name]) {
+            db.mapels[name] = { colsHarian: ['Tugas 1', 'Bab 1'], colsSAS: ['Sumatif Akhir'], scores: {} };
             saveDB();
             renderSidebar();
-            loadMapel(name); // Langsung pindah ke mapel baru
+            loadMapel(name);
         }
     }
 
     function deleteMapel(name) {
-        if(confirm(`Yakin hapus mapel "${name}"? Data nilai di mapel ini akan hilang permanen.`)) {
+        if(confirm(`Hapus mapel ${name}?`)) {
             delete db.mapels[name];
-            // Kalo mapel habis, reset ke default atau kosong
-            if (Object.keys(db.mapels).length === 0) {
-                 db.mapels['Mapel Baru'] = { columns: ['Nilai 1'], scores: {} };
-            }
+            if(Object.keys(db.mapels).length === 0) addMapel(); // Ensure at least one
             activeMapel = Object.keys(db.mapels)[0];
             saveDB();
             renderSidebar();
@@ -275,126 +419,6 @@
         saveDB();
     }
 
-    // --- LOGIKA TABEL UTAMA ---
-    function loadMapel(name) {
-        activeMapel = name;
-        document.getElementById('headerMapel').innerText = name;
-        renderSidebar(); 
-        renderTable();
-    }
-
-    function renderTable() {
-        const thead = document.getElementById('tableHead');
-        const tbody = document.getElementById('tableBody');
-        
-        // Safety check jika mapel dihapus tapi masih di-load
-        if (!db.mapels[activeMapel]) {
-            activeMapel = Object.keys(db.mapels)[0];
-        }
-        const data = db.mapels[activeMapel];
-
-        // 1. Header
-        let hHtml = `<tr><th>No</th><th>Nama Siswa</th>`;
-        data.columns.forEach((col, idx) => {
-            hHtml += `<th>
-                <div class="col-header">
-                    <span class="col-name" contenteditable="true" onblur="renameCol(${idx}, this.innerText)">${col}</span>
-                    <span class="col-del" onclick="deleteCol(${idx})">×</span>
-                </div>
-            </th>`;
-        });
-        hHtml += `<th style="background:#f0fdf4; color:#15803d;">Rerata</th></tr>`;
-        thead.innerHTML = hHtml;
-
-        // 2. Body
-        let bHtml = '';
-        if (db.students.length === 0) {
-            bHtml = `<tr><td colspan="${data.columns.length + 3}" style="text-align:center; padding:50px; color:#94a3b8;">
-                <div style="font-size:20px; margin-bottom:10px;">👥</div>
-                Belum ada data siswa.<br>
-                Klik tombol <b>Kelola Siswa</b> di pojok kiri bawah.
-            </td></tr>`;
-        } else {
-            db.students.forEach((studentName, sIdx) => {
-                // Pastikan object score ada
-                if (!data.scores[sIdx]) data.scores[sIdx] = {};
-                const sScores = data.scores[sIdx]; 
-                
-                let row = `<tr>
-                    <td style="text-align:center; background:#f8fafc;">${sIdx + 1}</td>
-                    <td style="padding-left:10px; font-weight:500;">
-                        <input value="${studentName}" readonly style="text-align:left; cursor:default;">
-                    </td>`;
-                
-                let sum = 0, count = 0;
-                
-                data.columns.forEach(col => {
-                    const val = sScores[col] || '';
-                    if(val) { sum += parseFloat(val); count++; }
-                    row += `<td><input type="number" value="${val}" onchange="updateScore(${sIdx}, '${col}', this.value)"></td>`;
-                });
-
-                const avg = count > 0 ? Math.round(sum/count) : '-';
-                row += `<td><div class="cell-avg">${avg}</div></td></tr>`;
-                bHtml += row;
-            });
-        }
-        tbody.innerHTML = bHtml;
-    }
-
-    // --- UPDATE NILAI (PERSISTENCE) ---
-    function updateScore(studentIdx, colName, val) {
-        db.mapels[activeMapel].scores[studentIdx][colName] = val;
-        saveDB();
-        // Update rata-rata visual tanpa reload semua
-        const row = document.getElementById('tableBody').rows[studentIdx];
-        let sum = 0, count = 0;
-        db.mapels[activeMapel].columns.forEach(c => {
-            const v = db.mapels[activeMapel].scores[studentIdx][c];
-            if(v) { sum += parseFloat(v); count++; }
-        });
-        row.cells[row.cells.length - 1].querySelector('.cell-avg').innerText = count > 0 ? Math.round(sum/count) : '-';
-    }
-
-    function addColumn() {
-        const name = prompt("Nama Kolom (misal: PH 3):");
-        if(name && !db.mapels[activeMapel].columns.includes(name)) {
-            db.mapels[activeMapel].columns.push(name);
-            saveDB();
-            renderTable();
-        }
-    }
-
-    function renameCol(idx, newName) {
-        const oldName = db.mapels[activeMapel].columns[idx];
-        if(newName && newName !== oldName) {
-            db.mapels[activeMapel].columns[idx] = newName;
-            // Migrasi nilai ke nama kolom baru
-            Object.keys(db.mapels[activeMapel].scores).forEach(sIdx => {
-                const sData = db.mapels[activeMapel].scores[sIdx];
-                if(sData[oldName]) {
-                    sData[newName] = sData[oldName];
-                    delete sData[oldName];
-                }
-            });
-            saveDB();
-        }
-    }
-
-    function deleteCol(idx) {
-        if(confirm("Hapus kolom nilai ini?")) {
-            const colName = db.mapels[activeMapel].columns[idx];
-            db.mapels[activeMapel].columns.splice(idx, 1);
-            // Bersihkan data sampah
-            Object.values(db.mapels[activeMapel].scores).forEach(sData => {
-                delete sData[colName];
-            });
-            saveDB();
-            renderTable();
-        }
-    }
-
-    // --- KELOLA SISWA (GLOBAL) ---
     function openStudentModal() {
         document.getElementById('bulkStudents').value = db.students.join('\n');
         document.getElementById('studentModal').style.display = 'flex';
@@ -403,13 +427,10 @@
     function saveStudents() {
         const raw = document.getElementById('bulkStudents').value;
         const list = raw.split('\n').map(s => s.trim()).filter(s => s);
-        
         if(list.length > 0) {
-            // Cek apakah user menghapus siswa (jumlah berkurang drastis)
             if(db.students.length > 0 && list.length < db.students.length) {
-                if(!confirm("Jumlah siswa berkurang. Nilai siswa yang dihapus akan hilang dari semua mapel. Lanjut?")) return;
+                if(!confirm("Siswa berkurang. Nilai siswa yang dihapus akan hilang. Lanjut?")) return;
             }
-
             db.students = list;
             saveDB();
             document.getElementById('studentModal').style.display = 'none';
@@ -417,40 +438,58 @@
         }
     }
 
-    // --- EXPORT ---
     function downloadExcel() {
-        const data = [];
         const mapelData = db.mapels[activeMapel];
+        const data = [];
         
         // Header
-        const header = ["No", "Nama Siswa", ...mapelData.columns, "Rata-rata"];
+        const header = ["No", "Nama Siswa", ...mapelData.colsHarian, "Rata Harian", ...mapelData.colsSAS, "Rata SAS", "Nilai Akhir"];
         data.push(header);
 
         // Rows
         db.students.forEach((name, i) => {
+            const sScores = mapelData.scores[i] || {};
             const row = [i+1, name];
-            let sum=0, count=0;
-            mapelData.columns.forEach(col => {
-                const val = (mapelData.scores[i] && mapelData.scores[i][col]) || '';
+            
+            // Harian
+            let sumH=0, countH=0;
+            mapelData.colsHarian.forEach(col => {
+                const val = sScores[col] || '';
                 row.push(val);
-                if(val) { sum+=parseFloat(val); count++; }
+                if(val) { sumH+=parseFloat(val); countH++; }
             });
-            row.push(count>0 ? Math.round(sum/count) : '');
+            const avgH = countH>0 ? sumH/countH : 0;
+            row.push(countH>0 ? Math.round(avgH) : '');
+
+            // SAS
+            let sumS=0, countS=0;
+            mapelData.colsSAS.forEach(col => {
+                const val = sScores[col] || '';
+                row.push(val);
+                if(val) { sumS+=parseFloat(val); countS++; }
+            });
+            const avgS = countS>0 ? sumS/countS : 0;
+            row.push(countS>0 ? Math.round(avgS) : '');
+
+            // Final
+            if(countH>0 && countS>0) row.push(Math.round((avgH*0.7) + (avgS*0.3)));
+            else if(countH>0) row.push(Math.round(avgH));
+            else row.push('');
+            
             data.push(row);
         });
 
         const ws = XLSX.utils.aoa_to_sheet(data);
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, activeMapel.substring(0, 30));
-        XLSX.writeFile(wb, `Nilai_${activeMapel}_${db.meta.className}.xlsx`);
+        XLSX.utils.book_append_sheet(wb, ws, activeMapel.substring(0,30));
+        XLSX.writeFile(wb, `Nilai_${activeMapel}.xlsx`);
     }
 
     function showToast() {
         const t = document.getElementById('toast');
         t.style.display = 'block';
-        setTimeout(() => t.style.display = 'none', 1000);
+        setTimeout(()=>t.style.display='none', 1000);
     }
 </script>
-
 </body>
 </html>
