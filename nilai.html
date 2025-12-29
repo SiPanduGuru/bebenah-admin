@@ -3,130 +3,397 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V.1.0 - Teaching Assistant | Rekap Nilai</title>
+    <title>SiPandu Nilai - Rekapitulasi Cerdas</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        :root { --primary: #2c3e50; --accent: #27ae60; --bg: #f8fafc; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 15px; color: #333; font-size: 14px; }
-        .container { max-width: 1100px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        .brand-wrapper { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
-        .brand-box { border-left: 4px solid var(--accent); padding-left: 12px; }
-        .brand-name { font-weight: bold; font-size: 18px; color: var(--primary); margin: 0; line-height: 1.2; }
-        .brand-sub { font-size: 11px; color: #64748b; margin: 0; }
-        .brand-tagline { font-size: 10px; color: var(--accent); font-style: italic; margin-top: 2px; }
-        .khd-quote { font-style: italic; color: #64748b; font-size: 12px; border-left: 2px solid #cbd5e1; padding-left: 10px; line-height: 1.4; max-width: 350px; text-align: left; }
-        .header { text-align: center; border-bottom: 3px double var(--primary); margin-bottom: 20px; padding-bottom: 10px; }
-        .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; background: #f1f5f9; padding: 20px; border-radius: 8px; margin-bottom: 25px; }
-        label { display: block; font-size: 11px; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 4px; }
-        input, select { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        th { background: #f1f5f9; color: #475569; padding: 12px; border: 1px solid #cbd5e1; font-size: 12px; }
-        td { padding: 10px; border: 1px solid #cbd5e1; text-align: center; }
-        .section-header { background: var(--primary); color: white; padding: 10px 15px; margin-top: 25px; border-radius: 6px 6px 0 0; display: flex; justify-content: space-between; align-items: center; }
-        .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; font-size: 13px; }
-        .btn-add { background: var(--accent); color: white; }
-        .btn-del { background: #ef4444; color: white; padding: 5px 10px; }
-        .nilai-dasar-box { margin-top: 40px; padding: 20px; border: 1px dashed #cbd5e1; border-radius: 8px; background: #fff; }
-        .nilai-title { font-weight: bold; font-size: 13px; color: var(--primary); margin-bottom: 12px; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; text-transform: uppercase; }
-        .nilai-grid { display: flex; flex-wrap: wrap; gap: 10px; }
-        .nilai-item { background: #f8fafc; padding: 6px 12px; border-radius: 4px; border: 1px solid #e2e8f0; font-size: 11px; color: #475569; font-weight: 600; }
-        .footer-text { font-size: 10px; color: #94a3b8; margin-top: 15px; text-align: right; font-weight: normal; }
-        @media print { .no-print { display: none !important; } }
+        :root {
+            /* THEME: Soft Slate (Professional & Calm) */
+            --bg-main: #f1f5f9;
+            --card-bg: #ffffff;
+            --header-bg: #1e293b; /* Sidebar color from previous module */
+            --text-main: #334155;
+            --text-light: #64748b;
+            --border: #cbd5e1;
+            
+            --primary: #2563eb;
+            --accent: #0ea5e9;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Inter, sans-serif; }
+        
+        body { margin: 0; background: var(--bg-main); color: var(--text-main); font-size: 14px; padding: 30px; }
+        .container { max-width: 1200px; margin: auto; }
+
+        /* HEADER */
+        .header-section { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
+        .brand h1 { margin: 0; font-size: 24px; color: var(--header-bg); font-weight: 800; letter-spacing: -0.5px; }
+        .brand p { margin: 5px 0 0 0; color: var(--text-light); font-size: 13px; }
+
+        /* CARD STYLE */
+        .card { background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px; }
+        
+        /* CONTROLS (Top Bar) */
+        .controls { padding: 20px; background: #fff; border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; }
+        
+        .control-group { display: flex; gap: 10px; align-items: center; }
+        .control-group label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-light); }
+        
+        select, input[type="text"] { padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; color: var(--text-main); }
+        
+        /* BUTTONS */
+        .btn { padding: 8px 16px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-outline { background: white; border: 1px solid var(--border); color: var(--text-main); }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-danger { background: #fee2e2; color: var(--danger); }
+        
+        /* DATA TABLE (The Excel Feel) */
+        .table-wrapper { overflow-x: auto; max-height: 70vh; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        
+        th { background: #f8fafc; padding: 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-main); border-bottom: 2px solid var(--border); border-right: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 10; white-space: nowrap; }
+        
+        td { border-bottom: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; padding: 0; }
+        td:first-child { background: #fff; position: sticky; left: 0; z-index: 5; border-right: 2px solid var(--border); }
+        
+        /* Input dalam tabel (Seamless) */
+        td input { width: 100%; border: none; padding: 12px; background: transparent; font-size: 13px; outline: none; }
+        td input:focus { background: #f0f9ff; box-shadow: inset 0 0 0 2px var(--accent); }
+        td input[type="number"] { text-align: center; font-weight: 600; }
+        
+        /* Rata-rata Column */
+        .col-avg { background: #f0fdf4; font-weight: bold; color: var(--success); text-align: center; }
+        
+        /* MODAL */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 30px; border-radius: 12px; width: 500px; max-width: 90%; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        textarea.bulk-input { width: 100%; height: 200px; padding: 15px; border: 1px solid var(--border); border-radius: 8px; margin: 15px 0; font-family: monospace; font-size: 13px; }
+
+        /* SETTINGS BAR (Toggle Columns) */
+        .settings-bar { padding: 10px 20px; background: #f1f5f9; border-bottom: 1px solid var(--border); display: flex; gap: 15px; font-size: 12px; }
+        .toggle-label { display: flex; align-items: center; gap: 5px; cursor: pointer; user-select: none; }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { padding: 0; background: white; }
+            .card { border: none; box-shadow: none; }
+            .table-wrapper { max-height: none; }
+            td input { border: none; background: transparent; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="brand-wrapper">
-        <div class="brand-box">
-            <div class="brand-name">Teaching Assistant</div>
-            <div class="brand-sub">Rencana Pembelajaran Mendalam</div>
-            <div class="brand-tagline">“Menuntun Kodrat Anak”</div>
+    <div class="header-section no-print">
+        <div class="brand">
+            <h1>SiPandu Nilai</h1>
+            <p>Rekapitulasi Nilai & Asesmen • V.2.0</p>
         </div>
-        <div class="khd-quote">“Mendidik adalah menuntun segala kodrat yang ada pada anak-anak.”</div>
+        <div style="display:flex; gap:10px;">
+            <button class="btn btn-outline" onclick="downloadExcel()">📊 Download Excel</button>
+            <button class="btn btn-primary" onclick="window.print()">🖨️ Cetak / PDF</button>
+        </div>
     </div>
 
-    <div class="header">
-        <h1 style="margin:0; font-size:22px;">DOKUMENTASI ASESMEN PEMBELAJARAN</h1>
-        <p style="margin:5px 0; color:#64748b;">Edisi Realistis • Kurikulum Merdeka</p>
-    </div>
+    <div class="card">
+        <div class="controls no-print">
+            <div class="control-group">
+                <div>
+                    <label>Mata Pelajaran</label><br>
+                    <input type="text" id="mapel" placeholder="Contoh: Matematika" oninput="saveData()" style="width:150px;">
+                </div>
+                <div>
+                    <label>Kelas</label><br>
+                    <input type="text" id="kelas" placeholder="IV-A" oninput="saveData()" style="width:80px;">
+                </div>
+            </div>
 
-    <div class="meta-grid">
-        <div><label>Sekolah</label><input type="text" id="cfg_sekolah" placeholder="Nama Sekolah"></div>
-        <div>
-            <label>Mata Pelajaran</label>
-            <select id="cfg_mapel">
-                <option>Pendidikan Pancasila</option>
-                <option>Bahasa Indonesia</option>
-                <option>Matematika</option>
-                <option>IPAS</option>
-                <option>PJOK</option>
-                <option>Seni Budaya</option>
-                <option>Bahasa Inggris</option>
-                <option>P5 / Kokurikuler</option>
-            </select>
+            <div class="control-group">
+                <button class="btn btn-success" onclick="openModal()">+ Input Siswa (Massal)</button>
+                <button class="btn btn-outline" onclick="addColumn()">+ Kolom Nilai</button>
+                <button class="btn btn-danger" onclick="resetData()">Reset Semua</button>
+            </div>
         </div>
-        <div><label>Guru Pengampu</label><input type="text" id="cfg_guru"></div>
-    </div>
 
-    <div id="listView">
-        <div class="section-header">
-            <span>DAFTAR NILAI</span>
-            <button class="btn btn-add" onclick="addStudent()">+ Tambah Siswa</button>
+        <div class="settings-bar no-print">
+            <span style="font-weight:bold; color:var(--text-light);">TAMPILKAN KOLOM:</span>
+            <label class="toggle-label"><input type="checkbox" id="togSikap" onchange="renderTable()" checked> Sikap</label>
+            <label class="toggle-label"><input type="checkbox" id="togDesc" onchange="renderTable()" checked> Deskripsi/Catatan</label>
+            <label class="toggle-label"><input type="checkbox" id="togRank" onchange="renderTable()"> Perangkingan (Opsional)</label>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th width="40">No</th>
-                    <th style="text-align:left">Nama Siswa</th>
-                    <th width="100">Rerata Harian</th>
-                    <th width="100">ASAS</th>
-                    <th width="100">NA RAPOR</th>
-                    <th width="80" class="no-print">Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="studentBody"></tbody>
-        </table>
-    </div>
 
-    <div class="nilai-dasar-box">
-        <div class="nilai-title">Nilai Dasar Pendidik</div>
-        <div class="nilai-grid">
-            <div class="nilai-item">Integritas</div>
-            <div class="nilai-item">Profesional</div>
-            <div class="nilai-item">Berpihak pada Anak</div>
-            <div class="nilai-item">Reflektif</div>
-            <div class="nilai-item">Manusiawi</div>
+        <div class="table-wrapper">
+            <table id="gradeTable">
+                <thead>
+                    <tr id="tableHead">
+                        </tr>
+                </thead>
+                <tbody id="tableBody">
+                    </tbody>
+            </table>
         </div>
-        <p class="footer-text">Panduan Administrasi • V.1.0 - Teaching Assistant</p>
+    </div>
+    
+    <div class="no-print" style="text-align:center; color:var(--text-light); font-size:12px; margin-top:20px;">
+        Tips: Gunakan tombol <b>TAB</b> di keyboard untuk pindah antar kolom nilai dengan cepat. Data tersimpan otomatis.
+    </div>
+</div>
+
+<div id="studentModal" class="modal">
+    <div class="modal-content">
+        <h3 style="margin-top:0">Input Siswa Massal</h3>
+        <p style="font-size:13px; color:var(--text-light);">Copy nama siswa dari Excel/Word, lalu Paste di bawah ini. Satu baris = satu siswa.</p>
+        <textarea id="bulkText" class="bulk-input" placeholder="Ahmad&#10;Budi&#10;Citra&#10;..."></textarea>
+        <div style="text-align:right; gap:10px; display:flex; justify-content:flex-end;">
+            <button class="btn btn-outline" onclick="closeModal()">Batal</button>
+            <button class="btn btn-primary" onclick="processBulk()">Proses Data</button>
+        </div>
     </div>
 </div>
 
 <script>
-    let db = JSON.parse(localStorage.getItem('ta_db')) || { data: [] };
-    
-    function save() { localStorage.setItem('ta_db', JSON.stringify(db)); }
+    // DATA STRUCTURE
+    // Kita pakai struktur yang fleksibel
+    let db = JSON.parse(localStorage.getItem('sipandu_nilai_v2')) || {
+        meta: { mapel: '', kelas: '' },
+        columns: ['TP 1', 'TP 2', 'STS', 'SAS'], // Default columns
+        students: [] // Array of { name: 'Ahmad', scores: { 'TP 1': 80 }, sikap: '', desc: '' }
+    };
 
-    function renderList() {
-        let html = '';
-        db.data.forEach((s, i) => {
-            html += `<tr>
-                <td>${i+1}</td>
-                <td style="text-align:left">${s.name}</td>
-                <td>-</td><td>-</td><td>-</td>
-                <td class="no-print"><button class="btn btn-del" onclick="del(${i})">×</button></td>
-            </tr>`;
+    window.onload = () => {
+        document.getElementById('mapel').value = db.meta.mapel;
+        document.getElementById('kelas').value = db.meta.kelas;
+        renderTable();
+    };
+
+    function saveData() {
+        db.meta.mapel = document.getElementById('mapel').value;
+        db.meta.kelas = document.getElementById('kelas').value;
+        localStorage.setItem('sipandu_nilai_v2', JSON.stringify(db));
+    }
+
+    // --- RENDERING ENGINE ---
+    function renderTable() {
+        const thead = document.getElementById('tableHead');
+        const tbody = document.getElementById('tableBody');
+        const showSikap = document.getElementById('togSikap').checked;
+        const showDesc = document.getElementById('togDesc').checked;
+        const showRank = document.getElementById('togRank').checked;
+
+        // 1. Render Headers
+        let hHtml = `<th style="width:40px">No</th><th style="min-width:200px">Nama Siswa</th>`;
+        
+        // Dynamic Grade Columns
+        db.columns.forEach((col, idx) => {
+            hHtml += `<th style="min-width:80px">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span contenteditable="true" onblur="renameColumn(${idx}, this.innerText)">${col}</span>
+                    <span class="no-print" onclick="removeColumn(${idx})" style="cursor:pointer; color:#ef4444; margin-left:5px;">×</span>
+                </div>
+            </th>`;
         });
-        document.getElementById('studentBody').innerHTML = html;
+
+        // Fixed Columns
+        hHtml += `<th style="width:80px; background:#f0fdf4;">Rata-rata</th>`;
+        if (showSikap) hHtml += `<th style="min-width:100px">Sikap</th>`;
+        if (showDesc) hHtml += `<th style="min-width:200px">Catatan</th>`;
+        if (showRank) hHtml += `<th style="width:60px">Rank</th>`;
+        hHtml += `<th class="no-print" style="width:40px"></th>`; // Delete btn
+
+        thead.innerHTML = hHtml;
+
+        // 2. Render Body
+        let bHtml = '';
+        
+        // Calculate ranks if needed
+        let sortedIndices = [];
+        if(showRank) {
+            const scores = db.students.map((s, i) => ({ idx: i, avg: calculateAvg(s.scores) }));
+            scores.sort((a, b) => b.avg - a.avg);
+            sortedIndices = scores.map(x => x.idx);
+        }
+
+        db.students.forEach((s, i) => {
+            let rowHtml = `<tr>`;
+            rowHtml += `<td style="text-align:center; background:#f8fafc;">${i+1}</td>`;
+            rowHtml += `<td><input type="text" value="${s.name}" onchange="updateStudent(${i}, 'name', this.value)" style="font-weight:600;"></td>`;
+
+            // Grade Inputs
+            db.columns.forEach(col => {
+                const val = s.scores[col] || '';
+                rowHtml += `<td><input type="number" value="${val}" onchange="updateScore(${i}, '${col}', this.value)" placeholder="-"></td>`;
+            });
+
+            // Average (Auto Calc)
+            const avg = calculateAvg(s.scores);
+            const avgDisplay = avg > 0 ? avg : '-';
+            rowHtml += `<td class="col-avg">${avgDisplay}</td>`;
+
+            // Optional Columns
+            if (showSikap) {
+                rowHtml += `<td>
+                    <select onchange="updateStudent(${i}, 'sikap', this.value)" style="border:none; width:100%; background:transparent;">
+                        <option value="">-</option>
+                        <option value="SB" ${s.sikap=='SB'?'selected':''}>SB</option>
+                        <option value="B" ${s.sikap=='B'?'selected':''}>B</option>
+                        <option value="C" ${s.sikap=='C'?'selected':''}>C</option>
+                        <option value="K" ${s.sikap=='K'?'selected':''}>K</option>
+                    </select>
+                </td>`;
+            }
+            if (showDesc) {
+                rowHtml += `<td><input type="text" value="${s.desc||''}" onchange="updateStudent(${i}, 'desc', this.value)" placeholder="Catatan..."></td>`;
+            }
+            if (showRank) {
+                const rank = sortedIndices.indexOf(i) + 1;
+                rowHtml += `<td style="text-align:center; font-weight:bold;">#${rank}</td>`;
+            }
+
+            // Delete Action
+            rowHtml += `<td class="no-print" style="text-align:center;">
+                <button onclick="deleteStudent(${i})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight:bold;">×</button>
+            </td>`;
+
+            rowHtml += `</tr>`;
+            bHtml += rowHtml;
+        });
+
+        tbody.innerHTML = bHtml;
     }
 
-    function addStudent() {
-        let n = prompt("Nama Siswa:");
-        if (n) { db.data.push({name: n}); save(); renderList(); }
+    // --- LOGIC ---
+    function calculateAvg(scoresObj) {
+        let sum = 0;
+        let count = 0;
+        db.columns.forEach(col => {
+            const val = parseFloat(scoresObj[col]);
+            if (!isNaN(val)) {
+                sum += val;
+                count++;
+            }
+        });
+        return count === 0 ? 0 : Math.round(sum / count);
     }
 
-    function del(i) { if(confirm("Hapus?")) { db.data.splice(i,1); save(); renderList(); } }
+    function updateScore(idx, col, val) {
+        db.students[idx].scores[col] = val;
+        saveData();
+        renderTable(); // Re-render to update average & rank
+    }
 
-    renderList();
+    function updateStudent(idx, field, val) {
+        db.students[idx][field] = val;
+        saveData();
+    }
+
+    function addColumn() {
+        const name = prompt("Nama Kolom Nilai (misal: PH 3, Tugas, Praktik):");
+        if (name && !db.columns.includes(name)) {
+            db.columns.push(name);
+            saveData();
+            renderTable();
+        }
+    }
+
+    function renameColumn(idx, newVal) {
+        const oldName = db.columns[idx];
+        if (newVal && newVal !== oldName) {
+            db.columns[idx] = newVal;
+            // Migrate data
+            db.students.forEach(s => {
+                s.scores[newVal] = s.scores[oldName];
+                delete s.scores[oldName];
+            });
+            saveData();
+        }
+    }
+
+    function removeColumn(idx) {
+        if (confirm(`Hapus kolom ${db.columns[idx]} beserta isinya?`)) {
+            const colName = db.columns[idx];
+            db.columns.splice(idx, 1);
+            db.students.forEach(s => delete s.scores[colName]);
+            saveData();
+            renderTable();
+        }
+    }
+
+    function deleteStudent(idx) {
+        if (confirm("Hapus siswa ini?")) {
+            db.students.splice(idx, 1);
+            saveData();
+            renderTable();
+        }
+    }
+
+    function resetData() {
+        if (confirm("Yakin ingin menghapus SEMUA data?")) {
+            db.students = [];
+            db.columns = ['TP 1', 'TP 2', 'STS', 'SAS'];
+            saveData();
+            renderTable();
+        }
+    }
+
+    // --- MASS INPUT HANDLER ---
+    function openModal() { document.getElementById('studentModal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('studentModal').style.display = 'none'; }
+    
+    function processBulk() {
+        const text = document.getElementById('bulkText').value;
+        const lines = text.split('\n');
+        let count = 0;
+        lines.forEach(line => {
+            const name = line.trim();
+            if (name) {
+                db.students.push({
+                    name: name,
+                    scores: {},
+                    sikap: '',
+                    desc: ''
+                });
+                count++;
+            }
+        });
+        document.getElementById('bulkText').value = '';
+        closeModal();
+        saveData();
+        renderTable();
+        alert(`Berhasil menambahkan ${count} siswa.`);
+    }
+
+    // --- EXPORT TO EXCEL ---
+    function downloadExcel() {
+        // Prepare Data for SheetJS
+        const data = [];
+        
+        // Header Row
+        const header = ["No", "Nama Siswa", ...db.columns, "Rata-rata", "Sikap", "Catatan"];
+        data.push(header);
+
+        // Rows
+        db.students.forEach((s, i) => {
+            const row = [i + 1, s.name];
+            db.columns.forEach(col => row.push(s.scores[col] || ''));
+            row.push(calculateAvg(s.scores));
+            row.push(s.sikap || '');
+            row.push(s.desc || '');
+            data.push(row);
+        });
+
+        // Create Workbook
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Nilai");
+        XLSX.writeFile(wb, `Nilai_${db.meta.mapel || 'Mapel'}.xlsx`);
+    }
 </script>
+
 </body>
 </html>
