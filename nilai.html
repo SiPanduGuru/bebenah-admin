@@ -3,395 +3,452 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiPandu Nilai - Rekapitulasi Cerdas</title>
+    <title>SiPandu Nilai v3.0 - Flow Master</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         :root {
-            /* THEME: Soft Slate (Professional & Calm) */
-            --bg-main: #f1f5f9;
-            --card-bg: #ffffff;
-            --header-bg: #1e293b; /* Sidebar color from previous module */
-            --text-main: #334155;
-            --text-light: #64748b;
+            /* THEME: Slate & Blue (Professional) */
+            --bg: #f1f5f9;
+            --sidebar: #0f172a;
+            --white: #ffffff;
+            --text: #334155;
             --border: #cbd5e1;
             
-            --primary: #2563eb;
-            --accent: #0ea5e9;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
+            --primary: #2563eb;       /* Biru Utama */
+            --accent: #0ea5e9;        /* Cyan */
+            --success: #10b981;       /* Hijau */
+            --danger: #ef4444;        /* Merah */
+            --warning: #f59e0b;       /* Kuning */
         }
 
         * { box-sizing: border-box; font-family: 'Segoe UI', Inter, sans-serif; }
         
-        body { margin: 0; background: var(--bg-main); color: var(--text-main); font-size: 14px; padding: 30px; }
-        .container { max-width: 1200px; margin: auto; }
+        body { margin: 0; display: flex; background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
 
-        /* HEADER */
-        .header-section { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
-        .brand h1 { margin: 0; font-size: 24px; color: var(--header-bg); font-weight: 800; letter-spacing: -0.5px; }
-        .brand p { margin: 5px 0 0 0; color: var(--text-light); font-size: 13px; }
+        /* SIDEBAR (NAVIGASI) */
+        .sidebar { 
+            width: 260px; background: var(--sidebar); color: white; 
+            display: flex; flex-direction: column; flex-shrink: 0;
+            border-right: 1px solid #334155;
+        }
+        .brand { padding: 20px; border-bottom: 1px solid #1e293b; }
+        .brand h2 { margin: 0; font-size: 18px; color: var(--accent); }
+        .brand small { opacity: 0.6; font-size: 11px; }
 
-        /* CARD STYLE */
-        .card { background: var(--card-bg); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px; }
+        .class-info { padding: 15px 20px; background: #1e293b; }
+        .class-info label { font-size: 10px; text-transform: uppercase; color: #94a3b8; font-weight: bold; }
+        .class-info input { background: transparent; border: none; color: white; font-weight: bold; font-size: 16px; width: 100%; outline: none; }
+
+        .nav-list { flex: 1; overflow-y: auto; padding: 10px 0; }
+        .nav-group-title { padding: 10px 20px 5px; font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: bold; letter-spacing: 0.5px; }
         
-        /* CONTROLS (Top Bar) */
-        .controls { padding: 20px; background: #fff; border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; }
+        .nav-item { 
+            padding: 10px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            border-left: 3px solid transparent; color: #cbd5e1; transition: 0.2s; font-size: 13px;
+        }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
+        .nav-item.active { background: rgba(37, 99, 235, 0.2); border-left-color: var(--primary); color: white; font-weight: 600; }
         
-        .control-group { display: flex; gap: 10px; align-items: center; }
-        .control-group label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-light); }
+        .sidebar-footer { padding: 20px; border-top: 1px solid #1e293b; }
+        .btn-manage { width: 100%; padding: 10px; background: #334155; border: 1px solid #475569; color: white; border-radius: 6px; cursor: pointer; font-size: 12px; transition: 0.2s; }
+        .btn-manage:hover { background: #475569; border-color: #64748b; }
+        .btn-add-mapel { background: var(--primary); border-color: var(--primary); margin-top: 10px; font-weight: bold; }
+        .btn-add-mapel:hover { background: #1d4ed8; }
+
+        /* MAIN AREA */
+        .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: white; }
         
-        select, input[type="text"] { padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; color: var(--text-main); }
-        
-        /* BUTTONS */
-        .btn { padding: 8px 16px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s; }
+        /* HEADER TOOLBAR */
+        .toolbar { 
+            padding: 15px 25px; border-bottom: 1px solid var(--border); 
+            display: flex; justify-content: space-between; align-items: center; background: #fff;
+        }
+        .page-title h1 { margin: 0; font-size: 20px; color: var(--primary); }
+        .page-title span { font-size: 12px; color: var(--text); opacity: 0.7; }
+
+        .actions { display: flex; gap: 10px; }
+        .btn { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 6px; }
         .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: #1d4ed8; }
         .btn-success { background: var(--success); color: white; }
-        .btn-outline { background: white; border: 1px solid var(--border); color: var(--text-main); }
+        .btn-outline { background: white; border: 1px solid var(--border); color: var(--text); }
         .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
-        .btn-danger { background: #fee2e2; color: var(--danger); }
         
-        /* DATA TABLE (The Excel Feel) */
-        .table-wrapper { overflow-x: auto; max-height: 70vh; }
-        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        /* TABLE AREA (EXCEL GRID) */
+        .grid-container { flex: 1; overflow: auto; padding: 0; position: relative; }
         
-        th { background: #f8fafc; padding: 12px; text-align: left; font-size: 12px; font-weight: 700; color: var(--text-main); border-bottom: 2px solid var(--border); border-right: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 10; white-space: nowrap; }
+        table { border-collapse: separate; border-spacing: 0; min-width: 100%; }
         
-        td { border-bottom: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; padding: 0; }
-        td:first-child { background: #fff; position: sticky; left: 0; z-index: 5; border-right: 2px solid var(--border); }
+        thead { position: sticky; top: 0; z-index: 10; }
+        th { 
+            background: #f8fafc; color: var(--text); padding: 12px 10px; 
+            font-size: 12px; font-weight: 700; text-align: left; border-bottom: 2px solid var(--border); border-right: 1px solid #e2e8f0; 
+            white-space: nowrap;
+        }
         
-        /* Input dalam tabel (Seamless) */
-        td input { width: 100%; border: none; padding: 12px; background: transparent; font-size: 13px; outline: none; }
-        td input:focus { background: #f0f9ff; box-shadow: inset 0 0 0 2px var(--accent); }
-        td input[type="number"] { text-align: center; font-weight: 600; }
+        /* Sticky First Columns */
+        th:nth-child(1), td:nth-child(1) { position: sticky; left: 0; z-index: 11; width: 40px; text-align: center; border-right: 1px solid #cbd5e1; }
+        th:nth-child(2), td:nth-child(2) { position: sticky; left: 40px; z-index: 11; min-width: 250px; border-right: 2px solid #cbd5e1; }
+        td:nth-child(1), td:nth-child(2) { background: #fff; z-index: 5; }
+        th:nth-child(1), th:nth-child(2) { z-index: 15; background: #f1f5f9; }
+
+        td { border-bottom: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; padding: 0; height: 35px; }
         
-        /* Rata-rata Column */
-        .col-avg { background: #f0fdf4; font-weight: bold; color: var(--success); text-align: center; }
+        /* Clean Input Cells */
+        td input { 
+            width: 100%; height: 100%; border: none; padding: 0 10px; 
+            font-size: 13px; outline: none; background: transparent; 
+            text-align: center;
+        }
+        td input:focus { background: #eff6ff; box-shadow: inset 0 0 0 2px var(--primary); }
+        td:nth-child(2) input { text-align: left; font-weight: 500; } /* Nama Siswa Align Left */
         
+        /* Column Header Editable */
+        .col-header { display: flex; align-items: center; justify-content: space-between; gap: 5px; }
+        .col-name { cursor: text; padding: 2px 5px; border-radius: 4px; }
+        .col-name:hover { background: #e2e8f0; }
+        .col-del { color: #ef4444; cursor: pointer; font-size: 14px; visibility: hidden; }
+        th:hover .col-del { visibility: visible; }
+
+        /* Average Column */
+        .cell-avg { background: #f0fdf4; font-weight: bold; color: #166534; display: flex; align-items: center; justify-content: center; height: 100%; }
+
         /* MODAL */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; padding: 30px; border-radius: 12px; width: 500px; max-width: 90%; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-        textarea.bulk-input { width: 100%; height: 200px; padding: 15px; border: 1px solid var(--border); border-radius: 8px; margin: 15px 0; font-family: monospace; font-size: 13px; }
-
-        /* SETTINGS BAR (Toggle Columns) */
-        .settings-bar { padding: 10px 20px; background: #f1f5f9; border-bottom: 1px solid var(--border); display: flex; gap: 15px; font-size: 12px; }
-        .toggle-label { display: flex; align-items: center; gap: 5px; cursor: pointer; user-select: none; }
+        .modal-content { background: white; padding: 25px; border-radius: 12px; width: 450px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        textarea { width: 100%; height: 150px; padding: 10px; border: 1px solid var(--border); border-radius: 6px; margin: 15px 0; font-family: monospace; }
+        
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #1e293b; color: white; padding: 10px 20px; border-radius: 50px; font-size: 12px; display: none; z-index: 2000; }
 
         @media print {
-            .no-print { display: none !important; }
-            body { padding: 0; background: white; }
-            .card { border: none; box-shadow: none; }
-            .table-wrapper { max-height: none; }
-            td input { border: none; background: transparent; }
+            .sidebar, .toolbar, .no-print { display: none; }
+            .grid-container { overflow: visible; }
+            td input { text-align: center; }
+            td:nth-child(2) input { text-align: left; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header-section no-print">
-        <div class="brand">
-            <h1>SiPandu Nilai</h1>
-            <p>Rekapitulasi Nilai & Asesmen • V.2.0</p>
-        </div>
-        <div style="display:flex; gap:10px;">
-            <button class="btn btn-outline" onclick="downloadExcel()">📊 Download Excel</button>
-            <button class="btn btn-primary" onclick="window.print()">🖨️ Cetak / PDF</button>
-        </div>
+<div class="toast" id="toast">Data Tersimpan ✓</div>
+
+<div class="sidebar">
+    <div class="brand">
+        <h2>SiPandu Nilai</h2>
+        <small>V 3.0 • Flow Master</small>
     </div>
-
-    <div class="card">
-        <div class="controls no-print">
-            <div class="control-group">
-                <div>
-                    <label>Mata Pelajaran</label><br>
-                    <input type="text" id="mapel" placeholder="Contoh: Matematika" oninput="saveData()" style="width:150px;">
-                </div>
-                <div>
-                    <label>Kelas</label><br>
-                    <input type="text" id="kelas" placeholder="IV-A" oninput="saveData()" style="width:80px;">
-                </div>
-            </div>
-
-            <div class="control-group">
-                <button class="btn btn-success" onclick="openModal()">+ Input Siswa (Massal)</button>
-                <button class="btn btn-outline" onclick="addColumn()">+ Kolom Nilai</button>
-                <button class="btn btn-danger" onclick="resetData()">Reset Semua</button>
-            </div>
-        </div>
-
-        <div class="settings-bar no-print">
-            <span style="font-weight:bold; color:var(--text-light);">TAMPILKAN KOLOM:</span>
-            <label class="toggle-label"><input type="checkbox" id="togSikap" onchange="renderTable()" checked> Sikap</label>
-            <label class="toggle-label"><input type="checkbox" id="togDesc" onchange="renderTable()" checked> Deskripsi/Catatan</label>
-            <label class="toggle-label"><input type="checkbox" id="togRank" onchange="renderTable()"> Perangkingan (Opsional)</label>
-        </div>
-
-        <div class="table-wrapper">
-            <table id="gradeTable">
-                <thead>
-                    <tr id="tableHead">
-                        </tr>
-                </thead>
-                <tbody id="tableBody">
-                    </tbody>
-            </table>
-        </div>
+    <div class="class-info">
+        <label>KELAS / FASE</label>
+        <input type="text" id="className" value="Kelas IV - B" onchange="updateMeta()">
     </div>
     
-    <div class="no-print" style="text-align:center; color:var(--text-light); font-size:12px; margin-top:20px;">
-        Tips: Gunakan tombol <b>TAB</b> di keyboard untuk pindah antar kolom nilai dengan cepat. Data tersimpan otomatis.
+    <div class="nav-list" id="mapelList">
+        </div>
+
+    <div class="sidebar-footer">
+        <button class="btn-manage" onclick="openStudentModal()">👥 Kelola Siswa (Global)</button>
+        <button class="btn-manage btn-add-mapel" onclick="addMapel()">+ Mapel Baru</button>
+    </div>
+</div>
+
+<div class="main">
+    <div class="toolbar">
+        <div class="page-title">
+            <h1 id="headerMapel">Mapel</h1>
+            <span id="headerDesc">Rekapitulasi Nilai Kelas</span>
+        </div>
+        <div class="actions">
+            <button class="btn btn-outline" onclick="addColumn()">+ Kolom Nilai</button>
+            <button class="btn btn-primary" onclick="downloadExcel()">📥 Download Excel</button>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <table id="dataTable">
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
     </div>
 </div>
 
 <div id="studentModal" class="modal">
     <div class="modal-content">
-        <h3 style="margin-top:0">Input Siswa Massal</h3>
-        <p style="font-size:13px; color:var(--text-light);">Copy nama siswa dari Excel/Word, lalu Paste di bawah ini. Satu baris = satu siswa.</p>
-        <textarea id="bulkText" class="bulk-input" placeholder="Ahmad&#10;Budi&#10;Citra&#10;..."></textarea>
-        <div style="text-align:right; gap:10px; display:flex; justify-content:flex-end;">
-            <button class="btn btn-outline" onclick="closeModal()">Batal</button>
-            <button class="btn btn-primary" onclick="processBulk()">Proses Data</button>
+        <h3 style="margin-top:0">Database Siswa (Global)</h3>
+        <p style="font-size:12px; color:#64748b;">
+            Masukkan daftar siswa satu kelas di sini. <br>
+            Daftar ini akan otomatis dipakai di <b>SEMUA MATA PELAJARAN</b>.
+        </p>
+        <textarea id="bulkStudents" placeholder="Ahmad&#10;Budi&#10;Citra&#10;Dinda..."></textarea>
+        <div style="text-align:right; display:flex; justify-content:flex-end; gap:10px;">
+            <button class="btn btn-outline" onclick="document.getElementById('studentModal').style.display='none'">Batal</button>
+            <button class="btn btn-primary" onclick="saveStudents()">Simpan & Sinkron</button>
         </div>
     </div>
 </div>
 
 <script>
-    // DATA STRUCTURE
-    // Kita pakai struktur yang fleksibel
-    let db = JSON.parse(localStorage.getItem('sipandu_nilai_v2')) || {
-        meta: { mapel: '', kelas: '' },
-        columns: ['TP 1', 'TP 2', 'STS', 'SAS'], // Default columns
-        students: [] // Array of { name: 'Ahmad', scores: { 'TP 1': 80 }, sikap: '', desc: '' }
+    // --- DATABASE AWAL (MAPEL WAJIB + TAMBAHAN) ---
+    // Struktur default sesuai request: Agama, Pancasila, B.Indo, MTK, IPAS, Seni, PJOK, Inggris, Mulok
+    const defaultMapels = {
+        'Pend. Agama & BP': { columns: ['TP 1', 'TP 2', 'Sumatif'], scores: {} },
+        'Pend. Pancasila': { columns: ['TP 1', 'TP 2', 'Sumatif'], scores: {} },
+        'Bahasa Indonesia': { columns: ['Menyimak', 'Membaca', 'Menulis'], scores: {} },
+        'Matematika': { columns: ['Bab 1', 'Bab 2', 'Sumatif'], scores: {} },
+        'IPAS': { columns: ['Bab 1', 'Bab 2', 'Proyek'], scores: {} },
+        'Seni & Budaya': { columns: ['Karya', 'Praktik', 'Teori'], scores: {} },
+        'PJOK': { columns: ['Praktik', 'Teori', 'Kesehatan'], scores: {} },
+        'Bahasa Inggris': { columns: ['Unit 1', 'Unit 2', 'Sumatif'], scores: {} },
+        'Mulok': { columns: ['Tugas', 'Praktik', 'Ujian'], scores: {} }
     };
+
+    // Load DB atau Init Baru
+    let db = JSON.parse(localStorage.getItem('sipandu_v3_plus_db')) || {
+        meta: { className: 'Kelas IV - A' },
+        students: [],
+        mapels: defaultMapels
+    };
+    
+    let activeMapel = Object.keys(db.mapels)[0]; 
 
     window.onload = () => {
-        document.getElementById('mapel').value = db.meta.mapel;
-        document.getElementById('kelas').value = db.meta.kelas;
-        renderTable();
+        document.getElementById('className').value = db.meta.className;
+        renderSidebar();
+        loadMapel(activeMapel);
     };
 
-    function saveData() {
-        db.meta.mapel = document.getElementById('mapel').value;
-        db.meta.kelas = document.getElementById('kelas').value;
-        localStorage.setItem('sipandu_nilai_v2', JSON.stringify(db));
+    function saveDB() {
+        localStorage.setItem('sipandu_v3_plus_db', JSON.stringify(db));
+        showToast();
     }
 
-    // --- RENDERING ENGINE ---
+    // --- LOGIKA SIDEBAR ---
+    function renderSidebar() {
+        const list = document.getElementById('mapelList');
+        list.innerHTML = '';
+        
+        // Render semua mapel yang ada di DB
+        Object.keys(db.mapels).forEach(m => {
+            const div = document.createElement('div');
+            div.className = `nav-item ${m === activeMapel ? 'active' : ''}`;
+            div.onclick = () => loadMapel(m);
+            
+            // Tombol hapus hanya muncul jika bukan mapel yang sedang aktif (untuk keamanan UX)
+            // Tapi user minta bisa edit mapel, jadi kita kasih tombol hapus kecil
+            const delBtn = `<span onclick="event.stopPropagation(); deleteMapel('${m}')" style="font-size:10px; color:#ef4444; opacity:0.6; padding:0 5px;">✕</span>`;
+            
+            div.innerHTML = `<span>${m}</span> ${m !== activeMapel ? delBtn : ''}`;
+            list.appendChild(div);
+        });
+    }
+
+    // Fitur "Add Mapel Kosong Sepuasnya"
+    function addMapel() {
+        const name = prompt("Nama Mata Pelajaran Baru (Bebas):");
+        if (name) {
+            if (db.mapels[name]) {
+                alert("Mapel sudah ada!");
+                return;
+            }
+            // Init mapel baru dengan kolom standar
+            db.mapels[name] = { columns: ['TP 1', 'TP 2', 'Sumatif'], scores: {} };
+            saveDB();
+            renderSidebar();
+            loadMapel(name); // Langsung pindah ke mapel baru
+        }
+    }
+
+    function deleteMapel(name) {
+        if(confirm(`Yakin hapus mapel "${name}"? Data nilai di mapel ini akan hilang permanen.`)) {
+            delete db.mapels[name];
+            // Kalo mapel habis, reset ke default atau kosong
+            if (Object.keys(db.mapels).length === 0) {
+                 db.mapels['Mapel Baru'] = { columns: ['Nilai 1'], scores: {} };
+            }
+            activeMapel = Object.keys(db.mapels)[0];
+            saveDB();
+            renderSidebar();
+            loadMapel(activeMapel);
+        }
+    }
+
+    function updateMeta() {
+        db.meta.className = document.getElementById('className').value;
+        saveDB();
+    }
+
+    // --- LOGIKA TABEL UTAMA ---
+    function loadMapel(name) {
+        activeMapel = name;
+        document.getElementById('headerMapel').innerText = name;
+        renderSidebar(); 
+        renderTable();
+    }
+
     function renderTable() {
         const thead = document.getElementById('tableHead');
         const tbody = document.getElementById('tableBody');
-        const showSikap = document.getElementById('togSikap').checked;
-        const showDesc = document.getElementById('togDesc').checked;
-        const showRank = document.getElementById('togRank').checked;
-
-        // 1. Render Headers
-        let hHtml = `<th style="width:40px">No</th><th style="min-width:200px">Nama Siswa</th>`;
         
-        // Dynamic Grade Columns
-        db.columns.forEach((col, idx) => {
-            hHtml += `<th style="min-width:80px">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span contenteditable="true" onblur="renameColumn(${idx}, this.innerText)">${col}</span>
-                    <span class="no-print" onclick="removeColumn(${idx})" style="cursor:pointer; color:#ef4444; margin-left:5px;">×</span>
+        // Safety check jika mapel dihapus tapi masih di-load
+        if (!db.mapels[activeMapel]) {
+            activeMapel = Object.keys(db.mapels)[0];
+        }
+        const data = db.mapels[activeMapel];
+
+        // 1. Header
+        let hHtml = `<tr><th>No</th><th>Nama Siswa</th>`;
+        data.columns.forEach((col, idx) => {
+            hHtml += `<th>
+                <div class="col-header">
+                    <span class="col-name" contenteditable="true" onblur="renameCol(${idx}, this.innerText)">${col}</span>
+                    <span class="col-del" onclick="deleteCol(${idx})">×</span>
                 </div>
             </th>`;
         });
-
-        // Fixed Columns
-        hHtml += `<th style="width:80px; background:#f0fdf4;">Rata-rata</th>`;
-        if (showSikap) hHtml += `<th style="min-width:100px">Sikap</th>`;
-        if (showDesc) hHtml += `<th style="min-width:200px">Catatan</th>`;
-        if (showRank) hHtml += `<th style="width:60px">Rank</th>`;
-        hHtml += `<th class="no-print" style="width:40px"></th>`; // Delete btn
-
+        hHtml += `<th style="background:#f0fdf4; color:#15803d;">Rerata</th></tr>`;
         thead.innerHTML = hHtml;
 
-        // 2. Render Body
+        // 2. Body
         let bHtml = '';
-        
-        // Calculate ranks if needed
-        let sortedIndices = [];
-        if(showRank) {
-            const scores = db.students.map((s, i) => ({ idx: i, avg: calculateAvg(s.scores) }));
-            scores.sort((a, b) => b.avg - a.avg);
-            sortedIndices = scores.map(x => x.idx);
-        }
+        if (db.students.length === 0) {
+            bHtml = `<tr><td colspan="${data.columns.length + 3}" style="text-align:center; padding:50px; color:#94a3b8;">
+                <div style="font-size:20px; margin-bottom:10px;">👥</div>
+                Belum ada data siswa.<br>
+                Klik tombol <b>Kelola Siswa</b> di pojok kiri bawah.
+            </td></tr>`;
+        } else {
+            db.students.forEach((studentName, sIdx) => {
+                // Pastikan object score ada
+                if (!data.scores[sIdx]) data.scores[sIdx] = {};
+                const sScores = data.scores[sIdx]; 
+                
+                let row = `<tr>
+                    <td style="text-align:center; background:#f8fafc;">${sIdx + 1}</td>
+                    <td style="padding-left:10px; font-weight:500;">
+                        <input value="${studentName}" readonly style="text-align:left; cursor:default;">
+                    </td>`;
+                
+                let sum = 0, count = 0;
+                
+                data.columns.forEach(col => {
+                    const val = sScores[col] || '';
+                    if(val) { sum += parseFloat(val); count++; }
+                    row += `<td><input type="number" value="${val}" onchange="updateScore(${sIdx}, '${col}', this.value)"></td>`;
+                });
 
-        db.students.forEach((s, i) => {
-            let rowHtml = `<tr>`;
-            rowHtml += `<td style="text-align:center; background:#f8fafc;">${i+1}</td>`;
-            rowHtml += `<td><input type="text" value="${s.name}" onchange="updateStudent(${i}, 'name', this.value)" style="font-weight:600;"></td>`;
-
-            // Grade Inputs
-            db.columns.forEach(col => {
-                const val = s.scores[col] || '';
-                rowHtml += `<td><input type="number" value="${val}" onchange="updateScore(${i}, '${col}', this.value)" placeholder="-"></td>`;
+                const avg = count > 0 ? Math.round(sum/count) : '-';
+                row += `<td><div class="cell-avg">${avg}</div></td></tr>`;
+                bHtml += row;
             });
-
-            // Average (Auto Calc)
-            const avg = calculateAvg(s.scores);
-            const avgDisplay = avg > 0 ? avg : '-';
-            rowHtml += `<td class="col-avg">${avgDisplay}</td>`;
-
-            // Optional Columns
-            if (showSikap) {
-                rowHtml += `<td>
-                    <select onchange="updateStudent(${i}, 'sikap', this.value)" style="border:none; width:100%; background:transparent;">
-                        <option value="">-</option>
-                        <option value="SB" ${s.sikap=='SB'?'selected':''}>SB</option>
-                        <option value="B" ${s.sikap=='B'?'selected':''}>B</option>
-                        <option value="C" ${s.sikap=='C'?'selected':''}>C</option>
-                        <option value="K" ${s.sikap=='K'?'selected':''}>K</option>
-                    </select>
-                </td>`;
-            }
-            if (showDesc) {
-                rowHtml += `<td><input type="text" value="${s.desc||''}" onchange="updateStudent(${i}, 'desc', this.value)" placeholder="Catatan..."></td>`;
-            }
-            if (showRank) {
-                const rank = sortedIndices.indexOf(i) + 1;
-                rowHtml += `<td style="text-align:center; font-weight:bold;">#${rank}</td>`;
-            }
-
-            // Delete Action
-            rowHtml += `<td class="no-print" style="text-align:center;">
-                <button onclick="deleteStudent(${i})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight:bold;">×</button>
-            </td>`;
-
-            rowHtml += `</tr>`;
-            bHtml += rowHtml;
-        });
-
+        }
         tbody.innerHTML = bHtml;
     }
 
-    // --- LOGIC ---
-    function calculateAvg(scoresObj) {
-        let sum = 0;
-        let count = 0;
-        db.columns.forEach(col => {
-            const val = parseFloat(scoresObj[col]);
-            if (!isNaN(val)) {
-                sum += val;
-                count++;
-            }
+    // --- UPDATE NILAI (PERSISTENCE) ---
+    function updateScore(studentIdx, colName, val) {
+        db.mapels[activeMapel].scores[studentIdx][colName] = val;
+        saveDB();
+        // Update rata-rata visual tanpa reload semua
+        const row = document.getElementById('tableBody').rows[studentIdx];
+        let sum = 0, count = 0;
+        db.mapels[activeMapel].columns.forEach(c => {
+            const v = db.mapels[activeMapel].scores[studentIdx][c];
+            if(v) { sum += parseFloat(v); count++; }
         });
-        return count === 0 ? 0 : Math.round(sum / count);
-    }
-
-    function updateScore(idx, col, val) {
-        db.students[idx].scores[col] = val;
-        saveData();
-        renderTable(); // Re-render to update average & rank
-    }
-
-    function updateStudent(idx, field, val) {
-        db.students[idx][field] = val;
-        saveData();
+        row.cells[row.cells.length - 1].querySelector('.cell-avg').innerText = count > 0 ? Math.round(sum/count) : '-';
     }
 
     function addColumn() {
-        const name = prompt("Nama Kolom Nilai (misal: PH 3, Tugas, Praktik):");
-        if (name && !db.columns.includes(name)) {
-            db.columns.push(name);
-            saveData();
+        const name = prompt("Nama Kolom (misal: PH 3):");
+        if(name && !db.mapels[activeMapel].columns.includes(name)) {
+            db.mapels[activeMapel].columns.push(name);
+            saveDB();
             renderTable();
         }
     }
 
-    function renameColumn(idx, newVal) {
-        const oldName = db.columns[idx];
-        if (newVal && newVal !== oldName) {
-            db.columns[idx] = newVal;
-            // Migrate data
-            db.students.forEach(s => {
-                s.scores[newVal] = s.scores[oldName];
-                delete s.scores[oldName];
+    function renameCol(idx, newName) {
+        const oldName = db.mapels[activeMapel].columns[idx];
+        if(newName && newName !== oldName) {
+            db.mapels[activeMapel].columns[idx] = newName;
+            // Migrasi nilai ke nama kolom baru
+            Object.keys(db.mapels[activeMapel].scores).forEach(sIdx => {
+                const sData = db.mapels[activeMapel].scores[sIdx];
+                if(sData[oldName]) {
+                    sData[newName] = sData[oldName];
+                    delete sData[oldName];
+                }
             });
-            saveData();
+            saveDB();
         }
     }
 
-    function removeColumn(idx) {
-        if (confirm(`Hapus kolom ${db.columns[idx]} beserta isinya?`)) {
-            const colName = db.columns[idx];
-            db.columns.splice(idx, 1);
-            db.students.forEach(s => delete s.scores[colName]);
-            saveData();
+    function deleteCol(idx) {
+        if(confirm("Hapus kolom nilai ini?")) {
+            const colName = db.mapels[activeMapel].columns[idx];
+            db.mapels[activeMapel].columns.splice(idx, 1);
+            // Bersihkan data sampah
+            Object.values(db.mapels[activeMapel].scores).forEach(sData => {
+                delete sData[colName];
+            });
+            saveDB();
             renderTable();
         }
     }
 
-    function deleteStudent(idx) {
-        if (confirm("Hapus siswa ini?")) {
-            db.students.splice(idx, 1);
-            saveData();
-            renderTable();
-        }
+    // --- KELOLA SISWA (GLOBAL) ---
+    function openStudentModal() {
+        document.getElementById('bulkStudents').value = db.students.join('\n');
+        document.getElementById('studentModal').style.display = 'flex';
     }
 
-    function resetData() {
-        if (confirm("Yakin ingin menghapus SEMUA data?")) {
-            db.students = [];
-            db.columns = ['TP 1', 'TP 2', 'STS', 'SAS'];
-            saveData();
-            renderTable();
-        }
-    }
-
-    // --- MASS INPUT HANDLER ---
-    function openModal() { document.getElementById('studentModal').style.display = 'flex'; }
-    function closeModal() { document.getElementById('studentModal').style.display = 'none'; }
-    
-    function processBulk() {
-        const text = document.getElementById('bulkText').value;
-        const lines = text.split('\n');
-        let count = 0;
-        lines.forEach(line => {
-            const name = line.trim();
-            if (name) {
-                db.students.push({
-                    name: name,
-                    scores: {},
-                    sikap: '',
-                    desc: ''
-                });
-                count++;
-            }
-        });
-        document.getElementById('bulkText').value = '';
-        closeModal();
-        saveData();
-        renderTable();
-        alert(`Berhasil menambahkan ${count} siswa.`);
-    }
-
-    // --- EXPORT TO EXCEL ---
-    function downloadExcel() {
-        // Prepare Data for SheetJS
-        const data = [];
+    function saveStudents() {
+        const raw = document.getElementById('bulkStudents').value;
+        const list = raw.split('\n').map(s => s.trim()).filter(s => s);
         
-        // Header Row
-        const header = ["No", "Nama Siswa", ...db.columns, "Rata-rata", "Sikap", "Catatan"];
+        if(list.length > 0) {
+            // Cek apakah user menghapus siswa (jumlah berkurang drastis)
+            if(db.students.length > 0 && list.length < db.students.length) {
+                if(!confirm("Jumlah siswa berkurang. Nilai siswa yang dihapus akan hilang dari semua mapel. Lanjut?")) return;
+            }
+
+            db.students = list;
+            saveDB();
+            document.getElementById('studentModal').style.display = 'none';
+            renderTable();
+        }
+    }
+
+    // --- EXPORT ---
+    function downloadExcel() {
+        const data = [];
+        const mapelData = db.mapels[activeMapel];
+        
+        // Header
+        const header = ["No", "Nama Siswa", ...mapelData.columns, "Rata-rata"];
         data.push(header);
 
         // Rows
-        db.students.forEach((s, i) => {
-            const row = [i + 1, s.name];
-            db.columns.forEach(col => row.push(s.scores[col] || ''));
-            row.push(calculateAvg(s.scores));
-            row.push(s.sikap || '');
-            row.push(s.desc || '');
+        db.students.forEach((name, i) => {
+            const row = [i+1, name];
+            let sum=0, count=0;
+            mapelData.columns.forEach(col => {
+                const val = (mapelData.scores[i] && mapelData.scores[i][col]) || '';
+                row.push(val);
+                if(val) { sum+=parseFloat(val); count++; }
+            });
+            row.push(count>0 ? Math.round(sum/count) : '');
             data.push(row);
         });
 
-        // Create Workbook
         const ws = XLSX.utils.aoa_to_sheet(data);
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Nilai");
-        XLSX.writeFile(wb, `Nilai_${db.meta.mapel || 'Mapel'}.xlsx`);
+        XLSX.utils.book_append_sheet(wb, ws, activeMapel.substring(0, 30));
+        XLSX.writeFile(wb, `Nilai_${activeMapel}_${db.meta.className}.xlsx`);
+    }
+
+    function showToast() {
+        const t = document.getElementById('toast');
+        t.style.display = 'block';
+        setTimeout(() => t.style.display = 'none', 1000);
     }
 </script>
 
