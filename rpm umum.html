@@ -2,191 +2,216 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>SiPandu RPM v5.0 - Word & PDF Resmi</title>
+    <title>SiPandu RPM - Sahabat Guru</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        /* --- GAYA TAMPILAN APLIKASI (UI) --- */
         :root {
-            --bg: #f3f4f6;
-            --sidebar: #111827;
-            --primary: #2563eb;
-            --text: #1f2937;
-            --border: #d1d5db;
+            /* TEMA: Bersih, Tenang, Fokus (Biru Langit & Putih) */
+            --bg-body: #f8fafc;
+            --sidebar-bg: #ffffff;
+            --sidebar-border: #e2e8f0;
+            --primary: #3b82f6; /* Biru yang lebih lembut */
+            --primary-hover: #2563eb;
+            --text-dark: #334155;
+            --text-light: #64748b;
         }
 
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); margin: 0; color: var(--text); overflow: hidden; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-body); margin: 0; color: var(--text-dark); overflow: hidden; }
         .wrapper { display: flex; height: 100vh; }
         
-        /* SIDEBAR */
-        .sidebar { width: 280px; background: var(--sidebar); color: #fff; padding: 20px; display: flex; flex-direction: column; flex-shrink: 0; }
-        .logo { font-size: 20px; font-weight: 800; color: #60a5fa; margin-bottom: 5px; letter-spacing: 1px; }
-        .sub-logo { font-size: 11px; color: #9ca3af; margin-bottom: 25px; border-bottom: 1px solid #374151; padding-bottom: 15px; }
+        /* SIDEBAR: Simpel & Bersih */
+        .sidebar { width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--sidebar-border); padding: 25px; display: flex; flex-direction: column; flex-shrink: 0; }
+        .app-title { font-size: 20px; font-weight: 800; color: var(--primary); margin-bottom: 5px; display:flex; align-items:center; gap:10px; }
+        .app-desc { font-size: 12px; color: var(--text-light); margin-bottom: 30px; }
         
-        .mapel-select { width: 100%; padding: 10px; background: #fff; color: #000; border-radius: 6px; margin-bottom: 15px; font-weight: bold; cursor: pointer; }
-        .btn-new { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; margin-bottom: 20px; }
-        .btn-new:hover { background: #1d4ed8; }
+        .mapel-select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; color: var(--text-dark); margin-bottom: 15px; cursor: pointer; font-weight: 600; }
         
-        .list-container { flex: 1; overflow-y: auto; }
-        .rpm-item { padding: 10px; background: rgba(255,255,255,0.05); margin-bottom: 4px; border-radius: 4px; cursor: pointer; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
-        .rpm-item:hover { background: rgba(255,255,255,0.1); }
-        .rpm-item.active { background: #3b82f6; font-weight: bold; border-left: 4px solid #93c5fd; }
+        .btn-new { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2); }
+        .btn-new:hover { background: var(--primary-hover); transform: translateY(-1px); }
 
-        /* AREA UTAMA */
-        .main { flex: 1; padding: 30px; overflow-y: auto; }
-        .paper { max-width: 850px; margin: auto; background: white; padding: 50px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; }
+        .list-area { flex: 1; overflow-y: auto; margin-top: 20px; }
+        .modul-item { padding: 12px; border-radius: 8px; margin-bottom: 5px; cursor: pointer; font-size: 13px; color: var(--text-dark); display: flex; justify-content: space-between; align-items: center; transition: 0.1s; }
+        .modul-item:hover { background: #eff6ff; }
+        .modul-item.active { background: #eff6ff; color: var(--primary); font-weight: 700; border: 1px solid #bfdbfe; }
+        
+        /* AREA KERJA */
+        .main { flex: 1; padding: 0; overflow-y: auto; position: relative; }
+        .work-area { max-width: 800px; margin: 40px auto; background: white; padding: 50px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); min-height: 800px; }
 
-        h1 { margin: 0; font-size: 22px; color: var(--primary); text-transform: uppercase; text-align: center; border-bottom: 2px solid #f3f4f6; padding-bottom: 20px; margin-bottom: 30px; }
-        h2 { font-size: 13px; background: #f9fafb; padding: 8px 10px; border-left: 5px solid var(--primary); margin-top: 30px; margin-bottom: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #374151; }
+        h1 { font-size: 24px; color: var(--text-dark); margin-bottom: 10px; font-weight: 700; border-bottom: 1px solid #f1f5f9; padding-bottom: 20px; }
+        h2 { font-size: 14px; color: var(--primary); margin-top: 40px; margin-bottom: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; border-left: 4px solid var(--primary); padding-left: 10px; }
 
-        /* FORM INPUT */
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .span-3 { grid-column: span 3; }
+        /* INPUT FIELDS: Fokus pada kenyamanan mengetik */
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-size: 12px; font-weight: 600; color: var(--text-light); margin-bottom: 6px; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; background: #f8fafc; font-family: inherit; box-sizing: border-box; transition: 0.2s; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
         .span-2 { grid-column: span 2; }
+        .span-3 { grid-column: span 3; }
 
-        label { display: block; font-size: 11px; font-weight: 700; color: #6b7280; margin-bottom: 4px; text-transform: uppercase; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; font-size: 13px; box-sizing: border-box; background: #f9fafb; font-family: inherit; }
-        input:focus, textarea:focus { outline: 2px solid var(--primary); background: #fff; }
+        /* PERTEMUAN CARD */
+        .meet-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 25px; margin-bottom: 20px; position: relative; }
+        .meet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .meet-title { font-weight: 700; color: var(--text-dark); font-size: 14px; }
+        .btn-del { color: #ef4444; background: none; border: none; font-size: 12px; font-weight: 600; cursor: pointer; padding: 5px 10px; border-radius: 4px; }
+        .btn-del:hover { background: #fef2f2; }
         
-        /* Pertemuan Card */
-        .meet-card { border: 1px solid #e5e7eb; border-radius: 6px; padding: 20px; margin-bottom: 15px; background: #fff; position: relative; }
-        .meet-header { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px dashed #e5e7eb; padding-bottom: 10px; }
-        .step-label { font-size: 11px; font-weight: bold; color: var(--primary); display: block; margin-top: 10px; margin-bottom: 3px; }
+        .step-tag { font-size: 11px; font-weight: 700; color: var(--primary); margin-top: 10px; display: block; }
+        
+        .btn-add-meet { width: 100%; padding: 15px; background: #f8fafc; border: 2px dashed #cbd5e1; color: var(--text-light); border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn-add-meet:hover { border-color: var(--primary); color: var(--primary); background: #eff6ff; }
 
-        /* TOMBOL BAWAH */
-        .btn-add { width: 100%; padding: 12px; border: 2px dashed #d1d5db; background: transparent; color: #6b7280; font-weight: bold; cursor: pointer; border-radius: 6px; }
-        .btn-add:hover { border-color: var(--primary); color: var(--primary); }
-        
-        .footer-action { display: flex; gap: 10px; margin-top: 40px; border-top: 2px solid #f3f4f6; padding-top: 20px; }
-        
-        .btn-big { flex: 1; padding: 15px; border: none; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; }
-        .btn-word { background: #1e40af; } .btn-word:hover { background: #1e3a8a; }
-        .btn-pdf { background: #be123c; } .btn-pdf:hover { background: #9f1239; }
+        /* TOMBOL AKSI */
+        .action-bar { position: sticky; bottom: 0; background: white; padding: 20px 0; border-top: 1px solid #f1f5f9; display: flex; gap: 15px; margin-top: 40px; }
+        .btn-action { flex: 1; padding: 14px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; font-size: 14px; display: flex; justify-content: center; align-items: center; gap: 8px; color: white; transition: 0.2s; }
+        .btn-word { background: #2563eb; } .btn-word:hover { background: #1d4ed8; }
+        .btn-pdf { background: #db2777; } .btn-pdf:hover { background: #be185d; }
 
-        .toast { position: fixed; bottom: 20px; right: 20px; background: #059669; color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; display: none; z-index: 1000; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        
-        /* 8 Dimensi Styles */
-        .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .check-item { background: #f9fafb; padding: 8px; border: 1px solid #e5e7eb; border-radius: 4px; }
+        /* Notifikasi */
+        .toast { position: fixed; bottom: 30px; right: 30px; background: #10b981; color: white; padding: 12px 25px; border-radius: 50px; font-weight: 600; font-size: 13px; display: none; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); z-index: 999; }
+
+        /* Checkbox Grid */
+        .check-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .check-item { background: #f8fafc; padding: 10px 15px; border-radius: 6px; border: 1px solid #f1f5f9; cursor: pointer; display: flex; gap: 10px; align-items: center; font-size: 13px; }
+        .check-item:hover { background: #fff; border-color: var(--primary); }
     </style>
 </head>
 <body>
 
-<div class="toast" id="notif">Data Disimpan Otomatis ✓</div>
+<div class="toast" id="toast">Disimpan otomatis ✓</div>
 
 <div class="wrapper">
     <div class="sidebar">
-        <div class="logo">SiPandu RPM</div>
-        <div class="sub-logo">Administrasi Guru Nasional</div>
+        <div class="app-title">🤖 SiPandu RPM</div>
+        <div class="app-desc">Bantu Guru Siapkan Administrasi</div>
 
-        <label style="color:#9ca3af;">Mata Pelajaran</label>
-        <select class="mapel-select" id="sidebarMapel" onchange="renderSidebar()">
+        <label>Pilih Mata Pelajaran:</label>
+        <select class="mapel-select" id="mapelSelect" onchange="filterList()">
             <option value="Guru Kelas">Guru Kelas (Tematik)</option>
             <option value="Matematika">Matematika</option>
             <option value="Bahasa Indonesia">Bahasa Indonesia</option>
             <option value="IPAS">IPAS</option>
             <option value="Pancasila">Pendidikan Pancasila</option>
-            <option value="PJOK">PJOK</option>
             <option value="Seni">Seni Budaya</option>
+            <option value="PJOK">PJOK</option>
             <option value="Agama">Pendidikan Agama</option>
-            <option value="Mulok">Muatan Lokal</option>
+            <option value="Bahasa Inggris">Bahasa Inggris</option>
         </select>
 
-        <button class="btn-new" onclick="createNew()">+ Modul Ajar Baru</button>
-        <div style="font-size:10px; font-weight:bold; margin-bottom:5px; color:#6b7280; text-transform:uppercase;">Daftar Modul:</div>
-        <div class="list-container" id="modulList"></div>
+        <button class="btn-new" onclick="addModul()">+ Buat Modul Baru</button>
+        
+        <div style="margin-top:25px; font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase;">Daftar Pekerjaan Anda:</div>
+        <div class="list-area" id="modulList"></div>
     </div>
 
     <div class="main">
-        <div id="emptyState" style="text-align:center; padding-top:100px; color:#9ca3af;">
-            <h2>📂 Mulai Bekerja</h2>
-            <p>Pilih Mapel di kiri dan klik tombol "+ Modul Ajar Baru"</p>
+        <div id="welcomeScreen" style="text-align:center; padding-top:150px; color:#94a3b8;">
+            <div style="font-size:40px; margin-bottom:10px;">👋</div>
+            <h2 style="border:none; color:#64748b; margin:0;">Siap Mengajar?</h2>
+            <p>Pilih Mata Pelajaran di samping kiri, lalu klik <b>+ Buat Modul Baru</b>.</p>
         </div>
 
-        <div class="paper" id="formArea" style="display:none;">
-            <h1>Modul Ajar & RPM</h1>
+        <div class="work-area" id="formArea" style="display:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:20px; margin-bottom:30px;">
+                <h1 style="border:none; padding:0; margin:0;">Edit Modul Ajar</h1>
+                <select id="modeBelajar" onchange="switchMode()" style="width:auto; padding:8px; font-size:12px; background:#eff6ff; border-color:#bfdbfe; color:#1e40af; font-weight:bold;">
+                    <option value="Standar">Mode Standar (K13/Merdeka)</option>
+                    <option value="Deep">Mode Deep Learning</option>
+                </select>
+            </div>
             
-            <form id="rpmForm" oninput="debounceSave()">
-                
-                <div style="background:#eff6ff; padding:15px; border-radius:6px; margin-bottom:25px; border:1px solid #bfdbfe;">
-                    <label style="color:#1e40af; font-size:12px;">Mode Langkah Pembelajaran:</label>
-                    <select id="pedagogyMode" onchange="changeMode()" style="background:white; margin-top:5px; font-weight:bold;">
-                        <option value="Standar">Standar (Pendahuluan - Inti - Penutup)</option>
-                        <option value="Deep">Deep Learning (Mindful - Meaningful - Joyful)</option>
-                    </select>
-                </div>
-
-                <h2>I. IDENTITAS MODUL</h2>
+            <form id="mainForm" oninput="autoSave()">
+                <h2>1. Identitas Umum</h2>
                 <div class="grid-3">
-                    <div class="span-3"><label>Nama Sekolah</label><input type="text" id="sekolah" placeholder="SD Negeri..." spellcheck="false"></div>
-                    <div class="span-2"><label>Judul Bab / Materi</label><input type="text" id="bab" oninput="updateLabel(this.value)" spellcheck="false"></div>
-                    <div><label>Mapel</label><input type="text" id="mapel" readonly style="background:#e5e7eb;"></div>
-                    
-                    <div><label>Fase / Kelas</label>
+                    <div class="span-3">
+                        <label>Nama Sekolah</label>
+                        <input type="text" id="sekolah" placeholder="Contoh: SDN 1 Pekalongan">
+                    </div>
+                    <div class="span-2">
+                        <label>Judul Bab / Materi Pokok</label>
+                        <input type="text" id="bab" placeholder="Contoh: Perkalian Bilangan Cacah" oninput="updateSidebarTitle(this.value)">
+                    </div>
+                    <div>
+                        <label>Mapel</label>
+                        <input type="text" id="mapel" readonly style="background:#f1f5f9; color:#64748b;">
+                    </div>
+                    <div>
+                        <label>Fase / Kelas</label>
                         <div style="display:flex; gap:5px;">
-                            <select id="fase" style="width:40%"><option>A</option><option>B</option><option>C</option></select>
-                            <select id="kelas" style="width:60%"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
+                            <select id="fase"><option>A</option><option>B</option><option>C</option></select>
+                            <select id="kelas"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
                         </div>
                     </div>
-                    <div><label>Semester</label><select id="semester"><option>1 (Ganjil)</option><option>2 (Genap)</option></select></div>
-                    <div><label>Tahun Ajaran</label><input type="text" id="tahun" placeholder="2024/2025" spellcheck="false"></div>
-                    
-                    <div class="span-2"><label>Alokasi Waktu</label><input type="text" id="alokasi" placeholder="Cth: 2 JP x 35 Menit" spellcheck="false"></div>
-                    <div><label>Jumlah Siswa</label><input type="text" id="jml_siswa" placeholder="Cth: 28 Anak" spellcheck="false"></div>
+                    <div>
+                        <label>Semester</label>
+                        <select id="semester"><option>1 (Ganjil)</option><option>2 (Genap)</option></select>
+                    </div>
+                    <div>
+                        <label>Alokasi Waktu</label>
+                        <input type="text" id="waktu" placeholder="2 JP x 35 Menit">
+                    </div>
                 </div>
 
-                <h2>II. KOMPONEN INTI</h2>
+                <h2>2. Komponen Inti</h2>
+                <div class="input-group">
+                    <label>Tujuan Pembelajaran</label>
+                    <textarea id="tp" placeholder="Apa yang akan dicapai siswa?"></textarea>
+                </div>
+                
                 <div class="grid-2">
-                    <div class="span-2"><label>Tujuan Pembelajaran (TP)</label><textarea id="tp" style="height:70px;" spellcheck="false"></textarea></div>
-                    <div class="span-2"><label>Sarana & Prasarana (Media)</label><textarea id="sarpras" style="height:50px;" spellcheck="false"></textarea></div>
+                    <div>
+                        <label>Pertanyaan Pemantik</label>
+                        <textarea id="pemantik" placeholder="Pertanyaan awal untuk memancing rasa ingin tahu..."></textarea>
+                    </div>
+                    <div>
+                        <label>Pemahaman Bermakna</label>
+                        <textarea id="bermakna" placeholder="Manfaat materi ini di kehidupan sehari-hari..."></textarea>
+                    </div>
                 </div>
 
-                <h2>III. PROFIL PELAJAR PANCASILA</h2>
-                <div class="check-grid">
-                    <div class="check-item"><label style="display:flex; gap:8px;"><input type="checkbox" id="p_iman"> Beriman & Bertakwa</label></div>
-                    <div class="check-item"><label style="display:flex; gap:8px;"><input type="checkbox" id="p_global"> Berkebinekaan Global</label></div>
-                    <div class="check-item"><label style="display:flex; gap:8px;"><input type="checkbox" id="p_royong"> Bergotong Royong</label></div>
-                    <div class="check-item"><label style="display:flex; gap:8px;"><input type="checkbox" id="p_mandiri"> Mandiri</label></div>
-                    <div class="check-item"><label style="display:flex; gap:8px;"><input type="checkbox" id="p_kritis"> Bernalar Kritis</label></div>
-                    <div class="check-item"><label style="display:flex; gap:8px;"><input type="checkbox" id="p_kreatif"> Kreatif</label></div>
+                <div style="margin-top:15px;">
+                    <label>Profil Pelajar Pancasila</label>
+                    <div class="check-group">
+                        <label class="check-item"><input type="checkbox" id="p1"> Beriman & Bertakwa</label>
+                        <label class="check-item"><input type="checkbox" id="p2"> Berkebinekaan Global</label>
+                        <label class="check-item"><input type="checkbox" id="p3"> Bergotong Royong</label>
+                        <label class="check-item"><input type="checkbox" id="p4"> Mandiri</label>
+                        <label class="check-item"><input type="checkbox" id="p5"> Bernalar Kritis</label>
+                        <label class="check-item"><input type="checkbox" id="p6"> Kreatif</label>
+                    </div>
                 </div>
 
-                <h2>IV. PEMANTIK (DEEP LEARNING)</h2>
-                <div class="grid-2">
-                    <div class="span-2"><label>Pertanyaan Pemantik</label><textarea id="pemantik" placeholder="Pertanyaan terbuka..." spellcheck="false"></textarea></div>
-                    <div class="span-2"><label>Pemahaman Bermakna</label><textarea id="bermakna" placeholder="Manfaat dalam kehidupan nyata..." spellcheck="false"></textarea></div>
-                </div>
+                <h2>3. Langkah Pembelajaran</h2>
+                <div id="meetContainer"></div>
+                <button type="button" class="btn-add-meet" onclick="addMeet()">+ Tambah Pertemuan Berikutnya</button>
 
-                <h2>V. KEGIATAN PEMBELAJARAN</h2>
-                <div id="pertemuanBox"></div>
-                <button type="button" class="btn-add" onclick="addMeet()">+ TAMBAH PERTEMUAN BERIKUTNYA</button>
-
-                <h2>VI. ASESMEN & REFLEKSI</h2>
+                <h2>4. Asesmen & Lampiran</h2>
                 <div class="grid-3">
-                    <div><label>Asesmen Awal</label><textarea id="as_awal" spellcheck="false"></textarea></div>
-                    <div><label>Asesmen Proses</label><textarea id="as_proses" spellcheck="false"></textarea></div>
-                    <div><label>Asesmen Akhir</label><textarea id="as_akhir" spellcheck="false"></textarea></div>
-                    <div class="span-3"><label>Refleksi Guru & Peserta Didik</label><textarea id="refleksi" spellcheck="false"></textarea></div>
+                    <div><label>Asesmen Awal</label><textarea id="as1"></textarea></div>
+                    <div><label>Asesmen Proses</label><textarea id="as2"></textarea></div>
+                    <div><label>Asesmen Akhir</label><textarea id="as3"></textarea></div>
+                </div>
+                <div class="grid-2" style="margin-top:15px;">
+                    <div><label>Refleksi</label><textarea id="refleksi"></textarea></div>
+                    <div><label>Media / Sarpras</label><textarea id="media"></textarea></div>
                 </div>
 
-                <h2>VII. LAMPIRAN</h2>
+                <h2>5. Tanda Tangan</h2>
                 <div class="grid-2">
-                    <div><label>Glosarium</label><textarea id="glosarium" spellcheck="false"></textarea></div>
-                    <div><label>Daftar Pustaka</label><textarea id="pustaka" spellcheck="false"></textarea></div>
+                    <div class="span-2"><label>Tempat, Tanggal</label><input type="text" id="tgl" placeholder="Pekalongan, ..."></div>
+                    <div><label>Kepala Sekolah</label><input type="text" id="ks" placeholder="Nama Lengkap"></div>
+                    <div><label>Guru Kelas/Mapel</label><input type="text" id="guru" placeholder="Nama Lengkap"></div>
+                    <div><label>NIP Kepsek</label><input type="text" id="nip1"></div>
+                    <div><label>NIP Guru</label><input type="text" id="nip2"></div>
                 </div>
 
-                <h2>VIII. TANDA TANGAN</h2>
-                <div class="grid-2">
-                    <div class="span-2"><label>Tempat & Tanggal Surat</label><input type="text" id="tgl_surat" placeholder="Cth: Jakarta, 17 Juli 2024" spellcheck="false"></div>
-                    <div><label>Nama Kepala Sekolah</label><input type="text" id="ks" spellcheck="false"></div>
-                    <div><label>Nama Guru Kelas/Mapel</label><input type="text" id="guru" spellcheck="false"></div>
-                    <div><label>NIP Kepala Sekolah</label><input type="text" id="nip_ks" spellcheck="false"></div>
-                    <div><label>NIP Guru</label><input type="text" id="nip_guru" spellcheck="false"></div>
-                </div>
-
-                <div class="footer-action">
-                    <button type="button" class="btn-big btn-word" onclick="downloadWord()">📄 DOWNLOAD WORD (RESMI)</button>
-                    <button type="button" class="btn-big btn-pdf" onclick="printPDF()">🖨️ DOWNLOAD PDF (RESMI)</button>
+                <div class="action-bar">
+                    <button type="button" class="btn-action btn-word" onclick="downloadDoc()">📄 Unduh Format Word (Bisa Edit)</button>
+                    <button type="button" class="btn-action btn-pdf" onclick="downloadPdf()">🖨️ Cetak PDF (Siap Print)</button>
                 </div>
             </form>
         </div>
@@ -194,293 +219,304 @@
 </div>
 
 <script>
-    // --- DATABASE & LOGIC ---
-    let db = JSON.parse(localStorage.getItem('rpm_final_v5')) || [];
-    let currentId = null;
-    let timer;
+    // PENYIMPANAN DATA
+    let db = JSON.parse(localStorage.getItem('sipandu_rpm_v6')) || [];
+    let activeId = null;
+    let timerSave;
 
-    const MODES = {
-        "Standar": ["PENDAHULUAN", "KEGIATAN INTI", "PENUTUP"],
-        "Deep": ["MINDFUL (Kesadaran)", "MEANINGFUL (Pemahaman)", "JOYFUL (Perayaan)"]
+    // CONFIG MODE
+    const LABELS = {
+        'Standar': ['Kegiatan Pendahuluan', 'Kegiatan Inti', 'Kegiatan Penutup'],
+        'Deep': ['Mindful (Kesadaran)', 'Meaningful (Pemahaman)', 'Joyful (Perayaan)']
     };
 
-    const PROFIL_LABELS = {
-        'p_iman': 'Beriman & Bertakwa', 'p_global': 'Berkebinekaan Global',
-        'p_royong': 'Bergotong Royong', 'p_mandiri': 'Mandiri',
-        'p_kritis': 'Bernalar Kritis', 'p_kreatif': 'Kreatif'
-    };
+    window.onload = () => filterList();
 
-    window.onload = () => { renderSidebar(); };
-
-    function createNew() {
-        const mapel = document.getElementById('sidebarMapel').value;
-        const id = 'mod_' + Date.now();
-        db.push({ id, mapel, bab: 'Modul Baru', meetings: [{t:'', m1:'', m2:'', m3:''}] });
-        saveData();
-        loadModul(id);
-    }
-
-    function loadModul(id) {
-        currentId = id;
-        const d = db.find(x => x.id === id);
-        if(!d) return;
-
-        document.getElementById('emptyState').style.display = 'none';
-        document.getElementById('formArea').style.display = 'block';
-
-        const fields = ['sekolah','bab','mapel','fase','kelas','semester','tahun','alokasi','jml_siswa',
-                        'tp','sarpras','pemantik','bermakna','as_awal','as_proses','as_akhir',
-                        'refleksi','glosarium','pustaka','tgl_surat','ks','guru','nip_ks','nip_guru'];
-        fields.forEach(f => { if(document.getElementById(f)) document.getElementById(f).value = d[f] || ''; });
-
-        document.getElementById('pedagogyMode').value = d.mode || 'Standar';
-        Object.keys(PROFIL_LABELS).forEach(k => {
-            document.getElementById(k).checked = !!d[k];
+    // 1. LOGIKA UTAMA
+    function addModul() {
+        const mapel = document.getElementById('mapelSelect').value;
+        const id = 'doc_' + Date.now();
+        db.push({
+            id: id, mapel: mapel, bab: 'Modul Baru',
+            mode: 'Standar', meetings: [{t:'', a:'', b:'', c:''}]
         });
-
-        const box = document.getElementById('pertemuanBox');
-        box.innerHTML = '';
-        (d.meetings || []).forEach((m, i) => renderMeet(i, m));
-        
-        renderSidebar();
-        changeMode();
+        save();
+        openModul(id);
     }
 
-    function renderMeet(i, data) {
-        const labels = MODES[document.getElementById('pedagogyMode').value];
-        const div = document.createElement('div');
-        div.className = 'meet-card';
-        div.innerHTML = `
-            <div class="meet-header">
-                <strong>PERTEMUAN KE-${i+1}</strong>
-                <button type="button" onclick="delMeet(${i})" style="color:red; border:none; background:none; cursor:pointer; font-weight:bold;">HAPUS</button>
-            </div>
-            <div><label>Topik / Sub-Materi</label><input type="text" class="inp-topik" value="${data.t||''}"></div>
-            <div><span class="step-label l-m1">${labels[0]}</span><textarea class="inp-m1">${data.m1||''}</textarea></div>
-            <div><span class="step-label l-m2">${labels[1]}</span><textarea class="inp-m2" style="height:70px;">${data.m2||''}</textarea></div>
-            <div><span class="step-label l-m3">${labels[2]}</span><textarea class="inp-m3">${data.m3||''}</textarea></div>
-        `;
-        document.getElementById('pertemuanBox').appendChild(div);
+    function openModul(id) {
+        activeId = id;
+        const data = db.find(x => x.id === id);
+        if(!data) return;
+
+        // Tampilkan Form
+        document.getElementById('welcomeScreen').style.display = 'none';
+        document.getElementById('formArea').style.display = 'block';
+        
+        // Isi Form Dasar
+        const map = {
+            'sekolah': data.sekolah, 'bab': data.bab, 'mapel': data.mapel,
+            'fase': data.fase, 'kelas': data.kelas, 'semester': data.semester, 'waktu': data.waktu,
+            'tp': data.tp, 'pemantik': data.pemantik, 'bermakna': data.bermakna,
+            'as1': data.as1, 'as2': data.as2, 'as3': data.as3, 
+            'refleksi': data.refleksi, 'media': data.media,
+            'tgl': data.tgl, 'ks': data.ks, 'guru': data.guru, 'nip1': data.nip1, 'nip2': data.nip2
+        };
+        for (let k in map) { if(document.getElementById(k)) document.getElementById(k).value = map[k] || ''; }
+
+        // Isi Checkbox
+        ['p1','p2','p3','p4','p5','p6'].forEach(k => document.getElementById(k).checked = !!data[k]);
+        
+        // Mode & Pertemuan
+        document.getElementById('modeBelajar').value = data.mode || 'Standar';
+        renderMeets(data);
+        
+        filterList();
+    }
+
+    function renderMeets(data) {
+        const container = document.getElementById('meetContainer');
+        container.innerHTML = '';
+        const lbl = LABELS[data.mode || 'Standar'];
+
+        (data.meetings || []).forEach((m, i) => {
+            const div = document.createElement('div');
+            div.className = 'meet-card';
+            div.innerHTML = `
+                <div class="meet-header">
+                    <span class="meet-title">Pertemuan Ke-${i+1}</span>
+                    <button type="button" class="btn-del" onclick="delMeet(${i})">Hapus</button>
+                </div>
+                <div style="margin-bottom:10px;">
+                    <label>Topik Pertemuan</label>
+                    <input type="text" class="inp-topik" value="${m.t||''}" placeholder="Misal: Diskusi Kelompok">
+                </div>
+                <div style="margin-bottom:10px;">
+                    <span class="step-tag tag-a">${lbl[0]}</span>
+                    <textarea class="inp-a">${m.a||''}</textarea>
+                </div>
+                <div style="margin-bottom:10px;">
+                    <span class="step-tag tag-b">${lbl[1]}</span>
+                    <textarea class="inp-b" style="height:80px;">${m.b||''}</textarea>
+                </div>
+                <div>
+                    <span class="step-tag tag-c">${lbl[2]}</span>
+                    <textarea class="inp-c">${m.c||''}</textarea>
+                </div>
+            `;
+            container.appendChild(div);
+        });
     }
 
     function addMeet() {
-        const d = db.find(x => x.id === currentId);
-        d.meetings.push({t:'', m1:'', m2:'', m3:''});
-        saveData();
-        loadModul(currentId);
+        const d = db.find(x => x.id === activeId);
+        d.meetings.push({t:'', a:'', b:'', c:''});
+        save();
+        renderMeets(d);
     }
 
-    function delMeet(i) {
+    function delMeet(idx) {
         if(!confirm('Hapus pertemuan ini?')) return;
-        const d = db.find(x => x.id === currentId);
-        d.meetings.splice(i, 1);
-        saveData();
-        loadModul(currentId);
+        const d = db.find(x => x.id === activeId);
+        d.meetings.splice(idx, 1);
+        save();
+        renderMeets(d);
     }
 
-    function changeMode() {
-        const mode = document.getElementById('pedagogyMode').value;
-        const labels = MODES[mode];
-        const cards = document.querySelectorAll('.meet-card');
-        cards.forEach(c => {
-            c.querySelector('.l-m1').innerText = labels[0];
-            c.querySelector('.l-m2').innerText = labels[1];
-            c.querySelector('.l-m3').innerText = labels[2];
-        });
-        debounceSave();
+    function switchMode() {
+        const mode = document.getElementById('modeBelajar').value;
+        const lbl = LABELS[mode];
+        document.querySelectorAll('.tag-a').forEach(e => e.innerText = lbl[0]);
+        document.querySelectorAll('.tag-b').forEach(e => e.innerText = lbl[1]);
+        document.querySelectorAll('.tag-c').forEach(e => e.innerText = lbl[2]);
+        autoSave();
     }
 
-    function debounceSave() {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            if(!currentId) return;
-            const d = db.find(x => x.id === currentId);
-            const fields = ['sekolah','bab','mapel','fase','kelas','semester','tahun','alokasi','jml_siswa',
-                            'tp','sarpras','pemantik','bermakna','as_awal','as_proses','as_akhir',
-                            'refleksi','glosarium','pustaka','tgl_surat','ks','guru','nip_ks','nip_guru'];
-            fields.forEach(f => d[f] = document.getElementById(f).value);
+    // 2. SYSTEM SIMPAN & LIST
+    function autoSave() {
+        clearTimeout(timerSave);
+        timerSave = setTimeout(() => {
+            const d = db.find(x => x.id === activeId);
+            if(!d) return;
+
+            // Ambil Data Input
+            const ids = ['sekolah','bab','fase','kelas','semester','waktu','tp','pemantik','bermakna','as1','as2','as3','refleksi','media','tgl','ks','guru','nip1','nip2'];
+            ids.forEach(k => d[k] = document.getElementById(k).value);
             
-            d.mode = document.getElementById('pedagogyMode').value;
-            Object.keys(PROFIL_LABELS).forEach(k => d[k] = document.getElementById(k).checked);
+            ['p1','p2','p3','p4','p5','p6'].forEach(k => d[k] = document.getElementById(k).checked);
+            d.mode = document.getElementById('modeBelajar').value;
 
+            // Ambil Data Pertemuan
             d.meetings = [];
             document.querySelectorAll('.meet-card').forEach(c => {
                 d.meetings.push({
                     t: c.querySelector('.inp-topik').value,
-                    m1: c.querySelector('.inp-m1').value,
-                    m2: c.querySelector('.inp-m2').value,
-                    m3: c.querySelector('.inp-m3').value
+                    a: c.querySelector('.inp-a').value,
+                    b: c.querySelector('.inp-b').value,
+                    c: c.querySelector('.inp-c').value
                 });
             });
-            saveData();
+
+            save();
         }, 800);
     }
 
-    function saveData() {
-        localStorage.setItem('rpm_final_v5', JSON.stringify(db));
-        document.getElementById('notif').style.display='block';
-        setTimeout(()=>document.getElementById('notif').style.display='none', 1000);
-        renderSidebar();
+    function save() {
+        localStorage.setItem('sipandu_rpm_v6', JSON.stringify(db));
+        const t = document.getElementById('toast');
+        t.style.display='block';
+        setTimeout(()=>t.style.display='none', 1000);
+        filterList();
     }
 
-    function renderSidebar() {
-        const filter = document.getElementById('sidebarMapel').value;
+    function filterList() {
+        const cat = document.getElementById('mapelSelect').value;
         const list = document.getElementById('modulList');
         list.innerHTML = '';
-        db.filter(x => x.mapel === filter).forEach(x => {
+        
+        db.filter(x => x.mapel === cat).forEach(item => {
             const div = document.createElement('div');
-            div.className = `rpm-item ${x.id===currentId?'active':''}`;
-            div.innerHTML = `<span>${x.bab}</span> <span onclick="delModul('${x.id}', event)" style="color:#ef4444; font-weight:bold;">×</span>`;
-            div.onclick = (e) => { if(e.target.tagName!=='SPAN'||e.target.innerText!=='×') loadModul(x.id); };
+            div.className = `modul-item ${item.id === activeId ? 'active' : ''}`;
+            div.innerHTML = `
+                <span>${item.bab || 'Tanpa Judul'}</span>
+                <span onclick="delDoc('${item.id}', event)" style="color:#ef4444; font-weight:bold; padding:0 5px;">×</span>
+            `;
+            div.onclick = (e) => { if(e.target.innerText !== '×') openModul(item.id); };
             list.appendChild(div);
         });
     }
-    
-    function updateLabel(v) {
-        const el = document.querySelector('.rpm-item.active span');
-        if(el) el.innerText = v || 'Modul Baru';
+
+    function updateSidebarTitle(val) {
+        const el = document.querySelector('.modul-item.active span');
+        if(el) el.innerText = val || 'Modul Baru';
     }
 
-    function delModul(id, e) {
+    function delDoc(id, e) {
         e.stopPropagation();
-        if(confirm('Hapus permanen?')) {
+        if(confirm('Hapus dokumen ini selamanya?')) {
             db = db.filter(x => x.id !== id);
-            saveData();
-            if(currentId === id) window.location.reload();
+            save();
+            if(activeId === id) window.location.reload();
         }
     }
 
-    // --- GENERATOR WORD DAN PDF CANGGIH ---
-    
-    function getHtmlContent(d, type) {
-        // Helper untuk Word/PDF Content
-        const labels = MODES[d.mode || 'Standar'];
-        let profilTxt = Object.keys(PROFIL_LABELS).filter(k => d[k]).map(k => PROFIL_LABELS[k]).join(', ');
+    // 3. GENERATOR DOKUMEN (INTI)
+    function generateHTML(d, isWord) {
+        const lbl = LABELS[d.mode || 'Standar'];
+        
+        // Profil Pancasila
+        const profils = [
+            d.p1?'Beriman & Bertakwa':null, d.p2?'Kebinekaan Global':null, 
+            d.p3?'Gotong Royong':null, d.p4?'Mandiri':null, 
+            d.p5?'Bernalar Kritis':null, d.p6?'Kreatif':null
+        ].filter(x=>x).join(', ');
 
-        let meetingsHtml = '';
-        (d.meetings || []).forEach((m, i) => {
-            meetingsHtml += `
-            <div style="margin-bottom:15px; border:1px solid #000; page-break-inside:avoid;">
-                <div style="background:#f3f4f6; padding:5px; font-weight:bold; border-bottom:1px solid #000;">
-                    PERTEMUAN KE-${i+1}: ${m.t}
+        // Loop Pertemuan
+        let rows = '';
+        (d.meetings||[]).forEach((m, i) => {
+            rows += `
+                <div style="border:1px solid #000; margin-bottom:15px; page-break-inside:avoid;">
+                    <div style="background:#f0f0f0; padding:5px; font-weight:bold; border-bottom:1px solid #000;">
+                        Pertemuan Ke-${i+1}: ${m.t}
+                    </div>
+                    <div style="padding:10px;">
+                        <p style="margin:5px 0"><b>1. ${lbl[0]}</b><br>${(m.a||'-').replace(/\n/g,'<br>')}</p>
+                        <p style="margin:5px 0"><b>2. ${lbl[1]}</b><br>${(m.b||'-').replace(/\n/g,'<br>')}</p>
+                        <p style="margin:5px 0"><b>3. ${lbl[2]}</b><br>${(m.c||'-').replace(/\n/g,'<br>')}</p>
+                    </div>
                 </div>
-                <div style="padding:10px;">
-                    <p style="margin:5px 0"><b>1. ${labels[0]}:</b><br>${(m.m1||'').replace(/\n/g,'<br>')}</p>
-                    <p style="margin:5px 0"><b>2. ${labels[1]}:</b><br>${(m.m2||'').replace(/\n/g,'<br>')}</p>
-                    <p style="margin:5px 0"><b>3. ${labels[2]}:</b><br>${(m.m3||'').replace(/\n/g,'<br>')}</p>
-                </div>
-            </div>`;
+            `;
         });
 
-        // CSS inline khusus untuk Word/PDF agar tabel rapi
-        const styleTable = `width:100%; border-collapse:collapse; margin-bottom:15px; font-size:11pt;`;
-        const styleTd = `border:1px solid #000; padding:5px; vertical-align:top;`;
+        const cssTable = "width:100%; border-collapse:collapse; margin-bottom:15px; font-family:'Times New Roman'; font-size:11pt;";
+        const cssTd = "border:1px solid #000; padding:6px; vertical-align:top;";
 
         return `
-            <div style="text-align:center; font-family:'Times New Roman',serif; margin-bottom:20px;">
-                <h3 style="margin:0; text-transform:uppercase;">MODUL AJAR KURIKULUM MERDEKA</h3>
-                <h4 style="margin:5px 0;">${d.sekolah}</h4>
+            <div style="font-family:'Times New Roman', serif; color:#000;">
+                <div style="text-align:center; margin-bottom:20px;">
+                    <h3 style="margin:0; text-transform:uppercase;">MODUL AJAR</h3>
+                    <div style="font-size:14px;">${d.sekolah}</div>
+                </div>
+                <hr style="border:1px solid #000; margin-bottom:15px;">
+                
+                <b>A. IDENTITAS</b>
+                <table style="${cssTable}">
+                    <tr><td width="150" style="${cssTd}">Mata Pelajaran</td><td style="${cssTd}">${d.mapel}</td></tr>
+                    <tr><td style="${cssTd}">Kelas / Fase</td><td style="${cssTd}">Kelas ${d.kelas} (Fase ${d.fase})</td></tr>
+                    <tr><td style="${cssTd}">Materi</td><td style="${cssTd}">${d.bab}</td></tr>
+                    <tr><td style="${cssTd}">Alokasi Waktu</td><td style="${cssTd}">${d.waktu}</td></tr>
+                </table>
+
+                <b>B. KOMPONEN INTI</b>
+                <table style="${cssTable}">
+                    <tr><td style="${cssTd}">Tujuan Pembelajaran</td><td style="${cssTd}">${(d.tp||'').replace(/\n/g,'<br>')}</td></tr>
+                    <tr><td style="${cssTd}">Profil Pancasila</td><td style="${cssTd}">${profils || '-'}</td></tr>
+                    <tr><td style="${cssTd}">Media Pembelajaran</td><td style="${cssTd}">${(d.media||'').replace(/\n/g,'<br>')}</td></tr>
+                    <tr><td style="${cssTd}">Pemantik</td><td style="${cssTd}">${d.pemantik||'-'}</td></tr>
+                </table>
+
+                <b>C. KEGIATAN PEMBELAJARAN</b><br><br>
+                ${rows}
+
+                <b>D. ASESMEN</b>
+                <table style="${cssTable}">
+                    <tr>
+                        <td style="${cssTd} background:#eee;"><b>Awal</b></td>
+                        <td style="${cssTd} background:#eee;"><b>Proses</b></td>
+                        <td style="${cssTd} background:#eee;"><b>Akhir</b></td>
+                    </tr>
+                    <tr>
+                        <td style="${cssTd}">${d.as1||'-'}</td>
+                        <td style="${cssTd}">${d.as2||'-'}</td>
+                        <td style="${cssTd}">${d.as3||'-'}</td>
+                    </tr>
+                </table>
+                <p><b>Refleksi:</b><br>${(d.refleksi||'-').replace(/\n/g,'<br>')}</p>
+
+                <br>
+                <table style="width:100%; border:none; text-align:center;">
+                    <tr>
+                        <td width="50%">Mengetahui,<br>Kepala Sekolah</td>
+                        <td width="50%">${d.tgl || '.................'}<br>Guru Kelas</td>
+                    </tr>
+                    <tr><td height="80"></td><td height="80"></td></tr>
+                    <tr>
+                        <td><b>${d.ks || '(...................)'}</b><br>NIP. ${d.nip1}</td>
+                        <td><b>${d.guru || '(...................)'}</b><br>NIP. ${d.nip2}</td>
+                    </tr>
+                </table>
             </div>
-            <hr style="border:1px solid #000; margin-bottom:15px;">
-
-            <h4>A. IDENTITAS MODUL</h4>
-            <table style="${styleTable}">
-                <tr><td style="${styleTd}" width="150"><b>Mata Pelajaran</b></td><td style="${styleTd}">${d.mapel}</td></tr>
-                <tr><td style="${styleTd}"><b>Fase / Kelas</b></td><td style="${styleTd}">Fase ${d.fase} / Kelas ${d.kelas}</td></tr>
-                <tr><td style="${styleTd}"><b>Semester / TA</b></td><td style="${styleTd}">${d.semester} / ${d.tahun}</td></tr>
-                <tr><td style="${styleTd}"><b>Materi</b></td><td style="${styleTd}">${d.bab}</td></tr>
-                <tr><td style="${styleTd}"><b>Alokasi Waktu</b></td><td style="${styleTd}">${d.alokasi}</td></tr>
-            </table>
-
-            <h4>B. KOMPONEN INTI</h4>
-            <table style="${styleTable}">
-                <tr><td style="${styleTd}"><b>Tujuan Pembelajaran</b></td><td style="${styleTd}">${(d.tp||'').replace(/\n/g,'<br>')}</td></tr>
-                <tr><td style="${styleTd}"><b>Profil Pancasila</b></td><td style="${styleTd}">${profilTxt}</td></tr>
-                <tr><td style="${styleTd}"><b>Sarana Prasarana</b></td><td style="${styleTd}">${(d.sarpras||'').replace(/\n/g,'<br>')}</td></tr>
-            </table>
-
-            <h4>C. PERTANYAAN PEMANTIK & MAKNA</h4>
-            <div style="border:1px solid #000; padding:10px; margin-bottom:15px;">
-                <p style="margin:5px 0"><b>Pemantik:</b> ${(d.pemantik||'')}</p>
-                <p style="margin:5px 0"><b>Pemahaman Bermakna:</b> ${(d.bermakna||'')}</p>
-            </div>
-
-            <h4>D. KEGIATAN PEMBELAJARAN (${d.mode})</h4>
-            ${meetingsHtml}
-
-            <h4>E. ASESMEN</h4>
-            <table style="${styleTable}">
-                <tr>
-                    <td style="${styleTd} background:#f3f4f6;"><b>Awal</b></td>
-                    <td style="${styleTd} background:#f3f4f6;"><b>Proses</b></td>
-                    <td style="${styleTd} background:#f3f4f6;"><b>Akhir</b></td>
-                </tr>
-                <tr>
-                    <td style="${styleTd}">${(d.as_awal||'')}</td>
-                    <td style="${styleTd}">${(d.as_proses||'')}</td>
-                    <td style="${styleTd}">${(d.as_akhir||'')}</td>
-                </tr>
-            </table>
-
-            <h4>F. REFLEKSI & LAMPIRAN</h4>
-            <table style="${styleTable}">
-                <tr><td style="${styleTd}"><b>Refleksi</b></td><td style="${styleTd}">${(d.refleksi||'').replace(/\n/g,'<br>')}</td></tr>
-                <tr><td style="${styleTd}"><b>Glosarium</b></td><td style="${styleTd}">${(d.glosarium||'').replace(/\n/g,'<br>')}</td></tr>
-                <tr><td style="${styleTd}"><b>Daftar Pustaka</b></td><td style="${styleTd}">${(d.pustaka||'').replace(/\n/g,'<br>')}</td></tr>
-            </table>
-
-            <br>
-            <table style="width:100%; text-align:center; border:none; margin-top:20px;">
-                <tr>
-                    <td style="border:none;" width="50%">Mengetahui,<br>Kepala Sekolah</td>
-                    <td style="border:none;" width="50%">${d.tgl_surat}<br>Guru Kelas / Mapel</td>
-                </tr>
-                <tr><td style="border:none; height:80px;"></td><td style="border:none; height:80px;"></td></tr>
-                <tr>
-                    <td style="border:none;"><b><u>${d.ks}</u></b><br>NIP. ${d.nip_ks}</td>
-                    <td style="border:none;"><b><u>${d.guru}</u></b><br>NIP. ${d.nip_guru}</td>
-                </tr>
-            </table>
         `;
     }
 
-    function downloadWord() {
-        const d = db.find(x => x.id === currentId);
+    function downloadDoc() {
+        const d = db.find(x => x.id === activeId);
         if(!d) return;
 
-        // HEADER KHUSUS AGAR DIKENALI SEBAGAI FILE WORD YANG RAPI
-        const preHtml = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Modul Ajar</title><style>body{font-family:'Times New Roman',serif; font-size:12pt;} table{border-collapse:collapse; width:100%;} td,th{border:1px solid #000; padding:5px; vertical-align:top;}</style></head><body>`;
-        const postHtml = "</body></html>";
-        const content = getHtmlContent(d, 'word');
-
-        const blob = new Blob(['\ufeff', preHtml + content + postHtml], {
-            type: 'application/msword'
-        });
+        const html = generateHTML(d, true);
+        const pre = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'><head><meta charset='utf-8'><title>Doc</title></head><body>`;
+        const post = "</body></html>";
         
+        const blob = new Blob(['\ufeff', pre + html + post], { type: 'application/msword' });
         const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `Modul_Resmi_${d.bab.replace(/\s+/g, '_')}.doc`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Modul_${d.bab.replace(/\s/g,'_')}.doc`;
+        a.click();
     }
 
-    function printPDF() {
-        const d = db.find(x => x.id === currentId);
+    function downloadPdf() {
+        const d = db.find(x => x.id === activeId);
         if(!d) return;
-        
-        const el = document.createElement('div');
-        el.style.padding = '40px';
-        el.style.fontFamily = "'Times New Roman', serif";
-        el.style.fontSize = "11pt";
-        el.style.lineHeight = "1.5";
-        el.style.color = "black";
-        el.innerHTML = getHtmlContent(d, 'pdf');
 
+        const el = document.createElement('div');
+        el.innerHTML = generateHTML(d, false);
+        el.style.padding = '40px';
+        el.style.width = '800px'; 
+        
         html2pdf().set({
-            margin: [15, 15, 15, 15],
-            filename: `Modul_Resmi_${d.bab}.pdf`,
+            margin: [15, 20, 15, 20],
+            filename: `Modul_${d.bab}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
