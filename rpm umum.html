@@ -2,262 +2,246 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>SiPandu RPM v2.0 - Deep Learning & Admin Ready</title>
+    <title>SiPandu RPM v3.0 - Sahabat Guru Baru</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
-            /* THEME: Deep Professional v1.1 */
-            --bg-main: #f1f5f9;
-            --sidebar-bg: #0f172a;
-            --sidebar-text: #e2e8f0;
-            --card-bg: #ffffff;
-            
-            --primary: #2563eb;       
-            --primary-dark: #1e40af;
-            --accent: #38bdf8;
-            --danger: #ef4444;
-            --success: #10b981;
-            
+            /* THEME: Friendly & Clean */
+            --bg-main: #f8fafc;
+            --sidebar-bg: #1e293b;
+            --primary: #4f46e5;       /* Indigo ramah */
+            --accent: #818cf8;
             --text-main: #334155;
-            --text-light: #64748b;
-            --border: #cbd5e1;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
-        body { font-family: 'Segoe UI', Inter, sans-serif; background: var(--bg-main); margin: 0; padding: 0; color: var(--text-main); line-height: 1.5; overflow: hidden; }
-        
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-main); margin: 0; color: var(--text-main); overflow: hidden; }
         .wrapper { display: flex; height: 100vh; }
         
         /* SIDEBAR */
-        .sidebar { width: 300px; background: var(--sidebar-bg); color: var(--sidebar-text); padding: 25px; display: flex; flex-direction: column; border-right: 1px solid #000; flex-shrink: 0; }
+        .sidebar { width: 280px; background: var(--sidebar-bg); color: white; padding: 20px; display: flex; flex-direction: column; flex-shrink: 0; }
+        .brand { font-size: 20px; font-weight: 800; color: var(--accent); margin-bottom: 5px; }
+        .brand-sub { font-size: 11px; opacity: 0.7; margin-bottom: 25px; display: block; border-bottom: 1px solid #334155; padding-bottom: 15px; }
         
-        .brand-box { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #334155; }
-        .brand-title { font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: 0.5px; margin: 0; }
-        .brand-sub { font-size: 11px; opacity: 0.6; margin-top: 5px; display: block; letter-spacing: 1px; }
+        .mapel-select { width: 100%; padding: 10px; background: #334155; color: white; border: none; border-radius: 6px; margin-bottom: 15px; cursor: pointer; }
+        .btn-new { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-bottom: 20px; }
+        .btn-new:hover { background: #4338ca; transform: translateY(-1px); }
         
-        .mapel-select { width: 100%; padding: 12px; background: #1e293b; color: white; border: 1px solid #475569; border-radius: 8px; margin-bottom: 15px; cursor: pointer; outline: none; }
-        .mapel-select:focus { border-color: var(--accent); }
+        .rpm-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1; }
+        .rpm-item { padding: 10px; background: rgba(255,255,255,0.05); margin-bottom: 5px; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+        .rpm-item:hover { background: rgba(255,255,255,0.1); }
+        .rpm-item.active { background: var(--accent); color: #0f172a; font-weight: bold; }
 
-        .rpm-list { list-style: none; padding: 0; margin: 0; flex-grow: 1; overflow-y: auto; }
-        .rpm-item { padding: 12px 15px; background: rgba(255,255,255,0.03); margin-bottom: 8px; border-radius: 8px; cursor: pointer; font-size: 13px; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid transparent; }
-        .rpm-item:hover { background: rgba(255,255,255,0.08); }
-        .rpm-item.active { background: var(--primary); border-left-color: var(--accent); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+        /* MAIN AREA */
+        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
+        .container { max-width: 850px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: var(--card-shadow); border: 1px solid var(--border); }
         
-        .btn-new { width: 100%; padding: 12px; background: var(--accent); color: #0f172a; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; margin-bottom: 20px; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
-        .btn-new:hover { background: #7dd3fc; transform: translateY(-1px); }
-
-        /* MAIN CONTENT */
-        .main-content { flex: 1; padding: 40px; overflow-y: auto; scroll-behavior: smooth; }
-        .container { max-width: 900px; margin: auto; background: var(--card-bg); padding: 50px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+        h1 { margin: 0 0 10px 0; color: var(--primary); font-size: 24px; }
+        h2 { font-size: 14px; background: #f1f5f9; padding: 8px 12px; border-radius: 4px; border-left: 4px solid var(--primary); color: #475569; margin-top: 30px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
         
-        .header-doc { text-align: center; margin-bottom: 40px; border-bottom: 2px solid var(--bg-main); padding-bottom: 20px; }
-        h1 { margin: 0; font-size: 24px; color: var(--primary-dark); font-weight: 800; }
-        .badge { display: inline-block; background: #e0f2fe; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-top: 10px; letter-spacing: 0.5px; }
-
-        h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-top: 40px; margin-bottom: 20px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
-        
-        .grid-form { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        /* FORM GRID */
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .span-3 { grid-column: span 3; }
         .span-2 { grid-column: span 2; }
         
-        label { display: block; font-size: 11px; font-weight: 700; color: var(--text-light); margin-bottom: 8px; text-transform: uppercase; }
-        input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; background: #f8fafc; color: var(--text-main); transition: 0.2s; box-sizing: border-box; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-        input[readonly] { background: #e2e8f0; color: #64748b; cursor: not-allowed; }
-
-        /* Pertemuan Card */
-        .pertemuan-card { border: 1px solid var(--border); background: #fff; border-radius: 12px; padding: 25px; margin-bottom: 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px dashed var(--border); padding-bottom: 15px; }
-        .card-head strong { color: var(--primary); font-size: 15px; }
+        .form-group { margin-bottom: 5px; }
+        label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+        .help-text { font-size: 10px; color: #94a3b8; font-style: italic; display: block; margin-bottom: 4px; }
         
-        .step-box { margin-top: 15px; }
-        .step-label { font-size: 11px; font-weight: 800; color: var(--primary-dark); margin-bottom: 5px; display: block; }
-        .step-box textarea { border-left: 4px solid var(--border); }
-        .step-box:nth-child(2) textarea { border-left-color: #10b981; } 
-        .step-box:nth-child(3) textarea { border-left-color: #f59e0b; } 
-        .step-box:nth-child(4) textarea { border-left-color: #3b82f6; } 
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; font-family: inherit; box-sizing: border-box; transition: 0.2s; }
+        input:focus, textarea:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+        input::placeholder, textarea::placeholder { color: #cbd5e1; }
+        textarea { resize: vertical; }
 
-        /* Buttons */
-        .btn-action { padding: 6px 12px; font-size: 11px; border-radius: 6px; cursor: pointer; border: 1px solid transparent; font-weight: 600; }
-        .btn-ghost { background: transparent; color: var(--text-light); border-color: var(--border); }
-        .btn-ghost:hover { border-color: var(--primary); color: var(--primary); }
-        .btn-danger { color: var(--danger); background: #fef2f2; border-color: #fecaca; }
-        .btn-add { width: 100%; padding: 15px; border: 2px dashed var(--border); background: #f8fafc; color: var(--text-light); font-weight: 700; cursor: pointer; border-radius: 12px; transition: 0.2s; }
-        .btn-add:hover { border-color: var(--primary); color: var(--primary); background: #eff6ff; }
+        /* PERTEMUAN CARD */
+        .card-pertemuan { border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; position: relative; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px dashed var(--border); padding-bottom: 10px; }
+        .badge-step { display: inline-block; background: #e0e7ff; color: var(--primary); font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-bottom: 3px; }
+
+        /* BUTTONS */
+        .btn-add { width: 100%; padding: 10px; border: 2px dashed #cbd5e1; background: transparent; color: #64748b; font-weight: 600; cursor: pointer; border-radius: 8px; transition: 0.2s; }
+        .btn-add:hover { border-color: var(--primary); color: var(--primary); background: #eef2ff; }
         
-        .footer-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 40px; }
-        .btn-big { padding: 15px; font-size: 14px; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; color: white; display: flex; justify-content: center; align-items: center; gap: 10px; transition: 0.2s; }
-        .btn-big:hover { transform: translateY(-2px); shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .btn-word { background: #2b579a; } 
-        .btn-pdf { background: #be123c; } 
-
-        /* Modal */
-        #tpModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.8); z-index:2000; justify-content:center; align-items:center; }
-        .modal-content { background:white; padding:30px; border-radius:16px; max-width:550px; width:90%; max-height:80vh; overflow-y:auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .tp-item { padding: 12px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; cursor: pointer; }
-        .tp-item:hover { background: #f1f5f9; }
-
-        .save-toast { position: fixed; bottom: 30px; right: 30px; background: var(--success); color: white; padding: 12px 25px; border-radius: 50px; font-weight: 600; font-size: 13px; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); display: none; z-index: 3000; }
+        .btn-action { padding: 5px 10px; font-size: 11px; border-radius: 4px; cursor: pointer; border: 1px solid transparent; }
+        .btn-danger { background: #fee2e2; color: #ef4444; }
         
-        /* 8 Dimensi Grid */
-        .profil-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .p-item { background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid var(--border); transition: 0.2s; }
-        .p-item:hover { border-color: var(--primary); background: #fff; }
-        .p-hidden { display: none; margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 10px; }
-        .p-hidden textarea { font-size: 12px; padding: 8px; height: 60px; }
+        .footer-btns { display: flex; gap: 10px; margin-top: 40px; }
+        .btn-big { flex: 1; padding: 15px; border: none; border-radius: 8px; font-weight: 700; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-pdf { background: #be123c; } .btn-pdf:hover { background: #9f1239; }
+        .btn-doc { background: #2563eb; } .btn-doc:hover { background: #1d4ed8; }
 
-        .undo-redo { display: flex; gap: 5px; margin-bottom: 15px; }
-        .btn-hist { flex: 1; padding: 6px; background: #334155; border: 1px solid #475569; color: #cbd5e1; cursor: pointer; border-radius: 4px; font-size: 11px; }
-        .btn-hist:hover:not(:disabled) { background: #475569; color: white; }
-        .btn-hist:disabled { opacity: 0.3; cursor: not-allowed; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #10b981; color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        /* 8 DIMENSI CHECKBOX */
+        .dimensi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .dimensi-item { background: #f8fafc; padding: 10px; border: 1px solid var(--border); border-radius: 6px; }
+        .dimensi-hidden { display: none; margin-top: 8px; }
+        .dimensi-hidden textarea { height: 40px; font-size: 11px; }
     </style>
 </head>
 <body>
 
-<div class="save-toast" id="saveNotif">Perubahan Tersimpan ✓</div>
-
-<div id="tpModal">
-    <div class="modal-content">
-        <h3 style="margin-top:0; color:var(--primary-dark)">Pilih Tujuan Pembelajaran</h3>
-        <div id="tpChoiceContainer" style="margin: 20px 0;"></div>
-        <div style="text-align: right; gap: 10px; display: flex; justify-content: flex-end;">
-            <button class="btn-action btn-ghost" onclick="document.getElementById('tpModal').style.display='none'">Batal</button>
-            <button class="btn-action" style="background:var(--primary); color:white;" onclick="confirmImportTP()">Impor Data</button>
-        </div>
-    </div>
-</div>
+<div class="toast" id="saveToast">Disimpan Otomatis ✓</div>
 
 <div class="wrapper">
     <div class="sidebar">
-        <div class="brand-box">
-            <div class="brand-title">SiPandu RPM</div>
-            <span class="brand-sub">DEEP LEARNING EDITION v2</span>
-        </div>
-
-        <div class="undo-redo">
-            <button class="btn-hist" id="btnUndo" onclick="undo()" title="Undo">↶ Undo</button>
-            <button class="btn-hist" id="btnRedo" onclick="redo()" title="Redo">↷ Redo</button>
-        </div>
-
-        <label style="color:#94a3b8; margin-bottom:5px;">MATA PELAJARAN:</label>
-        <select class="mapel-select" id="sidebarMapel" onchange="filterByMapel()">
+        <div class="brand">SiPandu Guru</div>
+        <span class="brand-sub">Administrasi Guru & Mahasiswa PPL</span>
+        
+        <label style="font-size:10px; color:#94a3b8; text-transform:uppercase;">Pilih Mata Pelajaran:</label>
+        <select class="mapel-select" id="sidebarMapel" onchange="renderSidebar()">
+            <option value="Umum">Umum / Guru Kelas</option>
             <option value="Matematika">Matematika</option>
-            <option value="Bahasa Indonesia">Bahasa Indonesia</option>
-            <option value="Pendidikan Pancasila">Pendidikan Pancasila</option>
+            <option value="B.Indonesia">B. Indonesia</option>
             <option value="IPAS">IPAS</option>
+            <option value="Pancasila">Pendidikan Pancasila</option>
+            <option value="Seni">Seni Budaya</option>
             <option value="PJOK">PJOK</option>
-            <option value="Seni Budaya">Seni Budaya</option>
-            <option value="Bahasa Inggris">Bahasa Inggris</option>
-            <option value="PABP">Pendidikan Agama</option>
-            <option value="Mulok">Mulok</option>
+            <option value="B.Inggris">B. Inggris</option>
+            <option value="Agama">Pendidikan Agama</option>
         </select>
 
-        <button class="btn-new" onclick="createNewRPM()">+ BUAT BAB BARU</button>
-        
-        <div style="font-size: 10px; text-transform:uppercase; color:#64748b; margin: 15px 0 5px 0; font-weight:bold;">Daftar Rencana</div>
+        <button class="btn-new" onclick="createNew()">+ Buat Modul Baru</button>
+        <div style="font-size:11px; font-weight:bold; margin-bottom:5px;">Riwayat Modul:</div>
         <ul class="rpm-list" id="rpmList"></ul>
     </div>
 
     <div class="main-content">
-        <div id="emptyState" style="text-align:center; padding-top:150px; opacity:0.5;">
-            <div style="font-size: 50px; margin-bottom: 20px;">📂</div>
-            <h3>Pilih Bab di Sidebar atau Buat Baru</h3>
+        <div id="emptyState" style="text-align:center; padding-top:100px; color:#94a3b8;">
+            <h2>👋 Halo, Guru Hebat!</h2>
+            <p>Silakan pilih modul di kiri atau buat baru untuk mulai merancang pembelajaran.</p>
         </div>
 
         <div class="container" id="formContainer" style="display:none;">
-            <div class="header-doc">
-                <h1>MODUL AJAR & RPM</h1>
-                <span class="badge" id="modeBadge">DEEP LEARNING FRAMEWORK</span>
+            <div style="border-bottom: 2px solid #f1f5f9; padding-bottom: 20px; margin-bottom: 20px;">
+                <h1>Perancangan Modul Ajar</h1>
+                <span style="background:#dbeafe; color:#1e40af; padding:3px 8px; border-radius:4px; font-size:11px; font-weight:bold;">Deep Learning & Kurikulum Merdeka Ready</span>
             </div>
 
-            <form id="rpmForm" oninput="handleInput()">
-                <div style="background:#f0f9ff; padding:10px 15px; border-radius:8px; border:1px solid #bae6fd; margin-bottom:25px; display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-size:12px; font-weight:bold; color:#0369a1;">MODE LANGKAH PEMBELAJARAN:</span>
-                    <select id="pedagogyMode" onchange="changePedagogyMode()" style="width:auto; padding:6px; font-size:12px; background:white;">
-                        <option value="Standar">Standar (Pendahuluan - Inti - Penutup)</option>
-                        <option value="3M">3M (Mindful - Meaningful - Joyful)</option>
-                    </select>
-                </div>
-
-                <h2>I. IDENTITAS MODUL (LENGKAP)</h2>
-                <div class="grid-form">
-                    <div class="span-3"><label>Satuan Pendidikan</label><input type="text" id="sekolah"></div>
-                    <div class="span-2"><label>Judul Bab / Materi</label><input type="text" id="bab" oninput="updateSidebarLabel(this.value)"></div>
-                    <div><label>Mapel (Otomatis)</label><input type="text" id="mapel" readonly></div>
-                    
-                    <div><label>Fase / Kelas</label>
+            <form id="mainForm" oninput="debounceSave()">
+                
+                <h2>1. Identitas Sekolah & Materi</h2>
+                <div class="grid-3">
+                    <div class="form-group span-3">
+                        <label>Nama Sekolah</label>
+                        <input type="text" id="sekolah" placeholder="Contoh: SD Negeri 1 Harapan Bangsa">
+                    </div>
+                    <div class="form-group span-2">
+                        <label>Judul Bab / Topik Materi</label>
+                        <input type="text" id="bab" placeholder="Contoh: Ekosistem dan Rantai Makanan" oninput="updateSidebarLabel(this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label>Mata Pelajaran</label>
+                        <input type="text" id="mapel" readonly style="background:#f1f5f9; cursor:not-allowed;">
+                    </div>
+                    <div class="form-group">
+                        <label>Kelas / Fase</label>
                         <div style="display:flex; gap:5px;">
-                            <select id="fase" style="width:40%"><option>A</option><option>B</option><option>C</option></select>
-                            <select id="kelas" style="width:60%"><option>I</option><option>II</option><option>III</option><option>IV</option><option>V</option><option>VI</option></select>
+                            <select id="kelas" style="width:60%"><option>Kelas 1</option><option>Kelas 2</option><option>Kelas 3</option><option>Kelas 4</option><option>Kelas 5</option><option>Kelas 6</option></select>
+                            <select id="fase" style="width:40%"><option>Fase A</option><option>Fase B</option><option>Fase C</option></select>
                         </div>
                     </div>
-                    <div><label>Semester</label><select id="semester"><option>1 (Ganjil)</option><option>2 (Genap)</option></select></div>
-                    <div><label>Tahun Ajaran</label><input type="text" id="tahun" placeholder="2024/2025"></div>
-                    
-                    <div><label>Alokasi Waktu</label><input type="text" id="alokasi" placeholder="2 x 35 Menit"></div>
-                    <div><label>Model Pembelajaran</label><input type="text" id="model_ajar" placeholder="PBL / PjBL / Tatap Muka"></div>
-                    <div><label>Target Siswa</label><input type="text" id="target_siswa" placeholder="Reguler"></div>
-
-                    <div class="span-3"><label>Sarana & Prasarana (Media)</label><textarea id="sarpras" placeholder="Laptop, LCD, Kertas Karton, Video Youtube..." style="height:50px;"></textarea></div>
+                    <div class="form-group">
+                        <label>Semester / Tahun</label>
+                        <input type="text" id="tahun" placeholder="Ganjil - 2024/2025">
+                    </div>
+                    <div class="form-group">
+                        <label>Alokasi Waktu</label>
+                        <input type="text" id="alokasi" placeholder="Cth: 2 x 35 Menit (1 Pertemuan)">
+                    </div>
+                    <div class="form-group span-3">
+                        <label>Sarana & Prasarana (Media)</label>
+                        <span class="help-text">Alat apa yang perlu disiapkan sebelum masuk kelas?</span>
+                        <textarea id="sarpras" style="height:50px;" placeholder="Contoh: Laptop, Proyektor LCD, Kertas Manila, Spidol warna, Video tentang Hewan..."></textarea>
+                    </div>
                 </div>
 
-                <h2>II. KOMPONEN INTI</h2>
-                <div style="position:relative; margin-bottom:20px;">
+                <h2>2. Tujuan & Profil Siswa</h2>
+                <div class="form-group">
                     <label>Tujuan Pembelajaran (TP)</label>
-                    <div style="position:absolute; right:0; top:0;">
-                        <button type="button" class="btn-action btn-ghost" onclick="importDataDariAdmn()">📥 Impor dari ADMN</button>
+                    <span class="help-text">Apa kemampuan spesifik yang akan didapat siswa setelah bab ini? Gunakan kata kerja operasional.</span>
+                    <textarea id="tp" style="height:80px;" placeholder="Contoh: 1. Peserta didik mampu mengidentifikasi komponen biotik dan abiotik.&#10;2. Peserta didik mampu membuat bagan rantai makanan sederhana."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Profil Pelajar Pancasila (Pilih yang relevan saja)</label>
+                    <div class="dimensi-grid" id="profilContainer"></div>
+                </div>
+
+                <h2>3. Pertanyaan Pemantik (Deep Learning)</h2>
+                <div class="grid-2">
+                    <div class="form-group span-2">
+                        <label>Pertanyaan Pemantik</label>
+                        <span class="help-text">Pertanyaan yang tidak bisa dijawab Ya/Tidak, untuk memancing rasa ingin tahu.</span>
+                        <input type="text" id="pemantik" placeholder="Contoh: Apa yang terjadi jika Matahari tiba-tiba menghilang dari tata surya kita?">
                     </div>
-                    <textarea id="tp" placeholder="Peserta didik mampu..." style="height:100px;"></textarea>
-                </div>
-                <div>
-                    <label>Indikator Ketercapaian (IKTP)</label>
-                    <textarea id="iktp" placeholder="1. ..." style="height:80px;"></textarea>
-                </div>
-
-                <h2>III. 8 DIMENSI PROFIL LULUSAN</h2>
-                <div class="profil-grid" id="profilListContainer"></div>
-
-                <h2>IV. PEMANTIK & MAKNA</h2>
-                <div class="grid-form">
-                    <div class="span-3"><label>Pertanyaan Pemantik</label><textarea id="pemantik" placeholder="Pertanyaan untuk memancing rasa ingin tahu..."></textarea></div>
-                    <div class="span-3"><label>Pemahaman Bermakna</label><textarea id="bermakna" placeholder="Manfaat materi ini dalam kehidupan nyata..."></textarea></div>
-                </div>
-
-                <h2>V. LANGKAH PEMBELAJARAN</h2>
-                <div id="pertemuanContainer"></div>
-                <button type="button" class="btn-add" onclick="addPertemuan()">+ TAMBAH PERTEMUAN BERIKUTNYA</button>
-
-                <h2>VI. ASESMEN</h2>
-                <div class="grid-form">
-                    <div class="span-3"><label>Strategi Diferensiasi (Opsional)</label><textarea id="diff_umum" placeholder="Konten, Proses, atau Produk..."></textarea></div>
-                    <div><label>Asesmen Awal</label><textarea id="as_awal"></textarea></div>
-                    <div><label>Asesmen Proses</label><textarea id="as_proses"></textarea></div>
-                    <div><label>Asesmen Akhir</label><textarea id="as_akhir"></textarea></div>
-                </div>
-
-                <h2>VII. REFLEKSI & LAMPIRAN (DEEP LEARNING)</h2>
-                <div class="grid-form">
-                    <div class="span-3">
-                        <label>Refleksi Guru & Peserta Didik (Mindful)</label>
-                        <textarea id="refleksi" placeholder="Pertanyaan pemantik refleksi: Apa hal baru yang dipelajari? Apa tantangan yang dihadapi?"></textarea>
+                    <div class="form-group span-2">
+                        <label>Pemahaman Bermakna</label>
+                        <span class="help-text">Apa gunanya materi ini di kehidupan nyata siswa? (Meaningful Learning)</span>
+                        <input type="text" id="bermakna" placeholder="Contoh: Kita jadi tahu pentingnya menjaga hutan agar hewan tidak kehilangan sumber makanan.">
                     </div>
-                    <div class="span-2">
-                        <label>Glosarium (Kata Kunci)</label>
-                        <textarea id="glosarium" placeholder="Daftar istilah penting..."></textarea>
+                </div>
+
+                <h2>4. Langkah Pembelajaran (Skenario)</h2>
+                <div style="background:#e0f2fe; padding:10px; border-radius:6px; margin-bottom:15px; font-size:12px; color:#1e40af;">
+                    <strong>Tips:</strong> Deep Learning menekankan pada pengalaman (Joyful), pemahaman (Meaningful), dan refleksi (Mindful).
+                </div>
+                <div id="pertemuanList"></div>
+                <button type="button" class="btn-add" onclick="addPertemuan()">+ Tambah Pertemuan Berikutnya</button>
+
+                <h2>5. Asesmen & Refleksi</h2>
+                <div class="grid-3">
+                    <div class="form-group">
+                        <label>Asesmen Awal</label>
+                        <span class="help-text">Cek kemampuan sebelum mulai.</span>
+                        <textarea id="as_awal" placeholder="Contoh: Tanya jawab lisan tentang hewan peliharaan di rumah."></textarea>
                     </div>
-                    <div>
+                    <div class="form-group">
+                        <label>Asesmen Proses</label>
+                        <span class="help-text">Penilaian saat kegiatan berlangsung.</span>
+                        <textarea id="as_proses" placeholder="Contoh: Observasi keaktifan diskusi kelompok (Rubrik terlampir)."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Asesmen Akhir</label>
+                        <span class="help-text">Produk/Tes di akhir bab.</span>
+                        <textarea id="as_akhir" placeholder="Contoh: Tes tertulis pilihan ganda & Presentasi poster."></textarea>
+                    </div>
+                    
+                    <div class="form-group span-3">
+                        <label>Refleksi Guru & Siswa (Wajib untuk Deep Learning)</label>
+                        <span class="help-text">Evaluasi perasaan dan pemahaman.</span>
+                        <textarea id="refleksi" placeholder="Contoh Pertanyaan Refleksi:&#10;1. Bagian mana yang paling menyenangkan hari ini?&#10;2. Apa kesulitan yang kalian hadapi saat kerja kelompok?"></textarea>
+                    </div>
+                    
+                    <div class="form-group span-2">
+                        <label>Glosarium (Kamus Kecil)</label>
+                        <textarea id="glosarium" placeholder="Contoh:&#10;- Produsen: Makhluk hidup yang membuat makanan sendiri.&#10;- Karnivora: Hewan pemakan daging."></textarea>
+                    </div>
+                    <div class="form-group">
                         <label>Daftar Pustaka</label>
-                        <textarea id="pustaka" placeholder="Sumber belajar..."></textarea>
+                        <textarea id="pustaka" placeholder="Contoh: Buku Siswa IPAS Kelas 5 Kemendikbud, Youtube Channel 'Sains Seru'."></textarea>
                     </div>
                 </div>
 
-                <div class="grid-form" style="margin-top:40px;">
-                    <div class="span-2"><label>Guru Penyusun</label><input type="text" id="guru"></div>
-                    <div><label>Kepala Sekolah</label><input type="text" id="ks"></div>
+                <div class="grid-2" style="margin-top:30px; border-top:1px solid #e2e8f0; padding-top:20px;">
+                    <div class="form-group">
+                        <label>Mengetahui Kepala Sekolah</label>
+                        <input type="text" id="ks" placeholder="Nama Kepala Sekolah & Gelar">
+                        <input type="text" id="nip_ks" placeholder="NIP Kepala Sekolah" style="margin-top:5px;">
+                    </div>
+                    <div class="form-group">
+                        <label>Guru Kelas / Mata Pelajaran</label>
+                        <input type="text" id="guru" placeholder="Nama Anda & Gelar">
+                        <input type="text" id="nip_guru" placeholder="NIP / NIM (Jika Mahasiswa)" style="margin-top:5px;">
+                    </div>
                 </div>
 
-                <div class="footer-actions">
-                    <button type="button" class="btn-big btn-word" onclick="downloadDoc()">📄 DOWNLOAD WORD</button>
-                    <button type="button" class="btn-big btn-pdf" onclick="downloadPDF()">📕 CETAK PDF RESMI</button>
+                <div class="footer-btns">
+                    <button type="button" class="btn-big btn-doc" onclick="downloadWord()">📄 Download Word (Edit)</button>
+                    <button type="button" class="btn-big btn-pdf" onclick="downloadPDF()">🖨️ Cetak PDF Resmi</button>
                 </div>
             </form>
         </div>
@@ -265,489 +249,324 @@
 </div>
 
 <script>
-    // === KONFIGURASI ===
-    let db = JSON.parse(localStorage.getItem('rpm_db_deeplearning_v2')) || []; // Updated Key
-    let currentId = null;
-    let historyStack = [];
-    let redoStack = [];
-    let typingTimer;
-    let tempTpList = [];
+    // --- DATABASE & STATE ---
+    let db = JSON.parse(localStorage.getItem('siPandu_v3_db')) || [];
+    let activeId = null;
+    let saveTimer;
 
-    const PEDAGOGY_LABELS = {
-        "Standar": { m1: "PENDAHULUAN (Apersepsi)", m2: "KEGIATAN INTI", m3: "PENUTUP (Refleksi)" },
-        "3M": { m1: "MINDFUL (Kesadaran)", m2: "MEANINGFUL (Pemahaman)", m3: "JOYFUL (Perayaan)" }
-    };
-    let currentMode = "Standar";
-
-    const dimensiData = [
-        { label: "Keimanan & Ketakwaan", desc: "Berdoa, nilai spiritual..." },
-        { label: "Kewargaan", desc: "Cinta tanah air, peduli sosial..." },
-        { label: "Penalaran Kritis", desc: "Analisis masalah, reflektif..." },
-        { label: "Kreativitas", desc: "Inovasi, karya orisinal..." },
-        { label: "Kolaborasi", desc: "Kerja kelompok, diskusi..." },
-        { label: "Kemandirian", desc: "Tanggung jawab, inisiatif..." },
-        { label: "Kesehatan", desc: "Fisik prima, well-being..." },
-        { label: "Komunikasi", desc: "Presentasi, diskusi lisan..." }
+    const dimensiList = [
+        {k:"iman", l:"Beriman & Bertakwa", h:"Berdoa, akhlak mulia..."},
+        {k:"global", l:"Berkebinekaan Global", h:"Menghargai budaya lain..."},
+        {k:"royong", l:"Bergotong Royong", h:"Kerjasama tim..."},
+        {k:"kreatif", l:"Kreatif", h:"Menghasilkan karya/ide..."},
+        {k:"kritis", l:"Bernalar Kritis", h:"Menganalisis masalah..."},
+        {k:"mandiri", l:"Mandiri", h:"Bertanggung jawab..."}
     ];
 
+    // --- INITIALIZATION ---
     window.onload = () => {
-        initProfilGrid();
-        filterByMapel();
-        updateHistoryButtons();
+        initProfilUI();
+        renderSidebar();
     };
 
-    // === CORE LOGIC ===
-    function handleInput() {
-        clearTimeout(typingTimer);
-        typingTimer = setTimeout(() => {
-            saveState(); 
-            saveCurrentData(false);
-        }, 800);
-    }
-
-    function saveState() {
-        if (historyStack.length > 0 && historyStack[historyStack.length - 1] === JSON.stringify(db)) return; 
-        historyStack.push(JSON.stringify(db));
-        if (historyStack.length > 20) historyStack.shift();
-        redoStack = [];
-        updateHistoryButtons();
-    }
-
-    function undo() {
-        if (historyStack.length > 0) {
-            redoStack.push(JSON.stringify(db));
-            db = JSON.parse(historyStack.pop());
-            syncAndReload();
-        }
-    }
-
-    function redo() {
-        if (redoStack.length > 0) {
-            historyStack.push(JSON.stringify(db));
-            db = JSON.parse(redoStack.pop());
-            syncAndReload();
-        }
-    }
-
-    function syncAndReload() {
-        localStorage.setItem('rpm_db_deeplearning_v2', JSON.stringify(db));
-        if (currentId) loadRPM(currentId);
-        renderSidebar();
-        updateHistoryButtons();
-    }
-
-    function updateHistoryButtons() {
-        document.getElementById('btnUndo').disabled = historyStack.length === 0;
-        document.getElementById('btnRedo').disabled = redoStack.length === 0;
-    }
-
-    function saveCurrentData() {
-        if (!currentId) return;
-        const index = db.findIndex(x => x.id === currentId);
-        if (index === -1) return;
-
-        // UPDATE: Fields lengkap untuk administrasi
-        const fields = [
-            'sekolah', 'bab', 'mapel', 'fase', 'kelas', 'semester', 'tahun', 
-            'alokasi', 'model_ajar', 'target_siswa', 'sarpras', 
-            'tp', 'iktp', 'pemantik', 'bermakna', 
-            'diff_umum', 'as_awal', 'as_proses', 'as_akhir', 
-            'refleksi', 'glosarium', 'pustaka', 'guru', 'ks'
-        ];
-        
-        fields.forEach(f => { if(document.getElementById(f)) db[index][f] = document.getElementById(f).value; });
-        
-        db[index].pedagogyMode = document.getElementById('pedagogyMode').value;
-
-        // Save 8 Dimensi
-        db[index].profils = {};
-        dimensiData.forEach((_, i) => { 
-            if(document.getElementById(`chk_${i}`).checked) 
-                db[index].profils[i] = { text: document.getElementById(`txt_${i}`).value }; 
-        });
-
-        // Save Pertemuan
-        let pData = [];
-        document.querySelectorAll('.pertemuan-card').forEach(c => {
-            pData.push({ 
-                m1: c.querySelector('.p_m1').value, 
-                m2: c.querySelector('.p_m2').value, 
-                m3: c.querySelector('.p_m3').value,
-                tanggal: c.querySelector('.p_tanggal').value,
-                jp: c.querySelector('.p_jp').value
-            });
-        });
-        db[index].pertemuan = pData;
-        
-        localStorage.setItem('rpm_db_deeplearning_v2', JSON.stringify(db));
-        showNotif();
-    }
-
-    // === UI RENDERING ===
-    function initProfilGrid() {
-        const container = document.getElementById('profilListContainer');
-        container.innerHTML = dimensiData.map((d, i) => `
-            <div class="p-item">
-                <label style="cursor:pointer; display:flex; align-items:center; gap:8px; font-size:12px;">
-                    <input type="checkbox" id="chk_${i}" onchange="toggleDimensi(${i})"> 
-                    <span style="font-weight:700; color:#334155;">${d.label}</span>
+    function initProfilUI() {
+        const c = document.getElementById('profilContainer');
+        c.innerHTML = dimensiList.map(d => `
+            <div class="dimensi-item">
+                <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                    <input type="checkbox" id="chk_${d.k}" onchange="toggleDimensi('${d.k}')">
+                    <span>${d.l}</span>
                 </label>
-                <div class="p-hidden" id="inp_${i}">
-                    <textarea id="txt_${i}" placeholder="${d.desc}"></textarea>
+                <div class="dimensi-hidden" id="box_${d.k}">
+                    <textarea id="val_${d.k}" placeholder="Contoh: ${d.h}"></textarea>
                 </div>
             </div>
         `).join('');
     }
 
-    function toggleDimensi(i) {
-        const chk = document.getElementById(`chk_${i}`);
-        document.getElementById(`inp_${i}`).style.display = chk.checked ? 'block' : 'none';
-        saveCurrentData();
+    function toggleDimensi(key) {
+        const chk = document.getElementById(`chk_${key}`);
+        document.getElementById(`box_${key}`).style.display = chk.checked ? 'block' : 'none';
+        debounceSave();
     }
 
-    function changePedagogyMode() {
-        currentMode = document.getElementById('pedagogyMode').value;
-        const labels = PEDAGOGY_LABELS[currentMode];
-        document.querySelectorAll('.pertemuan-card').forEach(card => {
-            card.querySelector('.lbl-m1').innerText = labels.m1;
-            card.querySelector('.lbl-m2').innerText = labels.m2;
-            card.querySelector('.lbl-m3').innerText = labels.m3;
+    // --- CRUD FUNCTIONS ---
+    function createNew() {
+        const mapel = document.getElementById('sidebarMapel').value;
+        const newId = 'modul_' + Date.now();
+        const emptyData = {
+            id: newId, mapel: mapel, bab: '', sekolah: '', kelas: 'Kelas 1', fase: 'Fase A',
+            tahun: '', alokasi: '', sarpras: '', tp: '', pemantik: '', bermakna: '',
+            as_awal: '', as_proses: '', as_akhir: '', refleksi: '', glosarium: '', pustaka: '',
+            ks: '', nip_ks: '', guru: '', nip_guru: '',
+            dimensi: {},
+            pertemuan: [{m1:'', m2:'', m3:'', topik:''}]
+        };
+        db.push(emptyData);
+        saveDB();
+        loadModul(newId);
+    }
+
+    function loadModul(id) {
+        activeId = id;
+        const data = db.find(x => x.id === id);
+        if(!data) return;
+
+        // UI Switch
+        document.getElementById('emptyState').style.display = 'none';
+        document.getElementById('formContainer').style.display = 'block';
+
+        // Load Fields
+        const fields = ['sekolah','bab','mapel','kelas','fase','tahun','alokasi','sarpras','tp','pemantik','bermakna','as_awal','as_proses','as_akhir','refleksi','glosarium','pustaka','ks','nip_ks','guru','nip_guru'];
+        fields.forEach(f => {
+            if(document.getElementById(f)) document.getElementById(f).value = data[f] || '';
         });
-        saveCurrentData();
+
+        // Load Dimensi
+        dimensiList.forEach(d => {
+            const saved = data.dimensi && data.dimensi[d.k];
+            document.getElementById(`chk_${d.k}`).checked = !!saved;
+            document.getElementById(`box_${d.k}`).style.display = saved ? 'block' : 'none';
+            document.getElementById(`val_${d.k}`).value = saved || '';
+        });
+
+        // Load Pertemuan
+        const pContainer = document.getElementById('pertemuanList');
+        pContainer.innerHTML = '';
+        (data.pertemuan || []).forEach((p, i) => renderPertemuanUI(i, p));
+        
+        renderSidebar();
+    }
+
+    function renderPertemuanUI(index, pData) {
+        const div = document.createElement('div');
+        div.className = 'card-pertemuan';
+        div.innerHTML = `
+            <div class="card-header">
+                <strong>Pertemuan Ke-${index+1}</strong>
+                <button type="button" class="btn-action btn-danger" onclick="hapusPertemuan(${index})">Hapus</button>
+            </div>
+            <div class="form-group">
+                <span class="badge-step">Topik / Sub-Bab</span>
+                <input type="text" class="p_topik" value="${pData.topik||''}" placeholder="Cth: Pengenalan Rantai Makanan">
+            </div>
+            <div class="form-group">
+                <span class="badge-step">Kegiatan Awal (Mindful)</span>
+                <textarea class="p_m1" placeholder="Cth: Guru menyapa, berdoa, dan menanyakan kabar perasaan siswa...">${pData.m1||''}</textarea>
+            </div>
+            <div class="form-group">
+                <span class="badge-step">Kegiatan Inti (Meaningful)</span>
+                <textarea class="p_m2" style="height:80px;" placeholder="Cth: Siswa menonton video, lalu diskusi kelompok membedakan herbivora dan karnivora...">${pData.m2||''}</textarea>
+            </div>
+            <div class="form-group">
+                <span class="badge-step">Kegiatan Penutup (Joyful)</span>
+                <textarea class="p_m3" placeholder="Cth: Guru mengajak siswa menyimpulkan dan melakukan tepuk semangat...">${pData.m3||''}</textarea>
+            </div>
+        `;
+        document.getElementById('pertemuanList').appendChild(div);
+    }
+
+    function addPertemuan() {
+        const pContainer = document.getElementById('pertemuanList');
+        renderPertemuanUI(pContainer.children.length, {});
+        debounceSave();
+    }
+
+    function hapusPertemuan(idx) {
+        if(!confirm("Hapus pertemuan ini?")) return;
+        const data = db.find(x => x.id === activeId);
+        data.pertemuan.splice(idx, 1);
+        saveDB();
+        loadModul(activeId);
+    }
+
+    function debounceSave() {
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => {
+            if(!activeId) return;
+            const dataIdx = db.findIndex(x => x.id === activeId);
+            if(dataIdx === -1) return;
+
+            // Collect Data
+            const fields = ['sekolah','bab','mapel','kelas','fase','tahun','alokasi','sarpras','tp','pemantik','bermakna','as_awal','as_proses','as_akhir','refleksi','glosarium','pustaka','ks','nip_ks','guru','nip_guru'];
+            fields.forEach(f => db[dataIdx][f] = document.getElementById(f).value);
+
+            // Collect Dimensi
+            db[dataIdx].dimensi = {};
+            dimensiList.forEach(d => {
+                if(document.getElementById(`chk_${d.k}`).checked) {
+                    db[dataIdx].dimensi[d.k] = document.getElementById(`val_${d.k}`).value;
+                }
+            });
+
+            // Collect Pertemuan
+            db[dataIdx].pertemuan = [];
+            document.querySelectorAll('.card-pertemuan').forEach(card => {
+                db[dataIdx].pertemuan.push({
+                    topik: card.querySelector('.p_topik').value,
+                    m1: card.querySelector('.p_m1').value,
+                    m2: card.querySelector('.p_m2').value,
+                    m3: card.querySelector('.p_m3').value
+                });
+            });
+
+            saveDB();
+            document.getElementById('saveToast').style.display = 'block';
+            setTimeout(() => document.getElementById('saveToast').style.display = 'none', 1500);
+        }, 1000);
+    }
+
+    function saveDB() {
+        localStorage.setItem('siPandu_v3_db', JSON.stringify(db));
+        renderSidebar();
     }
 
     function renderSidebar() {
-        const selectedMapel = document.getElementById('sidebarMapel').value;
+        const filter = document.getElementById('sidebarMapel').value;
         const list = document.getElementById('rpmList');
         list.innerHTML = '';
-        const filtered = db.filter(x => x.mapel === selectedMapel);
-        filtered.forEach(item => {
+        
+        db.filter(x => x.mapel === filter).forEach(item => {
             const li = document.createElement('li');
-            li.className = `rpm-item ${currentId === item.id ? 'active' : ''}`;
-            li.onclick = () => loadRPM(item.id);
-            li.innerHTML = `<span>${item.bab || 'Bab Baru'}</span><span onclick="event.stopPropagation(); deleteRPM('${item.id}')" style="color:#f87171; font-weight:bold;">×</span>`;
+            li.className = `rpm-item ${activeId === item.id ? 'active' : ''}`;
+            li.innerHTML = `<span>${item.bab || '(Tanpa Judul)'}</span> <span onclick="deleteModul('${item.id}')" style="color:red; font-weight:bold;">&times;</span>`;
+            li.onclick = (e) => { if(e.target.tagName !== 'SPAN') loadModul(item.id); };
+            li.querySelector('span:first-child').onclick = () => loadModul(item.id);
             list.appendChild(li);
         });
     }
 
-    function createNewRPM() {
-        saveState();
-        const selectedMapel = document.getElementById('sidebarMapel').value;
-        const newId = 'id_' + Date.now();
-        db.push({ 
-            id: newId, mapel: selectedMapel, bab: 'Bab Baru', 
-            pedagogyMode: 'Standar',
-            pertemuan: [{m1:'', m2:'', m3:'', tanggal:'', jp:''}], 
-            profils: {} 
-        });
-        syncAndReload();
-        loadRPM(newId);
-    }
-
-    function loadRPM(id) {
-        currentId = id;
-        const data = db.find(x => x.id === id);
-        if (!data) return;
-
-        document.getElementById('emptyState').style.display = 'none';
-        document.getElementById('formContainer').style.display = 'block';
-        document.getElementById('mapel').value = data.mapel || '';
-        
-        // Load Fields Expanded
-        const fields = [
-            'sekolah', 'bab', 'fase', 'kelas', 'semester', 'tahun', 
-            'alokasi', 'model_ajar', 'target_siswa', 'sarpras', 
-            'tp', 'iktp', 'pemantik', 'bermakna', 
-            'diff_umum', 'as_awal', 'as_proses', 'as_akhir', 
-            'refleksi', 'glosarium', 'pustaka', 'guru', 'ks'
-        ];
-        fields.forEach(f => { if(document.getElementById(f)) document.getElementById(f).value = data[f] || ''; });
-
-        currentMode = data.pedagogyMode || 'Standar';
-        document.getElementById('pedagogyMode').value = currentMode;
-
-        // Load 8 Dimensi
-        dimensiData.forEach((_, i) => {
-            const chk = document.getElementById(`chk_${i}`);
-            const div = document.getElementById(`inp_${i}`);
-            const saved = data.profils && data.profils[i];
-            chk.checked = !!saved; 
-            div.style.display = saved ? 'block' : 'none'; 
-            document.getElementById(`txt_${i}`).value = saved ? saved.text : '';
-        });
-
-        const container = document.getElementById('pertemuanContainer');
-        container.innerHTML = '';
-        (data.pertemuan || []).forEach((p, idx) => {
-            renderPertemuan(idx + 1, p.m1, p.m2, p.m3, p.tanggal, p.jp);
-        });
-
-        renderSidebar();
-    }
-
-    function renderPertemuan(num, m1='', m2='', m3='', tgl='', jp='') {
-        const labels = PEDAGOGY_LABELS[currentMode];
-        const div = document.createElement('div');
-        div.className = 'pertemuan-card';
-        div.innerHTML = `
-            <div class="card-head">
-                <strong>PERTEMUAN ${num}</strong>
-                <div style="display:flex; gap:10px;">
-                    <input type="text" class="p_tanggal" placeholder="Hari/Tanggal" value="${tgl}" style="width:120px;">
-                    <input type="text" class="p_jp" placeholder="JP" value="${jp}" style="width:60px; text-align:center;">
-                    <button type="button" class="btn-action btn-danger" onclick="deletePertemuan(${num-1})">Hapus</button>
-                </div>
-            </div>
-            <div class="step-box">
-                <span class="step-label lbl-m1">${labels.m1}</span>
-                <textarea class="p_m1" placeholder="Kegiatan awal...">${m1}</textarea>
-            </div>
-            <div class="step-box">
-                <span class="step-label lbl-m2">${labels.m2}</span>
-                <textarea class="p_m2" style="height:80px;" placeholder="Kegiatan inti...">${m2}</textarea>
-            </div>
-            <div class="step-box">
-                <span class="step-label lbl-m3">${labels.m3}</span>
-                <textarea class="p_m3" placeholder="Kegiatan penutup...">${m3}</textarea>
-            </div>
-        `;
-        document.getElementById('pertemuanContainer').appendChild(div);
-    }
-
-    function addPertemuan() {
-        saveState();
-        renderPertemuan(document.querySelectorAll('.pertemuan-card').length + 1);
-        saveCurrentData();
-    }
-
-    function deletePertemuan(index) {
-        if(!confirm('Hapus pertemuan ini?')) return;
-        saveState();
-        const activeData = db.find(x => x.id === currentId);
-        if(activeData && activeData.pertemuan) {
-            activeData.pertemuan.splice(index, 1);
-            syncAndReload();
-            loadRPM(currentId);
+    function deleteModul(id) {
+        if(confirm("Hapus modul ini permanen?")) {
+            db = db.filter(x => x.id !== id);
+            saveDB();
+            if(activeId === id) window.location.reload();
         }
     }
 
-    function deleteRPM(id) {
-        if(confirm('Hapus seluruh bab ini?')) {
-            saveState(); 
-            db = db.filter(x => x.id !== id); 
-            syncAndReload();
-            if(currentId === id) { 
-                currentId = null; 
-                document.getElementById('formContainer').style.display = 'none'; 
-                document.getElementById('emptyState').style.display = 'block'; 
-            }
-        }
+    function updateSidebarLabel(val) {
+        const el = document.querySelector('.rpm-item.active span:first-child');
+        if(el) el.innerText = val || '(Tanpa Judul)';
     }
 
-    // === ADMN INTEGRATION ===
-    function importDataDariAdmn() {
-        const dataAdmnRaw = localStorage.getItem('sipandu_v1_4');
-        if (!dataAdmnRaw) { alert("Data SiPandu ADMN tidak ditemukan."); return; }
-        const dataAdmn = JSON.parse(dataAdmnRaw);
-        const mapelSekarang = document.getElementById('sidebarMapel').value;
-        const subjek = dataAdmn.subjects[mapelSekarang];
-        if (!subjek || !subjek.tpList || subjek.tpList.length === 0) { alert("Tidak ada data TP untuk " + mapelSekarang); return; }
-        
-        tempTpList = subjek.tpList;
-        document.getElementById('tpChoiceContainer').innerHTML = tempTpList.map((tp, i) => `
-            <div class="tp-item">
-                <input type="checkbox" class="tp-check" value="${i}">
-                <span style="font-size:13px;">${tp.text}</span>
-            </div>
-        `).join('');
-        document.getElementById('tpModal').style.display = 'flex';
-        
-        if(!document.getElementById('sekolah').value) document.getElementById('sekolah').value = dataAdmn.common.sekolah;
-        if(!document.getElementById('guru').value) document.getElementById('guru').value = dataAdmn.common.guru;
-        if(!document.getElementById('ks').value) document.getElementById('ks').value = dataAdmn.common.ks;
-    }
-
-    function confirmImportTP() {
-        const checked = document.querySelectorAll('.tp-check:checked');
-        if (checked.length === 0) return;
-        saveState();
-        let selectedTexts = [];
-        checked.forEach(c => selectedTexts.push(tempTpList[c.value].text));
-        const formatted = selectedTexts.map(t => `• ${t}`).join('\n');
-        const currentVal = document.getElementById('tp').value;
-        document.getElementById('tp').value = currentVal ? (currentVal + "\n" + formatted) : formatted;
-        document.getElementById('tpModal').style.display = 'none';
-        saveCurrentData();
-    }
-
-    // === EXPORT DOC ===
-    function downloadDoc() {
-        const data = db.find(x => x.id === currentId);
-        if(!data) return;
-        const labels = PEDAGOGY_LABELS[data.pedagogyMode || 'Standar'];
-        
-        let profilHtml = "";
-        Object.keys(data.profils || {}).forEach(k => { 
-            profilHtml += `<li><b>${dimensiData[k].label}:</b> ${data.profils[k].text}</li>`; 
-        });
-        
-        let pertemuanHtml = "";
-        (data.pertemuan || []).forEach((p, i) => {
-            pertemuanHtml += `
-                <tr bgcolor="#f1f5f9"><td colspan="2" style="border:1px solid #000; padding:5px;"><b>PERTEMUAN ${i+1} (${p.tanggal || '-'} | ${p.jp || '-'})</b></td></tr>
-                <tr><td width="150" style="border:1px solid #000; padding:5px;">${labels.m1}</td><td style="border:1px solid #000; padding:5px;">${p.m1 || '-'}</td></tr>
-                <tr><td style="border:1px solid #000; padding:5px;">${labels.m2}</td><td style="border:1px solid #000; padding:5px;">${p.m2 || '-'}</td></tr>
-                <tr><td style="border:1px solid #000; padding:5px;">${labels.m3}</td><td style="border:1px solid #000; padding:5px;">${p.m3 || '-'}</td></tr>`;
-        });
-
-        const html = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'>
-        <head><meta charset='utf-8'><style>body{font-family:'Times New Roman'; font-size:11pt} table{width:100%; border-collapse:collapse} td{vertical-align:top}</style></head>
-        <body>
-            <h2 align="center">MODUL AJAR KURIKULUM MERDEKA</h2>
-            <table style="border:none">
-                <tr><td width="160">Satuan Pendidikan</td><td>: ${data.sekolah}</td></tr>
-                <tr><td>Mata Pelajaran</td><td>: ${data.mapel}</td></tr>
-                <tr><td>Bab / Topik</td><td>: ${data.bab}</td></tr>
-                <tr><td>Kelas / Fase</td><td>: ${data.kelas} / ${data.fase}</td></tr>
-                <tr><td>Semester / T.A</td><td>: ${data.semester || '-'} / ${data.tahun || '-'}</td></tr>
-                <tr><td>Alokasi Waktu</td><td>: ${data.alokasi}</td></tr>
-            </table>
-            <hr>
-            <h3>A. TUJUAN PEMBELAJARAN</h3>
-            <p>${data.tp.replace(/\n/g, '<br>')}</p>
-            <h3>B. SARPRAS & PROFIL LULUSAN</h3>
-            <p><b>Sarpras:</b> ${data.sarpras || '-'}</p>
-            <ul>${profilHtml}</ul>
-            <h3>C. LANGKAH PEMBELAJARAN</h3>
-            <table>${pertemuanHtml}</table>
-            <h3>D. ASESMEN & REFLEKSI</h3>
-            <table border="1">
-                <tr><th>Awal</th><th>Proses</th><th>Akhir</th></tr>
-                <tr><td>${data.as_awal}</td><td>${data.as_proses}</td><td>${data.as_akhir}</td></tr>
-            </table>
-            <p><b>Refleksi:</b> ${data.refleksi || '-'}</p>
-            <br>
-            <table border="0">
-                <tr><td align="center">Mengetahui,<br>Kepala Sekolah<br><br><br><b>${data.ks}</b></td><td align="center">Guru Penyusun<br><br><br><br><b>${data.guru}</b></td></tr>
-            </table>
-        </body></html>`;
-        
-        const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `Modul_${data.bab}.doc`;
-        a.click();
-    }
-
-    // === PDF ENGINE (FIXED) ===
+    // --- PDF GENERATOR (FIXED FULL CONTENT) ---
     function downloadPDF() {
-        const data = db.find(x => x.id === currentId);
-        if(!data) return;
+        if(!activeId) return;
+        const d = db.find(x => x.id === activeId);
 
-        // Create Virtual Element for Print
-        const element = document.createElement('div');
-        element.style.padding = "40px";
-        element.style.fontFamily = "'Times New Roman', serif";
-        element.style.fontSize = "11pt";
-        element.style.lineHeight = "1.4";
-        element.style.color = "#000";
-
-        // Profil List
-        let profilList = "";
-        Object.keys(data.profils || {}).forEach(k => {
-             profilList += `<li><b>${dimensiData[k].label}:</b> ${data.profils[k].text}</li>`;
+        // Buat Profil HTML
+        let profilHtml = '';
+        Object.keys(d.dimensi || {}).forEach(k => {
+            const label = dimensiList.find(x => x.k === k).l;
+            profilHtml += `<li><b>${label}:</b> ${d.dimensi[k]}</li>`;
         });
 
-        // Steps
-        let langkahHTML = "";
-        const labels = PEDAGOGY_LABELS[data.pedagogyMode || 'Standar'];
-        (data.pertemuan || []).forEach((p, i) => {
-            langkahHTML += `
-            <div style="margin-bottom:15px; border:1px solid #000; padding:10px;">
-                <div style="background:#eee; padding:5px; font-weight:bold; border-bottom:1px solid #000; margin-bottom:5px;">
-                    Pertemuan Ke-${i+1} (${p.tanggal || '-'} | ${p.jp || '-'})
+        // Buat Pertemuan HTML
+        let pertemuanHtml = '';
+        (d.pertemuan || []).forEach((p, i) => {
+            pertemuanHtml += `
+            <div style="border:1px solid #000; margin-bottom:15px; page-break-inside: avoid;">
+                <div style="background:#ddd; padding:5px; border-bottom:1px solid #000; font-weight:bold;">
+                    Pertemuan Ke-${i+1}: ${p.topik || 'Topik Umum'}
                 </div>
-                <p style="margin:5px 0;"><b>A. ${labels.m1}:</b><br>${(p.m1||'-').replace(/\n/g,'<br>')}</p>
-                <p style="margin:5px 0;"><b>B. ${labels.m2}:</b><br>${(p.m2||'-').replace(/\n/g,'<br>')}</p>
-                <p style="margin:5px 0;"><b>C. ${labels.m3}:</b><br>${(p.m3||'-').replace(/\n/g,'<br>')}</p>
+                <div style="padding:10px;">
+                    <p style="margin:5px 0;"><b>A. Kegiatan Awal:</b><br>${(p.m1||'-').replace(/\n/g,'<br>')}</p>
+                    <p style="margin:5px 0;"><b>B. Kegiatan Inti:</b><br>${(p.m2||'-').replace(/\n/g,'<br>')}</p>
+                    <p style="margin:5px 0;"><b>C. Kegiatan Penutup:</b><br>${(p.m3||'-').replace(/\n/g,'<br>')}</p>
+                </div>
             </div>`;
         });
 
+        const element = document.createElement('div');
+        element.style.padding = '40px';
+        element.style.fontFamily = 'Times New Roman';
+        element.style.color = '#000';
         element.innerHTML = `
-            <h3 style="text-align:center; text-transform:uppercase; margin-bottom:5px;">Modul Ajar Kurikulum Merdeka</h3>
-            <p style="text-align:center; font-size:10pt; margin-top:0;">${data.sekolah} | T.A ${data.tahun || '-'}</p>
-            <hr style="border:1px solid #000; margin-bottom:20px;">
-            
-            <table style="width:100%; border-collapse:collapse; margin-bottom:15px; font-size:11pt;">
-                <tr><td width="160"><b>Mata Pelajaran</b></td><td>: ${data.mapel}</td></tr>
-                <tr><td><b>Bab / Materi</b></td><td>: ${data.bab}</td></tr>
-                <tr><td><b>Kelas / Fase</b></td><td>: ${data.kelas} / ${data.fase} (Sem. ${data.semester||'-'})</td></tr>
-                <tr><td><b>Alokasi Waktu</b></td><td>: ${data.alokasi}</td></tr>
-                <tr><td><b>Model / Target</b></td><td>: ${data.model_ajar || '-'} / ${data.target_siswa || '-'}</td></tr>
+            <div style="text-align:center; text-transform:uppercase; font-weight:bold; font-size:14pt; margin-bottom:5px;">Modul Ajar Kurikulum Merdeka</div>
+            <div style="text-align:center; font-size:11pt;">${d.sekolah} | Tahun Ajaran ${d.tahun}</div>
+            <hr style="border:1px solid #000; margin: 10px 0 20px 0;">
+
+            <table style="width:100%; margin-bottom:20px; font-size:11pt;">
+                <tr><td width="150"><b>Mata Pelajaran</b></td><td>: ${d.mapel}</td></tr>
+                <tr><td><b>Kelas / Fase</b></td><td>: ${d.kelas} / ${d.fase}</td></tr>
+                <tr><td><b>Bab / Materi</b></td><td>: ${d.bab}</td></tr>
+                <tr><td><b>Alokasi Waktu</b></td><td>: ${d.alokasi}</td></tr>
             </table>
 
-            <h4 style="margin-bottom:5px; background:#e2e8f0; padding:5px;">A. TUJUAN PEMBELAJARAN</h4>
-            <div style="margin-left:5px; margin-bottom:10px;">${data.tp.replace(/\n/g, '<br>')}</div>
+            <h4 style="background:#eee; padding:5px; border-bottom:1px solid #000;">I. TUJUAN & PROFIL</h4>
+            <div style="padding:5px 10px;">
+                <p><b>Tujuan Pembelajaran:</b><br>${d.tp.replace(/\n/g,'<br>')}</p>
+                <p><b>Profil Pelajar Pancasila:</b></p>
+                <ul>${profilHtml}</ul>
+                <p><b>Sarana & Prasarana:</b><br>${d.sarpras || '-'}</p>
+            </div>
 
-            <h4 style="margin-bottom:5px; background:#e2e8f0; padding:5px;">B. PROFIL LULUSAN & SARPRAS</h4>
-            <ul style="margin-top:5px; margin-bottom:10px; padding-left:20px;">${profilList}</ul>
-            <p style="margin-bottom:10px;"><b>Media & Sarpras:</b> ${data.sarpras || '-'}</p>
+            <h4 style="background:#eee; padding:5px; border-bottom:1px solid #000;">II. PEMANTIK (DEEP LEARNING)</h4>
+            <div style="padding:5px 10px;">
+                <p><b>Pertanyaan Pemantik:</b> "${d.pemantik}"</p>
+                <p><b>Pemahaman Bermakna:</b> ${d.bermakna}</p>
+            </div>
 
-            <h4 style="margin-bottom:5px; background:#e2e8f0; padding:5px;">C. LANGKAH PEMBELAJARAN</h4>
-            ${langkahHTML}
+            <h4 style="background:#eee; padding:5px; border-bottom:1px solid #000;">III. LANGKAH PEMBELAJARAN</h4>
+            ${pertemuanHtml}
 
-            <h4 style="margin-bottom:5px; background:#e2e8f0; padding:5px;">D. ASESMEN & REFLEKSI</h4>
+            <h4 style="background:#eee; padding:5px; border-bottom:1px solid #000;">IV. ASESMEN & LAMPIRAN</h4>
             <table border="1" style="width:100%; border-collapse:collapse; margin-bottom:10px;">
-                <tr style="background:#eee;"><th>Awal</th><th>Proses</th><th>Akhir</th></tr>
+                <tr><th style="background:#f9f9f9;">Awal</th><th style="background:#f9f9f9;">Proses</th><th style="background:#f9f9f9;">Akhir</th></tr>
                 <tr>
-                    <td style="padding:5px; vertical-align:top;">${data.as_awal||'-'}</td>
-                    <td style="padding:5px; vertical-align:top;">${data.as_proses||'-'}</td>
-                    <td style="padding:5px; vertical-align:top;">${data.as_akhir||'-'}</td>
+                    <td style="padding:5px; vertical-align:top;">${d.as_awal||'-'}</td>
+                    <td style="padding:5px; vertical-align:top;">${d.as_proses||'-'}</td>
+                    <td style="padding:5px; vertical-align:top;">${d.as_akhir||'-'}</td>
                 </tr>
             </table>
-            <p><b>Refleksi:</b> ${data.refleksi || '-'}</p>
+            <p><b>Refleksi:</b><br>${d.refleksi||'-'}</p>
+            <p><b>Glosarium:</b><br>${d.glosarium||'-'}</p>
+            <p><b>Daftar Pustaka:</b><br>${d.pustaka||'-'}</p>
 
             <br><br>
-            <table style="width:100%; text-align:center; margin-top:20px;">
+            <table style="width:100%; text-align:center;">
                 <tr>
-                    <td>Mengetahui,<br>Kepala Sekolah<br><br><br><br><b><u>${data.ks || '.....................'}</u></b></td>
-                    <td>Guru Mata Pelajaran<br><br><br><br><br><b><u>${data.guru || '.....................'}</u></b></td>
+                    <td>Mengetahui,<br>Kepala Sekolah<br><br><br><br><b><u>${d.ks}</u></b><br>NIP. ${d.nip_ks}</td>
+                    <td>Guru Kelas / Mapel<br><br><br><br><b><u>${d.guru}</u></b><br>NIP. ${d.nip_guru}</td>
                 </tr>
             </table>
         `;
 
         const opt = {
-            margin: [15, 15, 15, 15],
-            filename: `Modul_Ajar_${data.bab.replace(/\s+/g,'_')}.pdf`,
+            margin: [15, 20, 15, 20],
+            filename: `Modul_${d.bab}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
-
         html2pdf().set(opt).from(element).save();
     }
 
-    function filterByMapel() {
-        renderSidebar();
-    }
-    
-    function updateSidebarLabel(val) {
-        if(!currentId) return;
-        const el = document.querySelector('.rpm-item.active span');
-        if(el) el.innerText = val || 'Bab Baru';
-        // Auto update db name view
-        const index = db.findIndex(x => x.id === currentId);
-        if(index !== -1) {
-            db[index].bab = val;
-            localStorage.setItem('rpm_db_deeplearning_v2', JSON.stringify(db));
-        }
-    }
-    
-    function showNotif() {
-        const n = document.getElementById('saveNotif');
-        n.style.display='block';
-        setTimeout(()=>n.style.display='none', 1500);
+    function downloadWord() {
+        alert("Fitur Download Word akan mengambil data teks sederhana untuk diedit.");
+        // Logika sederhana Word export (sama seperti sebelumnya, disesuaikan)
+        if(!activeId) return;
+        const d = db.find(x => x.id === activeId);
+        
+        let content = `
+        <html><head><style>body{font-family:'Times New Roman'}</style></head><body>
+        <h2 align="center">MODUL AJAR ${d.mapel.toUpperCase()}</h2>
+        <p><b>Sekolah:</b> ${d.sekolah}<br><b>Kelas:</b> ${d.kelas}<br><b>Bab:</b> ${d.bab}</p>
+        <hr>
+        <h3>A. TUJUAN</h3><p>${d.tp}</p>
+        <h3>B. LANGKAH</h3>
+        `;
+        (d.pertemuan||[]).forEach((p,i)=> {
+            content += `<p><b>Pertemuan ${i+1}:</b><br>Awal: ${p.m1}<br>Inti: ${p.m2}<br>Akhir: ${p.m3}</p>`;
+        });
+        content += `<h3>C. ASESMEN</h3><p>Awal: ${d.as_awal}<br>Proses: ${d.as_proses}<br>Akhir: ${d.as_akhir}</p>`;
+        content += `<br><table width="100%"><tr><td align="center">Kepala Sekolah<br><br><br>${d.ks}</td><td align="center">Guru<br><br><br>${d.guru}</td></tr></table></body></html>`;
+
+        const blob = new Blob(['\ufeff', content], {type:'application/msword'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `Modul_${d.bab}.doc`;
+        a.click();
     }
 </script>
 
