@@ -2,19 +2,19 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>SiPandu RPM v1.1 - Deep Learning Edition</title>
+    <title>SiPandu RPM v2.0 - Deep Learning & Admin Ready</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             /* THEME: Deep Professional v1.1 */
             --bg-main: #f1f5f9;
-            --sidebar-bg: #0f172a; /* Lebih gelap dikit biar elegan */
+            --sidebar-bg: #0f172a;
             --sidebar-text: #e2e8f0;
             --card-bg: #ffffff;
             
             --primary: #2563eb;       
             --primary-dark: #1e40af;
-            --accent: #38bdf8;        /* Sky Blue */
+            --accent: #38bdf8;
             --danger: #ef4444;
             --success: #10b981;
             
@@ -130,7 +130,7 @@
     <div class="sidebar">
         <div class="brand-box">
             <div class="brand-title">SiPandu RPM</div>
-            <span class="brand-sub">DEEP LEARNING EDITION</span>
+            <span class="brand-sub">DEEP LEARNING EDITION v2</span>
         </div>
 
         <div class="undo-redo">
@@ -165,7 +165,7 @@
 
         <div class="container" id="formContainer" style="display:none;">
             <div class="header-doc">
-                <h1>RENCANA PEMBELAJARAN</h1>
+                <h1>MODUL AJAR & RPM</h1>
                 <span class="badge" id="modeBadge">DEEP LEARNING FRAMEWORK</span>
             </div>
 
@@ -178,14 +178,26 @@
                     </select>
                 </div>
 
-                <h2>I. IDENTITAS MODUL</h2>
+                <h2>I. IDENTITAS MODUL (LENGKAP)</h2>
                 <div class="grid-form">
                     <div class="span-3"><label>Satuan Pendidikan</label><input type="text" id="sekolah"></div>
                     <div class="span-2"><label>Judul Bab / Materi</label><input type="text" id="bab" oninput="updateSidebarLabel(this.value)"></div>
                     <div><label>Mapel (Otomatis)</label><input type="text" id="mapel" readonly></div>
-                    <div><label>Fase</label><select id="fase"><option>A</option><option>B</option><option>C</option></select></div>
-                    <div><label>Kelas</label><select id="kelas"><option>I</option><option>II</option><option>III</option><option>IV</option><option>V</option><option>VI</option></select></div>
-                    <div><label>Alokasi Waktu</label><input type="text" id="alokasi" placeholder="Cth: 2 x 35 Menit"></div>
+                    
+                    <div><label>Fase / Kelas</label>
+                        <div style="display:flex; gap:5px;">
+                            <select id="fase" style="width:40%"><option>A</option><option>B</option><option>C</option></select>
+                            <select id="kelas" style="width:60%"><option>I</option><option>II</option><option>III</option><option>IV</option><option>V</option><option>VI</option></select>
+                        </div>
+                    </div>
+                    <div><label>Semester</label><select id="semester"><option>1 (Ganjil)</option><option>2 (Genap)</option></select></div>
+                    <div><label>Tahun Ajaran</label><input type="text" id="tahun" placeholder="2024/2025"></div>
+                    
+                    <div><label>Alokasi Waktu</label><input type="text" id="alokasi" placeholder="2 x 35 Menit"></div>
+                    <div><label>Model Pembelajaran</label><input type="text" id="model_ajar" placeholder="PBL / PjBL / Tatap Muka"></div>
+                    <div><label>Target Siswa</label><input type="text" id="target_siswa" placeholder="Reguler"></div>
+
+                    <div class="span-3"><label>Sarana & Prasarana (Media)</label><textarea id="sarpras" placeholder="Laptop, LCD, Kertas Karton, Video Youtube..." style="height:50px;"></textarea></div>
                 </div>
 
                 <h2>II. KOMPONEN INTI</h2>
@@ -222,6 +234,22 @@
                     <div><label>Asesmen Akhir</label><textarea id="as_akhir"></textarea></div>
                 </div>
 
+                <h2>VII. REFLEKSI & LAMPIRAN (DEEP LEARNING)</h2>
+                <div class="grid-form">
+                    <div class="span-3">
+                        <label>Refleksi Guru & Peserta Didik (Mindful)</label>
+                        <textarea id="refleksi" placeholder="Pertanyaan pemantik refleksi: Apa hal baru yang dipelajari? Apa tantangan yang dihadapi?"></textarea>
+                    </div>
+                    <div class="span-2">
+                        <label>Glosarium (Kata Kunci)</label>
+                        <textarea id="glosarium" placeholder="Daftar istilah penting..."></textarea>
+                    </div>
+                    <div>
+                        <label>Daftar Pustaka</label>
+                        <textarea id="pustaka" placeholder="Sumber belajar..."></textarea>
+                    </div>
+                </div>
+
                 <div class="grid-form" style="margin-top:40px;">
                     <div class="span-2"><label>Guru Penyusun</label><input type="text" id="guru"></div>
                     <div><label>Kepala Sekolah</label><input type="text" id="ks"></div>
@@ -229,7 +257,7 @@
 
                 <div class="footer-actions">
                     <button type="button" class="btn-big btn-word" onclick="downloadDoc()">📄 DOWNLOAD WORD</button>
-                    <button type="button" class="btn-big btn-pdf" onclick="downloadPDF()">📕 SIMPAN PDF</button>
+                    <button type="button" class="btn-big btn-pdf" onclick="downloadPDF()">📕 CETAK PDF RESMI</button>
                 </div>
             </form>
         </div>
@@ -238,7 +266,7 @@
 
 <script>
     // === KONFIGURASI ===
-    let db = JSON.parse(localStorage.getItem('rpm_db_deeplearning_v1')) || []; // Key baru biar fresh
+    let db = JSON.parse(localStorage.getItem('rpm_db_deeplearning_v2')) || []; // Updated Key
     let currentId = null;
     let historyStack = [];
     let redoStack = [];
@@ -251,16 +279,15 @@
     };
     let currentMode = "Standar";
 
-    // === UPDATE: 8 DIMENSI LENGKAP ===
     const dimensiData = [
-        { label: "Keimanan & Ketakwaan", desc: "Contoh: Berdoa, mengaitkan materi dengan nilai spiritual..." },
-        { label: "Kewargaan", desc: "Contoh: Cinta tanah air, keberagaman, peduli sosial..." },
-        { label: "Penalaran Kritis", desc: "Contoh: Menganalisis masalah, argumen logis, reflektif..." },
-        { label: "Kreativitas", desc: "Contoh: Inovasi, karya orisinal, solusi alternatif..." },
-        { label: "Kolaborasi", desc: "Contoh: Kerja kelompok, diskusi, berbagi peran..." },
-        { label: "Kemandirian", desc: "Contoh: Inisiatif belajar, tanggung jawab tugas..." },
-        { label: "Kesehatan", desc: "Contoh: Fisik prima, kesehatan mental (well-being)..." },
-        { label: "Komunikasi", desc: "Contoh: Presentasi, diskusi lisan/tulisan, podcast..." }
+        { label: "Keimanan & Ketakwaan", desc: "Berdoa, nilai spiritual..." },
+        { label: "Kewargaan", desc: "Cinta tanah air, peduli sosial..." },
+        { label: "Penalaran Kritis", desc: "Analisis masalah, reflektif..." },
+        { label: "Kreativitas", desc: "Inovasi, karya orisinal..." },
+        { label: "Kolaborasi", desc: "Kerja kelompok, diskusi..." },
+        { label: "Kemandirian", desc: "Tanggung jawab, inisiatif..." },
+        { label: "Kesehatan", desc: "Fisik prima, well-being..." },
+        { label: "Komunikasi", desc: "Presentasi, diskusi lisan..." }
     ];
 
     window.onload = () => {
@@ -303,7 +330,7 @@
     }
 
     function syncAndReload() {
-        localStorage.setItem('rpm_db_deeplearning_v1', JSON.stringify(db));
+        localStorage.setItem('rpm_db_deeplearning_v2', JSON.stringify(db));
         if (currentId) loadRPM(currentId);
         renderSidebar();
         updateHistoryButtons();
@@ -319,7 +346,14 @@
         const index = db.findIndex(x => x.id === currentId);
         if (index === -1) return;
 
-        const fields = ['sekolah', 'bab', 'fase', 'kelas', 'alokasi', 'tp', 'iktp', 'pemantik', 'bermakna', 'diff_umum', 'as_awal', 'as_proses', 'as_akhir', 'guru', 'ks'];
+        // UPDATE: Fields lengkap untuk administrasi
+        const fields = [
+            'sekolah', 'bab', 'mapel', 'fase', 'kelas', 'semester', 'tahun', 
+            'alokasi', 'model_ajar', 'target_siswa', 'sarpras', 
+            'tp', 'iktp', 'pemantik', 'bermakna', 
+            'diff_umum', 'as_awal', 'as_proses', 'as_akhir', 
+            'refleksi', 'glosarium', 'pustaka', 'guru', 'ks'
+        ];
         
         fields.forEach(f => { if(document.getElementById(f)) db[index][f] = document.getElementById(f).value; });
         
@@ -345,7 +379,7 @@
         });
         db[index].pertemuan = pData;
         
-        localStorage.setItem('rpm_db_deeplearning_v1', JSON.stringify(db));
+        localStorage.setItem('rpm_db_deeplearning_v2', JSON.stringify(db));
         showNotif();
     }
 
@@ -419,7 +453,14 @@
         document.getElementById('formContainer').style.display = 'block';
         document.getElementById('mapel').value = data.mapel || '';
         
-        const fields = ['sekolah', 'bab', 'fase', 'kelas', 'alokasi', 'tp', 'iktp', 'pemantik', 'bermakna', 'diff_umum', 'as_awal', 'as_proses', 'as_akhir', 'guru', 'ks'];
+        // Load Fields Expanded
+        const fields = [
+            'sekolah', 'bab', 'fase', 'kelas', 'semester', 'tahun', 
+            'alokasi', 'model_ajar', 'target_siswa', 'sarpras', 
+            'tp', 'iktp', 'pemantik', 'bermakna', 
+            'diff_umum', 'as_awal', 'as_proses', 'as_akhir', 
+            'refleksi', 'glosarium', 'pustaka', 'guru', 'ks'
+        ];
         fields.forEach(f => { if(document.getElementById(f)) document.getElementById(f).value = data[f] || ''; });
 
         currentMode = data.pedagogyMode || 'Standar';
@@ -503,6 +544,7 @@
         }
     }
 
+    // === ADMN INTEGRATION ===
     function importDataDariAdmn() {
         const dataAdmnRaw = localStorage.getItem('sipandu_v1_4');
         if (!dataAdmnRaw) { alert("Data SiPandu ADMN tidak ditemukan."); return; }
@@ -538,18 +580,15 @@
         saveCurrentData();
     }
 
-    // === EXPORT WORD ===
+    // === EXPORT DOC ===
     function downloadDoc() {
         const data = db.find(x => x.id === currentId);
         if(!data) return;
-
         const labels = PEDAGOGY_LABELS[data.pedagogyMode || 'Standar'];
         
         let profilHtml = "";
         Object.keys(data.profils || {}).forEach(k => { 
-            const dim = dimensiData[k].label;
-            const val = data.profils[k].text;
-            profilHtml += `<li><b>${dim}:</b> ${val}</li>`; 
+            profilHtml += `<li><b>${dimensiData[k].label}:</b> ${data.profils[k].text}</li>`; 
         });
         
         let pertemuanHtml = "";
@@ -565,26 +604,29 @@
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'>
         <head><meta charset='utf-8'><style>body{font-family:'Times New Roman'; font-size:11pt} table{width:100%; border-collapse:collapse} td{vertical-align:top}</style></head>
         <body>
-            <h2 align="center">RENCANA PEMBELAJARAN (MODUL AJAR)</h2>
+            <h2 align="center">MODUL AJAR KURIKULUM MERDEKA</h2>
             <table style="border:none">
-                <tr><td width="150">Satuan Pendidikan</td><td>: ${data.sekolah}</td></tr>
+                <tr><td width="160">Satuan Pendidikan</td><td>: ${data.sekolah}</td></tr>
                 <tr><td>Mata Pelajaran</td><td>: ${data.mapel}</td></tr>
                 <tr><td>Bab / Topik</td><td>: ${data.bab}</td></tr>
                 <tr><td>Kelas / Fase</td><td>: ${data.kelas} / ${data.fase}</td></tr>
+                <tr><td>Semester / T.A</td><td>: ${data.semester || '-'} / ${data.tahun || '-'}</td></tr>
                 <tr><td>Alokasi Waktu</td><td>: ${data.alokasi}</td></tr>
             </table>
             <hr>
             <h3>A. TUJUAN PEMBELAJARAN</h3>
             <p>${data.tp.replace(/\n/g, '<br>')}</p>
-            <h3>B. 8 DIMENSI PROFIL LULUSAN</h3>
+            <h3>B. SARPRAS & PROFIL LULUSAN</h3>
+            <p><b>Sarpras:</b> ${data.sarpras || '-'}</p>
             <ul>${profilHtml}</ul>
             <h3>C. LANGKAH PEMBELAJARAN</h3>
             <table>${pertemuanHtml}</table>
-            <h3>D. ASESMEN</h3>
+            <h3>D. ASESMEN & REFLEKSI</h3>
             <table border="1">
                 <tr><th>Awal</th><th>Proses</th><th>Akhir</th></tr>
                 <tr><td>${data.as_awal}</td><td>${data.as_proses}</td><td>${data.as_akhir}</td></tr>
             </table>
+            <p><b>Refleksi:</b> ${data.refleksi || '-'}</p>
             <br>
             <table border="0">
                 <tr><td align="center">Mengetahui,<br>Kepala Sekolah<br><br><br><b>${data.ks}</b></td><td align="center">Guru Penyusun<br><br><br><br><b>${data.guru}</b></td></tr>
@@ -594,18 +636,96 @@
         const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = `RPP_DeepLearning_${data.bab}.doc`;
+        a.download = `Modul_${data.bab}.doc`;
         a.click();
     }
 
+    // === PDF ENGINE (FIXED) ===
     function downloadPDF() {
         const data = db.find(x => x.id === currentId);
         if(!data) return;
+
+        // Create Virtual Element for Print
         const element = document.createElement('div');
-        element.style.padding = "30px";
-        element.style.fontFamily = "Arial";
-        element.innerHTML = `<h3>${data.bab}</h3><p>${data.tp}</p>`; 
-        html2pdf().from(element).save(`RPP_${data.bab}.pdf`);
+        element.style.padding = "40px";
+        element.style.fontFamily = "'Times New Roman', serif";
+        element.style.fontSize = "11pt";
+        element.style.lineHeight = "1.4";
+        element.style.color = "#000";
+
+        // Profil List
+        let profilList = "";
+        Object.keys(data.profils || {}).forEach(k => {
+             profilList += `<li><b>${dimensiData[k].label}:</b> ${data.profils[k].text}</li>`;
+        });
+
+        // Steps
+        let langkahHTML = "";
+        const labels = PEDAGOGY_LABELS[data.pedagogyMode || 'Standar'];
+        (data.pertemuan || []).forEach((p, i) => {
+            langkahHTML += `
+            <div style="margin-bottom:15px; border:1px solid #000; padding:10px;">
+                <div style="background:#eee; padding:5px; font-weight:bold; border-bottom:1px solid #000; margin-bottom:5px;">
+                    Pertemuan Ke-${i+1} (${p.tanggal || '-'} | ${p.jp || '-'})
+                </div>
+                <p style="margin:5px 0;"><b>A. ${labels.m1}:</b><br>${(p.m1||'-').replace(/\n/g,'<br>')}</p>
+                <p style="margin:5px 0;"><b>B. ${labels.m2}:</b><br>${(p.m2||'-').replace(/\n/g,'<br>')}</p>
+                <p style="margin:5px 0;"><b>C. ${labels.m3}:</b><br>${(p.m3||'-').replace(/\n/g,'<br>')}</p>
+            </div>`;
+        });
+
+        element.innerHTML = `
+            <h3 style="text-align:center; text-transform:uppercase; margin-bottom:5px;">Modul Ajar Kurikulum Merdeka</h3>
+            <p style="text-align:center; font-size:10pt; margin-top:0;">${data.sekolah} | T.A ${data.tahun || '-'}</p>
+            <hr style="border:1px solid #000; margin-bottom:20px;">
+            
+            <table style="width:100%; border-collapse:collapse; margin-bottom:15px; font-size:11pt;">
+                <tr><td width="160"><b>Mata Pelajaran</b></td><td>: ${data.mapel}</td></tr>
+                <tr><td><b>Bab / Materi</b></td><td>: ${data.bab}</td></tr>
+                <tr><td><b>Kelas / Fase</b></td><td>: ${data.kelas} / ${data.fase} (Sem. ${data.semester||'-'})</td></tr>
+                <tr><td><b>Alokasi Waktu</b></td><td>: ${data.alokasi}</td></tr>
+                <tr><td><b>Model / Target</b></td><td>: ${data.model_ajar || '-'} / ${data.target_siswa || '-'}</td></tr>
+            </table>
+
+            <h4 style="margin-bottom:5px; background:#e2e8f0; padding:5px;">A. TUJUAN PEMBELAJARAN</h4>
+            <div style="margin-left:5px; margin-bottom:10px;">${data.tp.replace(/\n/g, '<br>')}</div>
+
+            <h4 style="margin-bottom:5px; background:#e2e8f0; padding:5px;">B. PROFIL LULUSAN & SARPRAS</h4>
+            <ul style="margin-top:5px; margin-bottom:10px; padding-left:20px;">${profilList}</ul>
+            <p style="margin-bottom:10px;"><b>Media & Sarpras:</b> ${data.sarpras || '-'}</p>
+
+            <h4 style="margin-bottom:5px; background:#e2e8f0; padding:5px;">C. LANGKAH PEMBELAJARAN</h4>
+            ${langkahHTML}
+
+            <h4 style="margin-bottom:5px; background:#e2e8f0; padding:5px;">D. ASESMEN & REFLEKSI</h4>
+            <table border="1" style="width:100%; border-collapse:collapse; margin-bottom:10px;">
+                <tr style="background:#eee;"><th>Awal</th><th>Proses</th><th>Akhir</th></tr>
+                <tr>
+                    <td style="padding:5px; vertical-align:top;">${data.as_awal||'-'}</td>
+                    <td style="padding:5px; vertical-align:top;">${data.as_proses||'-'}</td>
+                    <td style="padding:5px; vertical-align:top;">${data.as_akhir||'-'}</td>
+                </tr>
+            </table>
+            <p><b>Refleksi:</b> ${data.refleksi || '-'}</p>
+
+            <br><br>
+            <table style="width:100%; text-align:center; margin-top:20px;">
+                <tr>
+                    <td>Mengetahui,<br>Kepala Sekolah<br><br><br><br><b><u>${data.ks || '.....................'}</u></b></td>
+                    <td>Guru Mata Pelajaran<br><br><br><br><br><b><u>${data.guru || '.....................'}</u></b></td>
+                </tr>
+            </table>
+        `;
+
+        const opt = {
+            margin: [15, 15, 15, 15],
+            filename: `Modul_Ajar_${data.bab.replace(/\s+/g,'_')}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(element).save();
     }
 
     function filterByMapel() {
@@ -613,14 +733,21 @@
     }
     
     function updateSidebarLabel(val) {
+        if(!currentId) return;
         const el = document.querySelector('.rpm-item.active span');
         if(el) el.innerText = val || 'Bab Baru';
+        // Auto update db name view
+        const index = db.findIndex(x => x.id === currentId);
+        if(index !== -1) {
+            db[index].bab = val;
+            localStorage.setItem('rpm_db_deeplearning_v2', JSON.stringify(db));
+        }
     }
     
     function showNotif() {
         const n = document.getElementById('saveNotif');
         n.style.display='block';
-        setTimeout(()=>n.style.display='none', 1000);
+        setTimeout(()=>n.style.display='none', 1500);
     }
 </script>
 
