@@ -2,246 +2,174 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>SiPandu RPM v3.0 - Sahabat Guru Baru</title>
+    <title>SiPandu RPM v2.0 - Edisi Resmi & Lengkap</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
-            /* THEME: Friendly & Clean */
+            /* TEMA: Clean Professional */
             --bg-main: #f8fafc;
             --sidebar-bg: #1e293b;
-            --primary: #4f46e5;       /* Indigo ramah */
-            --accent: #818cf8;
+            --primary: #2563eb;       
+            --accent: #38bdf8;
             --text-main: #334155;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --border: #cbd5e1;
         }
 
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-main); margin: 0; color: var(--text-main); overflow: hidden; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-main); margin: 0; padding: 0; color: var(--text-main); overflow: hidden; }
         .wrapper { display: flex; height: 100vh; }
         
         /* SIDEBAR */
-        .sidebar { width: 280px; background: var(--sidebar-bg); color: white; padding: 20px; display: flex; flex-direction: column; flex-shrink: 0; }
-        .brand { font-size: 20px; font-weight: 800; color: var(--accent); margin-bottom: 5px; }
-        .brand-sub { font-size: 11px; opacity: 0.7; margin-bottom: 25px; display: block; border-bottom: 1px solid #334155; padding-bottom: 15px; }
-        
-        .mapel-select { width: 100%; padding: 10px; background: #334155; color: white; border: none; border-radius: 6px; margin-bottom: 15px; cursor: pointer; }
-        .btn-new { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-bottom: 20px; }
-        .btn-new:hover { background: #4338ca; transform: translateY(-1px); }
-        
-        .rpm-list { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex: 1; }
-        .rpm-item { padding: 10px; background: rgba(255,255,255,0.05); margin-bottom: 5px; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
-        .rpm-item:hover { background: rgba(255,255,255,0.1); }
-        .rpm-item.active { background: var(--accent); color: #0f172a; font-weight: bold; }
+        .sidebar { width: 300px; background: var(--sidebar-bg); color: #fff; padding: 25px; display: flex; flex-direction: column; flex-shrink: 0; }
+        .brand-title { font-size: 22px; font-weight: 800; color: var(--accent); margin-bottom: 5px; }
+        .mapel-select { width: 100%; padding: 10px; background: #334155; color: white; border: 1px solid #475569; border-radius: 6px; margin-bottom: 20px; cursor: pointer; }
+        .rpm-list { list-style: none; padding: 0; margin: 0; flex: 1; overflow-y: auto; }
+        .rpm-item { padding: 10px; background: rgba(255,255,255,0.05); margin-bottom: 5px; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; justify-content: space-between; }
+        .rpm-item.active { background: var(--primary); color: white; font-weight: bold; }
+        .btn-new { width: 100%; padding: 12px; background: var(--accent); color: #0f172a; border: none; border-radius: 6px; font-weight: 700; margin-bottom: 20px; cursor: pointer; }
 
-        /* MAIN AREA */
-        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
-        .container { max-width: 850px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: var(--card-shadow); border: 1px solid var(--border); }
+        /* KONTEN UTAMA */
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+        .container { max-width: 900px; margin: auto; background: #fff; padding: 50px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid var(--border); }
         
-        h1 { margin: 0 0 10px 0; color: var(--primary); font-size: 24px; }
-        h2 { font-size: 14px; background: #f1f5f9; padding: 8px 12px; border-radius: 4px; border-left: 4px solid var(--primary); color: #475569; margin-top: 30px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
-        
-        /* FORM GRID */
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        h2 { font-size: 14px; text-transform: uppercase; color: var(--text-main); border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-top: 30px; margin-bottom: 15px; font-weight: 800; }
+        .grid-form { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
         .span-3 { grid-column: span 3; }
         .span-2 { grid-column: span 2; }
         
-        .form-group { margin-bottom: 5px; }
-        label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
-        .help-text { font-size: 10px; color: #94a3b8; font-style: italic; display: block; margin-bottom: 4px; }
+        label { display: block; font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 5px; text-transform: uppercase; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; background: #f8fafc; box-sizing: border-box; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); background: #fff; }
         
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; font-family: inherit; box-sizing: border-box; transition: 0.2s; }
-        input:focus, textarea:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
-        input::placeholder, textarea::placeholder { color: #cbd5e1; }
-        textarea { resize: vertical; }
+        /* TOMBOL AKSI */
+        .footer-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 40px; }
+        .btn-big { padding: 15px; font-size: 14px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; color: white; }
+        .btn-word { background: #1e40af; } 
+        .btn-pdf { background: #be123c; } 
 
-        /* PERTEMUAN CARD */
-        .card-pertemuan { border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; position: relative; }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px dashed var(--border); padding-bottom: 10px; }
-        .badge-step { display: inline-block; background: #e0e7ff; color: var(--primary); font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; margin-bottom: 3px; }
-
-        /* BUTTONS */
-        .btn-add { width: 100%; padding: 10px; border: 2px dashed #cbd5e1; background: transparent; color: #64748b; font-weight: 600; cursor: pointer; border-radius: 8px; transition: 0.2s; }
-        .btn-add:hover { border-color: var(--primary); color: var(--primary); background: #eef2ff; }
+        /* Kartu Pertemuan */
+        .pertemuan-card { border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; margin-bottom: 15px; background: #fff; }
+        .step-label { font-size: 11px; font-weight: bold; color: var(--primary); display: block; margin-top: 10px; margin-bottom: 3px; }
         
-        .btn-action { padding: 5px 10px; font-size: 11px; border-radius: 4px; cursor: pointer; border: 1px solid transparent; }
-        .btn-danger { background: #fee2e2; color: #ef4444; }
+        .save-toast { position: fixed; bottom: 20px; right: 20px; background: #10b981; color: white; padding: 10px 20px; border-radius: 50px; font-weight: bold; font-size: 12px; display: none; }
         
-        .footer-btns { display: flex; gap: 10px; margin-top: 40px; }
-        .btn-big { flex: 1; padding: 15px; border: none; border-radius: 8px; font-weight: 700; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-pdf { background: #be123c; } .btn-pdf:hover { background: #9f1239; }
-        .btn-doc { background: #2563eb; } .btn-doc:hover { background: #1d4ed8; }
-
-        .toast { position: fixed; bottom: 20px; right: 20px; background: #10b981; color: white; padding: 10px 20px; border-radius: 20px; font-size: 12px; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-
-        /* 8 DIMENSI CHECKBOX */
-        .dimensi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .dimensi-item { background: #f8fafc; padding: 10px; border: 1px solid var(--border); border-radius: 6px; }
-        .dimensi-hidden { display: none; margin-top: 8px; }
-        .dimensi-hidden textarea { height: 40px; font-size: 11px; }
+        /* 8 Dimensi Grid */
+        .profil-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .p-item { border: 1px solid #e2e8f0; padding: 10px; border-radius: 6px; }
+        .p-hidden { display: none; margin-top: 5px; }
     </style>
 </head>
 <body>
 
-<div class="toast" id="saveToast">Disimpan Otomatis ✓</div>
+<div class="save-toast" id="saveNotif">Disimpan Otomatis ✓</div>
 
 <div class="wrapper">
     <div class="sidebar">
-        <div class="brand">SiPandu Guru</div>
-        <span class="brand-sub">Administrasi Guru & Mahasiswa PPL</span>
-        
-        <label style="font-size:10px; color:#94a3b8; text-transform:uppercase;">Pilih Mata Pelajaran:</label>
-        <select class="mapel-select" id="sidebarMapel" onchange="renderSidebar()">
-            <option value="Umum">Umum / Guru Kelas</option>
+        <div class="brand-title">SiPandu RPM</div>
+        <div style="font-size:11px; opacity:0.7; margin-bottom:20px;">Deep Learning & Kurikulum Merdeka</div>
+
+        <label style="color:#94a3b8;">Mata Pelajaran:</label>
+        <select class="mapel-select" id="sidebarMapel" onchange="filterByMapel()">
+            <option value="Guru Kelas / Umum">Guru Kelas / Tematik</option>
             <option value="Matematika">Matematika</option>
-            <option value="B.Indonesia">B. Indonesia</option>
+            <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+            <option value="Pendidikan Pancasila">Pendidikan Pancasila</option>
             <option value="IPAS">IPAS</option>
-            <option value="Pancasila">Pendidikan Pancasila</option>
-            <option value="Seni">Seni Budaya</option>
             <option value="PJOK">PJOK</option>
-            <option value="B.Inggris">B. Inggris</option>
-            <option value="Agama">Pendidikan Agama</option>
+            <option value="Seni Budaya">Seni Budaya</option>
+            <option value="Bahasa Inggris">Bahasa Inggris</option>
+            <option value="PABP">Pendidikan Agama</option>
         </select>
 
-        <button class="btn-new" onclick="createNew()">+ Buat Modul Baru</button>
-        <div style="font-size:11px; font-weight:bold; margin-bottom:5px;">Riwayat Modul:</div>
+        <button class="btn-new" onclick="createNewRPM()">+ BUAT MODUL BARU</button>
+        <div style="font-size:10px; font-weight:bold; margin-bottom:5px; color:#cbd5e1;">RIWAYAT FILE:</div>
         <ul class="rpm-list" id="rpmList"></ul>
     </div>
 
     <div class="main-content">
-        <div id="emptyState" style="text-align:center; padding-top:100px; color:#94a3b8;">
-            <h2>👋 Halo, Guru Hebat!</h2>
-            <p>Silakan pilih modul di kiri atau buat baru untuk mulai merancang pembelajaran.</p>
+        <div id="emptyState" style="text-align:center; padding-top:100px; opacity:0.5;">
+            <h2>📂 Siap Membuat RPP?</h2>
+            <p>Pilih Mata Pelajaran di kiri dan klik "Buat Modul Baru"</p>
         </div>
 
         <div class="container" id="formContainer" style="display:none;">
-            <div style="border-bottom: 2px solid #f1f5f9; padding-bottom: 20px; margin-bottom: 20px;">
-                <h1>Perancangan Modul Ajar</h1>
-                <span style="background:#dbeafe; color:#1e40af; padding:3px 8px; border-radius:4px; font-size:11px; font-weight:bold;">Deep Learning & Kurikulum Merdeka Ready</span>
+            <div style="text-align:center; margin-bottom:30px; border-bottom:1px solid #e2e8f0; padding-bottom:20px;">
+                <h1 style="margin:0; color:#1e3a8a;">MODUL AJAR & RPM</h1>
+                <span style="background:#dbeafe; color:#1e40af; font-size:11px; padding:3px 8px; border-radius:4px; font-weight:bold;">DEEP LEARNING READY</span>
             </div>
 
-            <form id="mainForm" oninput="debounceSave()">
-                
-                <h2>1. Identitas Sekolah & Materi</h2>
-                <div class="grid-3">
-                    <div class="form-group span-3">
-                        <label>Nama Sekolah</label>
-                        <input type="text" id="sekolah" placeholder="Contoh: SD Negeri 1 Harapan Bangsa">
-                    </div>
-                    <div class="form-group span-2">
-                        <label>Judul Bab / Topik Materi</label>
-                        <input type="text" id="bab" placeholder="Contoh: Ekosistem dan Rantai Makanan" oninput="updateSidebarLabel(this.value)">
-                    </div>
-                    <div class="form-group">
-                        <label>Mata Pelajaran</label>
-                        <input type="text" id="mapel" readonly style="background:#f1f5f9; cursor:not-allowed;">
-                    </div>
-                    <div class="form-group">
-                        <label>Kelas / Fase</label>
+            <form id="rpmForm" oninput="handleInput()">
+                <div style="background:#f1f5f9; padding:10px; border-radius:6px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:12px; font-weight:bold;">Mode Langkah Pembelajaran:</span>
+                    <select id="pedagogyMode" onchange="changePedagogyMode()" style="width:auto; font-size:12px;">
+                        <option value="Standar">Standar (Pendahuluan - Inti - Penutup)</option>
+                        <option value="3M">Deep Learning (Mindful - Meaningful - Joyful)</option>
+                    </select>
+                </div>
+
+                <h2>I. IDENTITAS MODUL (LENGKAP)</h2>
+                <div class="grid-form">
+                    <div class="span-3"><label>Nama Sekolah</label><input type="text" id="sekolah" placeholder="Nama Sekolah Anda"></div>
+                    <div class="span-2"><label>Judul Bab / Materi</label><input type="text" id="bab" placeholder="Contoh: Ekosistem dan Jaring Makanan" oninput="updateSidebarLabel(this.value)"></div>
+                    <div><label>Mapel</label><input type="text" id="mapel" readonly style="background:#e2e8f0;"></div>
+                    
+                    <div><label>Fase / Kelas</label>
                         <div style="display:flex; gap:5px;">
-                            <select id="kelas" style="width:60%"><option>Kelas 1</option><option>Kelas 2</option><option>Kelas 3</option><option>Kelas 4</option><option>Kelas 5</option><option>Kelas 6</option></select>
-                            <select id="fase" style="width:40%"><option>Fase A</option><option>Fase B</option><option>Fase C</option></select>
+                            <select id="fase" style="width:40%"><option>A</option><option>B</option><option>C</option></select>
+                            <select id="kelas" style="width:60%"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>Semester / Tahun</label>
-                        <input type="text" id="tahun" placeholder="Ganjil - 2024/2025">
-                    </div>
-                    <div class="form-group">
-                        <label>Alokasi Waktu</label>
-                        <input type="text" id="alokasi" placeholder="Cth: 2 x 35 Menit (1 Pertemuan)">
-                    </div>
-                    <div class="form-group span-3">
-                        <label>Sarana & Prasarana (Media)</label>
-                        <span class="help-text">Alat apa yang perlu disiapkan sebelum masuk kelas?</span>
-                        <textarea id="sarpras" style="height:50px;" placeholder="Contoh: Laptop, Proyektor LCD, Kertas Manila, Spidol warna, Video tentang Hewan..."></textarea>
-                    </div>
-                </div>
-
-                <h2>2. Tujuan & Profil Siswa</h2>
-                <div class="form-group">
-                    <label>Tujuan Pembelajaran (TP)</label>
-                    <span class="help-text">Apa kemampuan spesifik yang akan didapat siswa setelah bab ini? Gunakan kata kerja operasional.</span>
-                    <textarea id="tp" style="height:80px;" placeholder="Contoh: 1. Peserta didik mampu mengidentifikasi komponen biotik dan abiotik.&#10;2. Peserta didik mampu membuat bagan rantai makanan sederhana."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>Profil Pelajar Pancasila (Pilih yang relevan saja)</label>
-                    <div class="dimensi-grid" id="profilContainer"></div>
-                </div>
-
-                <h2>3. Pertanyaan Pemantik (Deep Learning)</h2>
-                <div class="grid-2">
-                    <div class="form-group span-2">
-                        <label>Pertanyaan Pemantik</label>
-                        <span class="help-text">Pertanyaan yang tidak bisa dijawab Ya/Tidak, untuk memancing rasa ingin tahu.</span>
-                        <input type="text" id="pemantik" placeholder="Contoh: Apa yang terjadi jika Matahari tiba-tiba menghilang dari tata surya kita?">
-                    </div>
-                    <div class="form-group span-2">
-                        <label>Pemahaman Bermakna</label>
-                        <span class="help-text">Apa gunanya materi ini di kehidupan nyata siswa? (Meaningful Learning)</span>
-                        <input type="text" id="bermakna" placeholder="Contoh: Kita jadi tahu pentingnya menjaga hutan agar hewan tidak kehilangan sumber makanan.">
-                    </div>
-                </div>
-
-                <h2>4. Langkah Pembelajaran (Skenario)</h2>
-                <div style="background:#e0f2fe; padding:10px; border-radius:6px; margin-bottom:15px; font-size:12px; color:#1e40af;">
-                    <strong>Tips:</strong> Deep Learning menekankan pada pengalaman (Joyful), pemahaman (Meaningful), dan refleksi (Mindful).
-                </div>
-                <div id="pertemuanList"></div>
-                <button type="button" class="btn-add" onclick="addPertemuan()">+ Tambah Pertemuan Berikutnya</button>
-
-                <h2>5. Asesmen & Refleksi</h2>
-                <div class="grid-3">
-                    <div class="form-group">
-                        <label>Asesmen Awal</label>
-                        <span class="help-text">Cek kemampuan sebelum mulai.</span>
-                        <textarea id="as_awal" placeholder="Contoh: Tanya jawab lisan tentang hewan peliharaan di rumah."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Asesmen Proses</label>
-                        <span class="help-text">Penilaian saat kegiatan berlangsung.</span>
-                        <textarea id="as_proses" placeholder="Contoh: Observasi keaktifan diskusi kelompok (Rubrik terlampir)."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Asesmen Akhir</label>
-                        <span class="help-text">Produk/Tes di akhir bab.</span>
-                        <textarea id="as_akhir" placeholder="Contoh: Tes tertulis pilihan ganda & Presentasi poster."></textarea>
-                    </div>
+                    <div><label>Semester</label><select id="semester"><option>1 (Ganjil)</option><option>2 (Genap)</option></select></div>
+                    <div><label>Tahun Ajaran</label><input type="text" id="tahun" placeholder="2024/2025"></div>
                     
-                    <div class="form-group span-3">
-                        <label>Refleksi Guru & Siswa (Wajib untuk Deep Learning)</label>
-                        <span class="help-text">Evaluasi perasaan dan pemahaman.</span>
-                        <textarea id="refleksi" placeholder="Contoh Pertanyaan Refleksi:&#10;1. Bagian mana yang paling menyenangkan hari ini?&#10;2. Apa kesulitan yang kalian hadapi saat kerja kelompok?"></textarea>
-                    </div>
+                    <div class="span-2"><label>Alokasi Waktu</label><input type="text" id="alokasi" placeholder="Cth: 2 x 35 Menit (1 Pertemuan)"></div>
+                    <div><label>Jumlah Siswa</label><input type="text" id="jml_siswa" placeholder="Cth: 28 Siswa"></div>
+                </div>
+
+                <h2>II. KOMPONEN INTI & SARPRAS</h2>
+                <div class="grid-form">
+                    <div class="span-3"><label>Tujuan Pembelajaran (TP)</label><textarea id="tp" style="height:80px;" placeholder="Peserta didik mampu..."></textarea></div>
+                    <div class="span-3"><label>Sarana & Prasarana (Media)</label><textarea id="sarpras" style="height:50px;" placeholder="Laptop, Proyektor, Kertas Karton, Video Youtube..."></textarea></div>
+                </div>
+
+                <h2>III. PROFIL PELAJAR PANCASILA (8 DIMENSI)</h2>
+                <div class="profil-grid" id="profilListContainer"></div>
+
+                <h2>IV. PEMANTIK (DEEP LEARNING)</h2>
+                <div class="grid-form">
+                    <div class="span-3"><label>Pertanyaan Pemantik</label><textarea id="pemantik" placeholder="Pertanyaan yang memancing rasa ingin tahu..."></textarea></div>
+                    <div class="span-3"><label>Pemahaman Bermakna</label><textarea id="bermakna" placeholder="Manfaat materi ini di kehidupan nyata..."></textarea></div>
+                </div>
+
+                <h2>V. KEGIATAN PEMBELAJARAN</h2>
+                <div id="pertemuanContainer"></div>
+                <button type="button" class="btn-new" style="background:#f1f5f9; color:#334155; border:2px dashed #cbd5e1;" onclick="addPertemuan()">+ TAMBAH PERTEMUAN BERIKUTNYA</button>
+
+                <h2>VI. ASESMEN & REFLEKSI</h2>
+                <div class="grid-form">
+                    <div><label>Asesmen Awal</label><textarea id="as_awal" placeholder="Cek kesiapan belajar..."></textarea></div>
+                    <div><label>Asesmen Proses</label><textarea id="as_proses" placeholder="Observasi saat kegiatan..."></textarea></div>
+                    <div><label>Asesmen Akhir</label><textarea id="as_akhir" placeholder="Produk / Tes tertulis..."></textarea></div>
                     
-                    <div class="form-group span-2">
-                        <label>Glosarium (Kamus Kecil)</label>
-                        <textarea id="glosarium" placeholder="Contoh:&#10;- Produsen: Makhluk hidup yang membuat makanan sendiri.&#10;- Karnivora: Hewan pemakan daging."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Daftar Pustaka</label>
-                        <textarea id="pustaka" placeholder="Contoh: Buku Siswa IPAS Kelas 5 Kemendikbud, Youtube Channel 'Sains Seru'."></textarea>
-                    </div>
+                    <div class="span-3"><label>Refleksi Guru & Peserta Didik</label><textarea id="refleksi" placeholder="Catatan refleksi perbaikan..."></textarea></div>
                 </div>
 
-                <div class="grid-2" style="margin-top:30px; border-top:1px solid #e2e8f0; padding-top:20px;">
-                    <div class="form-group">
-                        <label>Mengetahui Kepala Sekolah</label>
-                        <input type="text" id="ks" placeholder="Nama Kepala Sekolah & Gelar">
-                        <input type="text" id="nip_ks" placeholder="NIP Kepala Sekolah" style="margin-top:5px;">
-                    </div>
-                    <div class="form-group">
-                        <label>Guru Kelas / Mata Pelajaran</label>
-                        <input type="text" id="guru" placeholder="Nama Anda & Gelar">
-                        <input type="text" id="nip_guru" placeholder="NIP / NIM (Jika Mahasiswa)" style="margin-top:5px;">
-                    </div>
+                <h2>VII. LAMPIRAN</h2>
+                <div class="grid-form">
+                    <div class="span-2"><label>Glosarium (Istilah Penting)</label><textarea id="glosarium" placeholder="Daftar kata sulit..."></textarea></div>
+                    <div><label>Daftar Pustaka</label><textarea id="pustaka" placeholder="Sumber buku / link..."></textarea></div>
                 </div>
 
-                <div class="footer-btns">
-                    <button type="button" class="btn-big btn-doc" onclick="downloadWord()">📄 Download Word (Edit)</button>
-                    <button type="button" class="btn-big btn-pdf" onclick="downloadPDF()">🖨️ Cetak PDF Resmi</button>
+                <div class="grid-form" style="margin-top:40px; background:#f8fafc; padding:20px; border-radius:8px;">
+                    <div class="span-2"><label>Nama Guru</label><input type="text" id="guru" placeholder="Nama Lengkap & Gelar"></div>
+                    <div><label>NIP Guru</label><input type="text" id="nip_guru" placeholder="NIP / -"></div>
+                    <div class="span-2"><label>Nama Kepala Sekolah</label><input type="text" id="ks" placeholder="Nama Lengkap & Gelar"></div>
+                    <div><label>NIP Kepsek</label><input type="text" id="nip_ks" placeholder="NIP"></div>
+                    <div class="span-3"><label>Tempat & Tanggal Surat</label><input type="text" id="tgl_surat" placeholder="Cth: Jakarta, 15 Juli 2024"></div>
+                </div>
+
+                <div class="footer-actions">
+                    <button type="button" class="btn-big btn-word" onclick="downloadDoc()">📄 DOWNLOAD WORD (EDIT)</button>
+                    <button type="button" class="btn-big btn-pdf" onclick="downloadPDF()">🖨️ CETAK PDF RESMI</button>
                 </div>
             </form>
         </div>
@@ -249,323 +177,349 @@
 </div>
 
 <script>
-    // --- DATABASE & STATE ---
-    let db = JSON.parse(localStorage.getItem('siPandu_v3_db')) || [];
-    let activeId = null;
-    let saveTimer;
+    // === SETUP DATA ===
+    let db = JSON.parse(localStorage.getItem('rpm_db_resmi_v2')) || [];
+    let currentId = null;
+    let typingTimer;
 
-    const dimensiList = [
-        {k:"iman", l:"Beriman & Bertakwa", h:"Berdoa, akhlak mulia..."},
-        {k:"global", l:"Berkebinekaan Global", h:"Menghargai budaya lain..."},
-        {k:"royong", l:"Bergotong Royong", h:"Kerjasama tim..."},
-        {k:"kreatif", l:"Kreatif", h:"Menghasilkan karya/ide..."},
-        {k:"kritis", l:"Bernalar Kritis", h:"Menganalisis masalah..."},
-        {k:"mandiri", l:"Mandiri", h:"Bertanggung jawab..."}
+    const PEDAGOGY_LABELS = {
+        "Standar": { m1: "PENDAHULUAN", m2: "KEGIATAN INTI", m3: "PENUTUP" },
+        "3M": { m1: "MINDFUL (Kesadaran)", m2: "MEANINGFUL (Pemahaman)", m3: "JOYFUL (Perayaan)" }
+    };
+    let currentMode = "Standar";
+
+    const dimensiData = [
+        { label: "Beriman & Bertakwa", desc: "Berdoa, Akhlak mulia..." },
+        { label: "Berkebinekaan Global", desc: "Menghargai budaya..." },
+        { label: "Bergotong Royong", desc: "Kerjasama, kolaborasi..." },
+        { label: "Mandiri", desc: "Tanggung jawab..." },
+        { label: "Bernalar Kritis", desc: "Memproses informasi..." },
+        { label: "Kreatif", desc: "Menghasilkan karya..." }
     ];
 
-    // --- INITIALIZATION ---
     window.onload = () => {
-        initProfilUI();
-        renderSidebar();
+        initProfilGrid();
+        filterByMapel();
     };
 
-    function initProfilUI() {
-        const c = document.getElementById('profilContainer');
-        c.innerHTML = dimensiList.map(d => `
-            <div class="dimensi-item">
-                <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-                    <input type="checkbox" id="chk_${d.k}" onchange="toggleDimensi('${d.k}')">
-                    <span>${d.l}</span>
+    // === CORE FUNCTION ===
+    function handleInput() {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(() => { saveCurrentData(); }, 800);
+    }
+
+    function saveCurrentData() {
+        if (!currentId) return;
+        const index = db.findIndex(x => x.id === currentId);
+        if (index === -1) return;
+
+        const fields = [
+            'sekolah', 'bab', 'fase', 'kelas', 'semester', 'tahun', 'alokasi', 'jml_siswa',
+            'tp', 'sarpras', 'pemantik', 'bermakna', 
+            'as_awal', 'as_proses', 'as_akhir', 'refleksi', 'glosarium', 'pustaka',
+            'guru', 'nip_guru', 'ks', 'nip_ks', 'tgl_surat'
+        ];
+        
+        fields.forEach(f => { if(document.getElementById(f)) db[index][f] = document.getElementById(f).value; });
+        db[index].pedagogyMode = document.getElementById('pedagogyMode').value;
+
+        // Save Profil
+        db[index].profils = {};
+        dimensiData.forEach((_, i) => { 
+            if(document.getElementById(`chk_${i}`).checked) 
+                db[index].profils[i] = { text: document.getElementById(`txt_${i}`).value }; 
+        });
+
+        // Save Pertemuan
+        let pData = [];
+        document.querySelectorAll('.pertemuan-card').forEach(c => {
+            pData.push({ 
+                topik: c.querySelector('.p_topik').value,
+                m1: c.querySelector('.p_m1').value, 
+                m2: c.querySelector('.p_m2').value, 
+                m3: c.querySelector('.p_m3').value
+            });
+        });
+        db[index].pertemuan = pData;
+        
+        localStorage.setItem('rpm_db_resmi_v2', JSON.stringify(db));
+        showNotif();
+    }
+
+    // === UI ===
+    function initProfilGrid() {
+        const container = document.getElementById('profilListContainer');
+        container.innerHTML = dimensiData.map((d, i) => `
+            <div class="p-item">
+                <label style="cursor:pointer; display:flex; align-items:center; gap:8px; font-size:12px;">
+                    <input type="checkbox" id="chk_${i}" onchange="toggleDimensi(${i})"> 
+                    <span>${d.label}</span>
                 </label>
-                <div class="dimensi-hidden" id="box_${d.k}">
-                    <textarea id="val_${d.k}" placeholder="Contoh: ${d.h}"></textarea>
+                <div class="p-hidden" id="inp_${i}">
+                    <textarea id="txt_${i}" placeholder="${d.desc}" style="height:40px;"></textarea>
                 </div>
             </div>
         `).join('');
     }
 
-    function toggleDimensi(key) {
-        const chk = document.getElementById(`chk_${key}`);
-        document.getElementById(`box_${key}`).style.display = chk.checked ? 'block' : 'none';
-        debounceSave();
+    function toggleDimensi(i) {
+        const chk = document.getElementById(`chk_${i}`);
+        document.getElementById(`inp_${i}`).style.display = chk.checked ? 'block' : 'none';
+        saveCurrentData();
     }
 
-    // --- CRUD FUNCTIONS ---
-    function createNew() {
-        const mapel = document.getElementById('sidebarMapel').value;
-        const newId = 'modul_' + Date.now();
-        const emptyData = {
-            id: newId, mapel: mapel, bab: '', sekolah: '', kelas: 'Kelas 1', fase: 'Fase A',
-            tahun: '', alokasi: '', sarpras: '', tp: '', pemantik: '', bermakna: '',
-            as_awal: '', as_proses: '', as_akhir: '', refleksi: '', glosarium: '', pustaka: '',
-            ks: '', nip_ks: '', guru: '', nip_guru: '',
-            dimensi: {},
-            pertemuan: [{m1:'', m2:'', m3:'', topik:''}]
-        };
-        db.push(emptyData);
-        saveDB();
-        loadModul(newId);
+    function createNewRPM() {
+        const selectedMapel = document.getElementById('sidebarMapel').value;
+        const newId = 'id_' + Date.now();
+        db.push({ 
+            id: newId, mapel: selectedMapel, bab: '', 
+            pedagogyMode: 'Standar',
+            pertemuan: [{topik:'', m1:'', m2:'', m3:''}], 
+            profils: {} 
+        });
+        saveCurrentData(); // Init save
+        loadRPM(newId);
     }
 
-    function loadModul(id) {
-        activeId = id;
+    function loadRPM(id) {
+        currentId = id;
         const data = db.find(x => x.id === id);
-        if(!data) return;
+        if (!data) return;
 
-        // UI Switch
         document.getElementById('emptyState').style.display = 'none';
         document.getElementById('formContainer').style.display = 'block';
-
-        // Load Fields
-        const fields = ['sekolah','bab','mapel','kelas','fase','tahun','alokasi','sarpras','tp','pemantik','bermakna','as_awal','as_proses','as_akhir','refleksi','glosarium','pustaka','ks','nip_ks','guru','nip_guru'];
-        fields.forEach(f => {
-            if(document.getElementById(f)) document.getElementById(f).value = data[f] || '';
-        });
-
-        // Load Dimensi
-        dimensiList.forEach(d => {
-            const saved = data.dimensi && data.dimensi[d.k];
-            document.getElementById(`chk_${d.k}`).checked = !!saved;
-            document.getElementById(`box_${d.k}`).style.display = saved ? 'block' : 'none';
-            document.getElementById(`val_${d.k}`).value = saved || '';
-        });
-
-        // Load Pertemuan
-        const pContainer = document.getElementById('pertemuanList');
-        pContainer.innerHTML = '';
-        (data.pertemuan || []).forEach((p, i) => renderPertemuanUI(i, p));
+        document.getElementById('mapel').value = data.mapel || '';
         
-        renderSidebar();
+        const fields = [
+            'sekolah', 'bab', 'fase', 'kelas', 'semester', 'tahun', 'alokasi', 'jml_siswa',
+            'tp', 'sarpras', 'pemantik', 'bermakna', 
+            'as_awal', 'as_proses', 'as_akhir', 'refleksi', 'glosarium', 'pustaka',
+            'guru', 'nip_guru', 'ks', 'nip_ks', 'tgl_surat'
+        ];
+        fields.forEach(f => { if(document.getElementById(f)) document.getElementById(f).value = data[f] || ''; });
+
+        document.getElementById('pedagogyMode').value = data.pedagogyMode || 'Standar';
+        changePedagogyMode();
+
+        dimensiData.forEach((_, i) => {
+            const chk = document.getElementById(`chk_${i}`);
+            const div = document.getElementById(`inp_${i}`);
+            const saved = data.profils && data.profils[i];
+            chk.checked = !!saved; 
+            div.style.display = saved ? 'block' : 'none'; 
+            document.getElementById(`txt_${i}`).value = saved ? saved.text : '';
+        });
+
+        const container = document.getElementById('pertemuanContainer');
+        container.innerHTML = '';
+        (data.pertemuan || []).forEach((p, idx) => {
+            renderPertemuan(idx + 1, p.topik, p.m1, p.m2, p.m3);
+        });
+
+        filterByMapel();
     }
 
-    function renderPertemuanUI(index, pData) {
+    function renderPertemuan(num, topik='', m1='', m2='', m3='') {
+        const labels = PEDAGOGY_LABELS[document.getElementById('pedagogyMode').value];
         const div = document.createElement('div');
-        div.className = 'card-pertemuan';
+        div.className = 'pertemuan-card';
         div.innerHTML = `
-            <div class="card-header">
-                <strong>Pertemuan Ke-${index+1}</strong>
-                <button type="button" class="btn-action btn-danger" onclick="hapusPertemuan(${index})">Hapus</button>
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <strong>PERTEMUAN KE-${num}</strong>
+                <button type="button" class="btn-action btn-danger" onclick="this.parentElement.parentElement.remove(); saveCurrentData();" style="color:red; background:none; border:none; cursor:pointer;">Hapus</button>
             </div>
-            <div class="form-group">
-                <span class="badge-step">Topik / Sub-Bab</span>
-                <input type="text" class="p_topik" value="${pData.topik||''}" placeholder="Cth: Pengenalan Rantai Makanan">
+            <div><label>Topik / Sub-Materi</label><input type="text" class="p_topik" value="${topik}"></div>
+            <div class="step-box">
+                <span class="step-label lbl-m1">${labels.m1}</span>
+                <textarea class="p_m1" placeholder="Kegiatan awal...">${m1}</textarea>
             </div>
-            <div class="form-group">
-                <span class="badge-step">Kegiatan Awal (Mindful)</span>
-                <textarea class="p_m1" placeholder="Cth: Guru menyapa, berdoa, dan menanyakan kabar perasaan siswa...">${pData.m1||''}</textarea>
+            <div class="step-box">
+                <span class="step-label lbl-m2">${labels.m2}</span>
+                <textarea class="p_m2" style="height:80px;" placeholder="Kegiatan inti...">${m2}</textarea>
             </div>
-            <div class="form-group">
-                <span class="badge-step">Kegiatan Inti (Meaningful)</span>
-                <textarea class="p_m2" style="height:80px;" placeholder="Cth: Siswa menonton video, lalu diskusi kelompok membedakan herbivora dan karnivora...">${pData.m2||''}</textarea>
-            </div>
-            <div class="form-group">
-                <span class="badge-step">Kegiatan Penutup (Joyful)</span>
-                <textarea class="p_m3" placeholder="Cth: Guru mengajak siswa menyimpulkan dan melakukan tepuk semangat...">${pData.m3||''}</textarea>
+            <div class="step-box">
+                <span class="step-label lbl-m3">${labels.m3}</span>
+                <textarea class="p_m3" placeholder="Kegiatan penutup...">${m3}</textarea>
             </div>
         `;
-        document.getElementById('pertemuanList').appendChild(div);
+        document.getElementById('pertemuanContainer').appendChild(div);
     }
 
     function addPertemuan() {
-        const pContainer = document.getElementById('pertemuanList');
-        renderPertemuanUI(pContainer.children.length, {});
-        debounceSave();
+        renderPertemuan(document.querySelectorAll('.pertemuan-card').length + 1);
+        saveCurrentData();
+    }
+    
+    function changePedagogyMode() {
+        const mode = document.getElementById('pedagogyMode').value;
+        const labels = PEDAGOGY_LABELS[mode];
+        document.querySelectorAll('.pertemuan-card').forEach(card => {
+            card.querySelector('.lbl-m1').innerText = labels.m1;
+            card.querySelector('.lbl-m2').innerText = labels.m2;
+            card.querySelector('.lbl-m3').innerText = labels.m3;
+        });
+        saveCurrentData();
     }
 
-    function hapusPertemuan(idx) {
-        if(!confirm("Hapus pertemuan ini?")) return;
-        const data = db.find(x => x.id === activeId);
-        data.pertemuan.splice(idx, 1);
-        saveDB();
-        loadModul(activeId);
-    }
-
-    function debounceSave() {
-        clearTimeout(saveTimer);
-        saveTimer = setTimeout(() => {
-            if(!activeId) return;
-            const dataIdx = db.findIndex(x => x.id === activeId);
-            if(dataIdx === -1) return;
-
-            // Collect Data
-            const fields = ['sekolah','bab','mapel','kelas','fase','tahun','alokasi','sarpras','tp','pemantik','bermakna','as_awal','as_proses','as_akhir','refleksi','glosarium','pustaka','ks','nip_ks','guru','nip_guru'];
-            fields.forEach(f => db[dataIdx][f] = document.getElementById(f).value);
-
-            // Collect Dimensi
-            db[dataIdx].dimensi = {};
-            dimensiList.forEach(d => {
-                if(document.getElementById(`chk_${d.k}`).checked) {
-                    db[dataIdx].dimensi[d.k] = document.getElementById(`val_${d.k}`).value;
-                }
-            });
-
-            // Collect Pertemuan
-            db[dataIdx].pertemuan = [];
-            document.querySelectorAll('.card-pertemuan').forEach(card => {
-                db[dataIdx].pertemuan.push({
-                    topik: card.querySelector('.p_topik').value,
-                    m1: card.querySelector('.p_m1').value,
-                    m2: card.querySelector('.p_m2').value,
-                    m3: card.querySelector('.p_m3').value
-                });
-            });
-
-            saveDB();
-            document.getElementById('saveToast').style.display = 'block';
-            setTimeout(() => document.getElementById('saveToast').style.display = 'none', 1500);
-        }, 1000);
-    }
-
-    function saveDB() {
-        localStorage.setItem('siPandu_v3_db', JSON.stringify(db));
-        renderSidebar();
-    }
-
-    function renderSidebar() {
-        const filter = document.getElementById('sidebarMapel').value;
+    function filterByMapel() {
+        const selected = document.getElementById('sidebarMapel').value;
         const list = document.getElementById('rpmList');
         list.innerHTML = '';
-        
-        db.filter(x => x.mapel === filter).forEach(item => {
+        db.filter(x => x.mapel === selected).forEach(item => {
             const li = document.createElement('li');
-            li.className = `rpm-item ${activeId === item.id ? 'active' : ''}`;
-            li.innerHTML = `<span>${item.bab || '(Tanpa Judul)'}</span> <span onclick="deleteModul('${item.id}')" style="color:red; font-weight:bold;">&times;</span>`;
-            li.onclick = (e) => { if(e.target.tagName !== 'SPAN') loadModul(item.id); };
-            li.querySelector('span:first-child').onclick = () => loadModul(item.id);
+            li.className = `rpm-item ${currentId === item.id ? 'active' : ''}`;
+            li.onclick = () => loadRPM(item.id);
+            li.innerHTML = `<span>${item.bab || 'Modul Baru'}</span>`;
             list.appendChild(li);
         });
     }
 
-    function deleteModul(id) {
-        if(confirm("Hapus modul ini permanen?")) {
-            db = db.filter(x => x.id !== id);
-            saveDB();
-            if(activeId === id) window.location.reload();
-        }
-    }
-
     function updateSidebarLabel(val) {
-        const el = document.querySelector('.rpm-item.active span:first-child');
-        if(el) el.innerText = val || '(Tanpa Judul)';
+        const el = document.querySelector('.rpm-item.active span');
+        if(el) el.innerText = val || 'Modul Baru';
     }
 
-    // --- PDF GENERATOR (FIXED FULL CONTENT) ---
+    function showNotif() {
+        const n = document.getElementById('saveNotif');
+        n.style.display='block';
+        setTimeout(()=>n.style.display='none', 1000);
+    }
+
+    // === PDF ENGINE YANG DIPERBAIKI (RESMI & RAPI) ===
     function downloadPDF() {
-        if(!activeId) return;
-        const d = db.find(x => x.id === activeId);
+        const data = db.find(x => x.id === currentId);
+        if(!data) return;
 
-        // Buat Profil HTML
-        let profilHtml = '';
-        Object.keys(d.dimensi || {}).forEach(k => {
-            const label = dimensiList.find(x => x.k === k).l;
-            profilHtml += `<li><b>${label}:</b> ${d.dimensi[k]}</li>`;
-        });
-
-        // Buat Pertemuan HTML
-        let pertemuanHtml = '';
-        (d.pertemuan || []).forEach((p, i) => {
-            pertemuanHtml += `
-            <div style="border:1px solid #000; margin-bottom:15px; page-break-inside: avoid;">
-                <div style="background:#ddd; padding:5px; border-bottom:1px solid #000; font-weight:bold;">
-                    Pertemuan Ke-${i+1}: ${p.topik || 'Topik Umum'}
-                </div>
-                <div style="padding:10px;">
-                    <p style="margin:5px 0;"><b>A. Kegiatan Awal:</b><br>${(p.m1||'-').replace(/\n/g,'<br>')}</p>
-                    <p style="margin:5px 0;"><b>B. Kegiatan Inti:</b><br>${(p.m2||'-').replace(/\n/g,'<br>')}</p>
-                    <p style="margin:5px 0;"><b>C. Kegiatan Penutup:</b><br>${(p.m3||'-').replace(/\n/g,'<br>')}</p>
-                </div>
-            </div>`;
-        });
-
+        // Siapkan Elemen Cetak (Virtual)
         const element = document.createElement('div');
-        element.style.padding = '40px';
-        element.style.fontFamily = 'Times New Roman';
-        element.style.color = '#000';
-        element.innerHTML = `
-            <div style="text-align:center; text-transform:uppercase; font-weight:bold; font-size:14pt; margin-bottom:5px;">Modul Ajar Kurikulum Merdeka</div>
-            <div style="text-align:center; font-size:11pt;">${d.sekolah} | Tahun Ajaran ${d.tahun}</div>
-            <hr style="border:1px solid #000; margin: 10px 0 20px 0;">
+        element.style.padding = "30px 40px";
+        element.style.fontFamily = "'Times New Roman', serif";
+        element.style.fontSize = "11pt";
+        element.style.color = "#000";
+        element.style.lineHeight = "1.4";
 
-            <table style="width:100%; margin-bottom:20px; font-size:11pt;">
-                <tr><td width="150"><b>Mata Pelajaran</b></td><td>: ${d.mapel}</td></tr>
-                <tr><td><b>Kelas / Fase</b></td><td>: ${d.kelas} / ${d.fase}</td></tr>
-                <tr><td><b>Bab / Materi</b></td><td>: ${d.bab}</td></tr>
-                <tr><td><b>Alokasi Waktu</b></td><td>: ${d.alokasi}</td></tr>
+        // 1. KOP MODUL
+        let html = `
+            <div style="text-align:center; margin-bottom:20px;">
+                <h3 style="margin:0; text-transform:uppercase;">MODUL AJAR KURIKULUM MERDEKA</h3>
+                <h4 style="margin:5px 0 0 0;">${data.sekolah || 'Nama Sekolah Belum Diisi'}</h4>
+            </div>
+            <hr style="border:1px solid #000; margin-bottom:15px;">
+        `;
+
+        // 2. IDENTITAS (Tabel)
+        html += `
+            <h4 style="margin-bottom:5px;">A. INFORMASI UMUM</h4>
+            <table style="width:100%; border-collapse:collapse; margin-bottom:15px; font-size:11pt;">
+                <tr><td width="160">Mata Pelajaran</td><td>: ${data.mapel}</td></tr>
+                <tr><td>Fase / Kelas</td><td>: Fase ${data.fase} / Kelas ${data.kelas}</td></tr>
+                <tr><td>Semester / Tahun</td><td>: ${data.semester || '-'} / ${data.tahun || '-'}</td></tr>
+                <tr><td>Alokasi Waktu</td><td>: ${data.alokasi}</td></tr>
+                <tr><td>Judul Modul</td><td>: ${data.bab}</td></tr>
+                <tr><td>Jumlah Siswa</td><td>: ${data.jml_siswa || '-'}</td></tr>
             </table>
+        `;
 
-            <h4 style="background:#eee; padding:5px; border-bottom:1px solid #000;">I. TUJUAN & PROFIL</h4>
-            <div style="padding:5px 10px;">
-                <p><b>Tujuan Pembelajaran:</b><br>${d.tp.replace(/\n/g,'<br>')}</p>
-                <p><b>Profil Pelajar Pancasila:</b></p>
-                <ul>${profilHtml}</ul>
-                <p><b>Sarana & Prasarana:</b><br>${d.sarpras || '-'}</p>
-            </div>
+        // 3. KOMPONEN INTI
+        let profilStr = "";
+        Object.keys(data.profils || {}).forEach(k => { profilStr += `${dimensiData[k].label}, `; });
+        
+        html += `
+            <table style="width:100%; border-collapse:collapse; border:1px solid #000; margin-bottom:15px;">
+                <tr style="background:#eee;"><th style="border:1px solid #000; padding:5px; text-align:left;">B. KOMPONEN INTI</th></tr>
+                <tr><td style="border:1px solid #000; padding:10px;">
+                    <b>1. Tujuan Pembelajaran:</b><br>${(data.tp||'-').replace(/\n/g,'<br>')}
+                    <br><br><b>2. Profil Pelajar Pancasila:</b><br>${profilStr.slice(0, -2) || '-'}
+                    <br><br><b>3. Pertanyaan Pemantik:</b><br>${(data.pemantik||'-')}
+                    <br><br><b>4. Pemahaman Bermakna:</b><br>${(data.bermakna||'-')}
+                    <br><br><b>5. Sarana & Prasarana:</b><br>${(data.sarpras||'-')}
+                </td></tr>
+            </table>
+        `;
 
-            <h4 style="background:#eee; padding:5px; border-bottom:1px solid #000;">II. PEMANTIK (DEEP LEARNING)</h4>
-            <div style="padding:5px 10px;">
-                <p><b>Pertanyaan Pemantik:</b> "${d.pemantik}"</p>
-                <p><b>Pemahaman Bermakna:</b> ${d.bermakna}</p>
-            </div>
+        // 4. KEGIATAN PEMBELAJARAN (Looping)
+        html += `<h4 style="margin-bottom:5px;">C. KEGIATAN PEMBELAJARAN</h4>`;
+        const labels = PEDAGOGY_LABELS[data.pedagogyMode || 'Standar'];
+        
+        (data.pertemuan || []).forEach((p, i) => {
+            html += `
+                <div style="border:1px solid #000; margin-bottom:15px; page-break-inside: avoid;">
+                    <div style="background:#eee; padding:5px; font-weight:bold; border-bottom:1px solid #000;">
+                        Pertemuan Ke-${i+1}: ${p.topik || 'Topik Umum'}
+                    </div>
+                    <div style="padding:10px;">
+                        <p style="margin:5px 0;"><b>1. ${labels.m1}:</b><br>${(p.m1||'-').replace(/\n/g,'<br>')}</p>
+                        <p style="margin:5px 0;"><b>2. ${labels.m2}:</b><br>${(p.m2||'-').replace(/\n/g,'<br>')}</p>
+                        <p style="margin:5px 0;"><b>3. ${labels.m3}:</b><br>${(p.m3||'-').replace(/\n/g,'<br>')}</p>
+                    </div>
+                </div>
+            `;
+        });
 
-            <h4 style="background:#eee; padding:5px; border-bottom:1px solid #000;">III. LANGKAH PEMBELAJARAN</h4>
-            ${pertemuanHtml}
-
-            <h4 style="background:#eee; padding:5px; border-bottom:1px solid #000;">IV. ASESMEN & LAMPIRAN</h4>
-            <table border="1" style="width:100%; border-collapse:collapse; margin-bottom:10px;">
-                <tr><th style="background:#f9f9f9;">Awal</th><th style="background:#f9f9f9;">Proses</th><th style="background:#f9f9f9;">Akhir</th></tr>
+        // 5. ASESMEN & LAMPIRAN
+        html += `
+            <h4 style="margin-bottom:5px;">D. ASESMEN & LAMPIRAN</h4>
+            <table style="width:100%; border-collapse:collapse; border:1px solid #000; margin-bottom:15px;">
                 <tr>
-                    <td style="padding:5px; vertical-align:top;">${d.as_awal||'-'}</td>
-                    <td style="padding:5px; vertical-align:top;">${d.as_proses||'-'}</td>
-                    <td style="padding:5px; vertical-align:top;">${d.as_akhir||'-'}</td>
+                    <td style="border:1px solid #000; padding:5px; width:33%;"><b>Asesmen Awal:</b><br>${data.as_awal||'-'}</td>
+                    <td style="border:1px solid #000; padding:5px; width:33%;"><b>Asesmen Proses:</b><br>${data.as_proses||'-'}</td>
+                    <td style="border:1px solid #000; padding:5px; width:33%;"><b>Asesmen Akhir:</b><br>${data.as_akhir||'-'}</td>
                 </tr>
+                <tr><td colspan="3" style="border:1px solid #000; padding:5px;"><b>Refleksi Guru & Siswa:</b><br>${(data.refleksi||'-').replace(/\n/g,'<br>')}</td></tr>
+                <tr><td colspan="3" style="border:1px solid #000; padding:5px;"><b>Glosarium:</b><br>${(data.glosarium||'-').replace(/\n/g,'<br>')}</td></tr>
+                <tr><td colspan="3" style="border:1px solid #000; padding:5px;"><b>Daftar Pustaka:</b><br>${(data.pustaka||'-').replace(/\n/g,'<br>')}</td></tr>
             </table>
-            <p><b>Refleksi:</b><br>${d.refleksi||'-'}</p>
-            <p><b>Glosarium:</b><br>${d.glosarium||'-'}</p>
-            <p><b>Daftar Pustaka:</b><br>${d.pustaka||'-'}</p>
+        `;
 
-            <br><br>
-            <table style="width:100%; text-align:center;">
+        // 6. TANDA TANGAN
+        html += `
+            <br>
+            <table style="width:100%; text-align:center; margin-top:10px;">
                 <tr>
-                    <td>Mengetahui,<br>Kepala Sekolah<br><br><br><br><b><u>${d.ks}</u></b><br>NIP. ${d.nip_ks}</td>
-                    <td>Guru Kelas / Mapel<br><br><br><br><b><u>${d.guru}</u></b><br>NIP. ${d.nip_guru}</td>
+                    <td width="50%">Mengetahui,<br>Kepala Sekolah</td>
+                    <td width="50%">${data.tgl_surat || '................., ................. 20..'} <br> Guru Kelas / Mapel</td>
+                </tr>
+                <tr><td height="70"></td><td height="70"></td></tr>
+                <tr>
+                    <td><b><u>${data.ks || '(...................................)'}</u></b><br>NIP. ${data.nip_ks || '-'}</td>
+                    <td><b><u>${data.guru || '(...................................)'}</u></b><br>NIP. ${data.nip_guru || '-'}</td>
                 </tr>
             </table>
         `;
 
+        element.innerHTML = html;
+
         const opt = {
-            margin: [15, 20, 15, 20],
-            filename: `Modul_${d.bab}.pdf`,
+            margin: [15, 15, 15, 15],
+            filename: `Modul_${data.bab.replace(/\s+/g,'_') || 'Baru'}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
+
         html2pdf().set(opt).from(element).save();
     }
 
-    function downloadWord() {
-        alert("Fitur Download Word akan mengambil data teks sederhana untuk diedit.");
-        // Logika sederhana Word export (sama seperti sebelumnya, disesuaikan)
-        if(!activeId) return;
-        const d = db.find(x => x.id === activeId);
+    function downloadDoc() {
+        alert("Fitur Download Word akan mengekspor teks untuk diedit di Microsoft Word.");
+        const data = db.find(x => x.id === currentId);
         
-        let content = `
-        <html><head><style>body{font-family:'Times New Roman'}</style></head><body>
-        <h2 align="center">MODUL AJAR ${d.mapel.toUpperCase()}</h2>
-        <p><b>Sekolah:</b> ${d.sekolah}<br><b>Kelas:</b> ${d.kelas}<br><b>Bab:</b> ${d.bab}</p>
-        <hr>
-        <h3>A. TUJUAN</h3><p>${d.tp}</p>
-        <h3>B. LANGKAH</h3>
-        `;
-        (d.pertemuan||[]).forEach((p,i)=> {
-            content += `<p><b>Pertemuan ${i+1}:</b><br>Awal: ${p.m1}<br>Inti: ${p.m2}<br>Akhir: ${p.m3}</p>`;
+        let content = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'><head><meta charset='utf-8'><title>Modul Ajar</title></head><body>`;
+        content += `<h2 align="center">MODUL AJAR KURIKULUM MERDEKA</h2><br>`;
+        content += `<p><b>Sekolah:</b> ${data.sekolah}<br><b>Mapel:</b> ${data.mapel}<br><b>Kelas:</b> ${data.kelas}<br><b>Bab:</b> ${data.bab}</p>`;
+        content += `<h3>A. TUJUAN</h3><p>${data.tp}</p>`;
+        content += `<h3>B. KEGIATAN</h3>`;
+        (data.pertemuan||[]).forEach((p,i) => {
+            content += `<p><b>Pertemuan ${i+1}:</b><br>${p.m1}<br>${p.m2}<br>${p.m3}</p>`;
         });
-        content += `<h3>C. ASESMEN</h3><p>Awal: ${d.as_awal}<br>Proses: ${d.as_proses}<br>Akhir: ${d.as_akhir}</p>`;
-        content += `<br><table width="100%"><tr><td align="center">Kepala Sekolah<br><br><br>${d.ks}</td><td align="center">Guru<br><br><br>${d.guru}</td></tr></table></body></html>`;
+        content += `<h3>C. ASESMEN</h3><p>Awal: ${data.as_awal}<br>Akhir: ${data.as_akhir}</p>`;
+        content += `<br><table width="100%"><tr><td align="center">Mengetahui,<br>Kepala Sekolah<br><br><br>${data.ks}</td><td align="center">Guru<br><br><br>${data.guru}</td></tr></table>`;
+        content += `</body></html>`;
 
-        const blob = new Blob(['\ufeff', content], {type:'application/msword'});
+        const blob = new Blob(['\ufeff', content], { type: 'application/msword' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = `Modul_${d.bab}.doc`;
+        a.download = `Modul_${data.bab}.doc`;
         a.click();
     }
 </script>
