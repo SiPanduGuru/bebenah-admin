@@ -2,191 +2,520 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>SiPandu - Personal Workspace</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guru Space: Honorer Pro Max (Auto-Save)</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Outfit:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        /* === STYLE TETAP SAMA (GURU SANCTUARY 2.0 + REALITA) === */
         :root {
-            --bg-main: #0a0a1a;
-            --bg-card: rgba(28, 21, 58, 0.3);
-            --purple-soft: #a78bfa;
-            --purple-dark: #6d28d9;
-            --purple-glow: rgba(167, 139, 250, 0.15);
-            --text-muted: #b6b0d8;
+            --bg-gradient: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: 2px solid rgba(255, 255, 255, 1);
+            --text-dark: #111827; --text-grey: #4b5563;
+            --primary: #6366f1; --accent: #ec4899; --success: #10b981; --warning: #f59e0b;
+            --radius: 28px; --shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
         }
 
+        * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
         body {
-            font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at bottom right, #1a1440, #0a0a1a);
-            color: white; margin: 0; padding: 40px; min-height: 100vh;
-            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-dark);
+            margin: 0; padding: 0; min-height: 100vh;
+            background: var(--bg-gradient); background-attachment: fixed; overflow-x: hidden;
         }
 
-        .home-wrapper {
-            max-width: 1200px; margin: auto;
-            display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px;
+        /* Dekorasi */
+        .orb { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; animation: float 8s ease-in-out infinite alternate; }
+        .orb-1 { top: -5%; left: -5%; width: 400px; height: 400px; background: rgba(255, 255, 255, 0.5); }
+        .orb-2 { bottom: -5%; right: -5%; width: 500px; height: 500px; background: rgba(99, 102, 241, 0.3); animation-delay: -4s; }
+        @keyframes float { 0% {transform: translateY(0);} 100% {transform: translateY(30px);} }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; display: grid; gap: 40px; }
+
+        .glass {
+            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: var(--glass-border); border-radius: var(--radius); box-shadow: var(--shadow);
+            padding: 30px; transition: transform 0.3s ease;
         }
 
-        /* --- 1. THE REFINED HERO (PERSONAL WORKSPACE) --- */
-        .hero-section {
-            grid-column: span 2; padding: 60px 50px;
-            background: linear-gradient(135deg, rgba(109, 40, 217, 0.1), rgba(139, 92, 246, 0.03));
-            border-radius: 40px; border: 1px solid rgba(167, 139, 250, 0.1);
-            position: relative; overflow: hidden;
-        }
-
-        /* REVISI 1: Tag lebih personal */
-        .hero-tag { font-size: 10px; letter-spacing: 6px; color: var(--purple-soft); font-weight: 800; text-transform: uppercase; }
+        h1, h2, h3 { margin: 0; font-family: 'Outfit', sans-serif; letter-spacing: -0.5px; }
+        .section-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; color: var(--text-dark); }
         
-        h1 { font-family: 'Montserrat'; font-size: 44px; margin: 15px 0; letter-spacing: -1px; }
-        
-        /* REVISI 3: Deskripsi membumi */
-        .hero-desc { max-width: 700px; line-height: 1.8; opacity: 0.6; font-size: 15px; font-weight: 300; }
+        /* Hero */
+        .hero-box { text-align: center; padding: 40px 30px; border-bottom: 8px solid var(--accent); }
+        .date-badge { display: inline-block; padding: 8px 16px; background: var(--accent); color: white; border-radius: 50px; font-weight: 800; font-size: 0.9rem; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .daily-quote { font-size: 1.8rem; font-weight: 800; line-height: 1.4; color: var(--text-dark); margin-bottom: 20px; }
+        .daily-sub { font-size: 1rem; color: var(--text-grey); font-weight: 500; }
 
-        /* --- 2. THE POETIC STATUS BAR --- */
-        .status-grid { grid-column: span 2; display: flex; gap: 20px; }
-        .stat-card {
-            flex: 1; background: var(--bg-card); padding: 30px 20px; border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.05); text-align: center;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .stat-card:hover { border-color: var(--purple-soft); background: rgba(167, 139, 250, 0.05); }
-        .stat-val { font-size: 32px; font-weight: 800; display: block; color: var(--purple-soft); text-shadow: 0 0 15px var(--purple-glow); }
-        .stat-lab { font-size: 9px; opacity: 0.4; letter-spacing: 2px; text-transform: uppercase; margin-top: 8px; font-weight: 700; }
+        /* Nav */
+        .nav-scroller { overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none; }
+        .nav-pills { display: flex; gap: 12px; width: max-content; }
+        .nav-btn { padding: 14px 28px; border-radius: 18px; border: 2px solid rgba(255,255,255,0.5); background: rgba(255,255,255,0.4); color: var(--text-grey); font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s; font-family: 'Outfit', sans-serif; }
+        .nav-btn.active { background: white; border-color: var(--primary); color: var(--primary); box-shadow: 0 5px 15px rgba(99, 102, 241, 0.2); transform: translateY(-2px); }
 
-        /* --- 3. RECENT LOG SUMMARY --- */
-        .card {
-            background: var(--bg-card); backdrop-filter: blur(15px);
-            padding: 35px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);
-        }
-        
-        /* REVISI 6: Header Akses Cepat */
-        h2 { font-family: 'Montserrat'; font-size: 11px; letter-spacing: 3px; color: var(--purple-soft); margin-bottom: 30px; opacity: 0.8; }
+        .section { display: none; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .section.active { display: block; }
+        @keyframes popIn { from{opacity:0; transform: scale(0.95);} to{opacity:1; transform: scale(1);} }
 
-        .summary-item {
-            padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.03);
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .summary-item:last-child { border: none; }
+        /* Inputs & Buttons */
+        .input-lg { width: 100%; padding: 16px 20px; border-radius: 16px; border: 2px solid transparent; background: white; font-size: 1rem; font-family: 'Plus Jakarta Sans'; margin-bottom: 15px; transition: 0.3s; color: var(--text-dark); box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+        .input-lg:focus { border-color: var(--primary); }
+        .btn-lg { width: 100%; padding: 16px; border-radius: 16px; border: none; font-size: 1.1rem; font-weight: 800; cursor: pointer; transition: 0.3s; font-family: 'Outfit'; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3); }
+        .btn-primary:active { transform: scale(0.98); }
+        .btn-accent { background: var(--accent); color: white; box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3); }
 
-        /* --- 4. QUICK NAV WITH ALIEN GLOW --- */
-        .quick-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-        .nav-box {
-            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 25px; border-radius: 22px; text-align: center; cursor: pointer; 
-            transition: all 0.4s ease; position: relative;
-        }
-        .nav-box:hover { 
-            background: rgba(109, 40, 217, 0.1); 
-            transform: translateY(-8px); 
-            border-color: var(--purple-soft);
-            box-shadow: 0 15px 30px var(--purple-glow);
-        }
-        .nav-box span { display: block; font-size: 24px; margin-bottom: 12px; filter: grayscale(0.5); }
-        .nav-box:hover span { filter: grayscale(0); }
-        .nav-box label { font-size: 11px; font-weight: 800; cursor: pointer; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-        .nav-box:hover label { color: white; }
+        /* To-Do Item (Updated for Delete) */
+        .todo-item { background: white; padding: 12px 16px; margin-bottom: 10px; border-radius: 16px; font-weight: 600; display: flex; align-items: center; justify-content: space-between; transition: 0.2s; border: 1px solid #f3f4f6; }
+        .todo-item:hover { transform: translateX(5px); border-color: var(--primary); }
+        .todo-text { flex: 1; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .todo-text.done { text-decoration: line-through; opacity: 0.5; }
+        .btn-delete { background: #fee2e2; color: #ef4444; border: none; padding: 8px; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-left: 10px; }
+        .btn-delete:hover { background: #ef4444; color: white; }
 
-        .motto-footer { grid-column: span 2; text-align: center; opacity: 0.2; font-size: 11px; margin-top: 40px; letter-spacing: 2px; }
+        /* Breath Blob */
+        .breath-wrap { height: 200px; display: flex; align-items: center; justify-content: center; }
+        .blob { width: 120px; height: 120px; background: linear-gradient(45deg, var(--primary), var(--accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 1.2rem; cursor: pointer; box-shadow: 0 0 30px rgba(99, 102, 241, 0.4); transition: all 4s ease-in-out; }
+        .blob.inhale { transform: scale(1.8); } .blob.exhale { transform: scale(1); }
+
+        /* Grade Gen */
+        .grade-big { font-size: 5rem; font-weight: 800; color: var(--primary); text-align: center; font-family: 'Outfit'; margin: 20px 0; text-shadow: 2px 2px 0px #e0e7ff; }
+
+        /* Bingo */
+        .bingo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+        .bingo-item { aspect-ratio: 1; background: white; border-radius: 12px; padding: 5px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.2s; border: 2px solid transparent; color: var(--text-grey); }
+        .bingo-item:hover { transform: scale(0.95); background: #f9fafb; }
+        .bingo-item.checked { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Music Floating */
+        .music-float { position: fixed; bottom: 20px; right: 20px; background: white; padding: 10px 20px; border-radius: 50px; display: flex; align-items: center; gap: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); z-index: 100; border: 2px solid var(--primary); }
+        .play-toggle { width: 40px; height: 40px; border-radius: 50%; border: none; background: var(--primary); color: white; cursor: pointer; }
+
+        /* Toast */
+        .toast { position: fixed; top: 20px; left: 50%; transform: translate(-50%, -100px); background: #111827; color: white; padding: 12px 30px; border-radius: 50px; font-weight: 700; z-index: 999; transition: 0.4s; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .toast.show { transform: translate(-50%, 0); }
+
+        /* Void */
+        .trash-btn { font-size: 3rem; margin: 20px auto; display: block; background: none; border: none; cursor: pointer; transition: 0.3s; }
+        .trash-btn:hover { transform: scale(1.2) rotate(15deg); }
+
+        /* Game Simulasi */
+        .calendar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px; margin-top: 20px; }
+        .cal-day { background: white; border-radius: 12px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; cursor: pointer; border: 2px solid transparent; transition: 0.2s; position: relative; overflow: hidden; color: var(--text-dark); }
+        .cal-day:hover { transform: translateY(-3px); border-color: var(--primary); }
+        .cal-day.passed { background: var(--success); color: white; border-color: var(--success); }
+        .cal-day.failed { background: var(--accent); color: white; border-color: var(--accent); }
+        .cal-day.locked { opacity: 0.5; cursor: not-allowed; background: #e5e7eb; color: #9ca3af; }
+        .sanity-bar { height: 20px; width: 100%; background: #e5e7eb; border-radius: 50px; overflow: hidden; margin-bottom: 20px; border: 1px solid white; }
+        .sanity-fill { height: 100%; width: 100%; background: var(--primary); transition: width 0.5s ease, background 0.3s; }
+
+        .sim-modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
+        .sim-content { background: white; width: 100%; max-width: 400px; border-radius: 24px; padding: 30px; text-align: center; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        .sim-text { font-size: 1.2rem; font-weight: 700; margin: 20px 0 30px; line-height: 1.5; }
+        .sim-btn-group { display: flex; flex-direction: column; gap: 10px; }
 
     </style>
 </head>
 <body>
 
-    <div class="home-wrapper">
-        <section class="hero-section">
-            <span class="hero-tag">Personal Teaching Space</span>
-            
-            <h1>Selamat Datang, <br><span id="userName" style="color:var(--purple-soft)">Ruang Kerja Pribadi</span></h1>
-            
-            <p class="hero-desc">
-                SiPandu membantu guru menata administrasi dan perencanaan pembelajaran
-                dalam satu alur kerja pribadi. Fokus pada kerapian dokumen, kejelasan tujuan, dan refleksi praktik mengajar.
-            </p>
-            
-            <div style="margin-top: 35px; font-size: 11px; font-weight: 800; letter-spacing: 2px; color: #4caf50;">
-                <span style="opacity:0.5; color: white;">STATUS RUANG KERJA:</span> SIAP
-            </div>
-        </section>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div id="toast" class="toast">Notif Masuk!</div>
 
-        <div class="status-grid">
-            <div class="stat-card">
-                <span class="stat-val" id="countRPM">0</span>
-                <span class="stat-lab">Total RPM</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-val" id="countAgenda">0</span>
-                <span class="stat-lab">Agenda Tercatat</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-val">AMAN</span>
-                <span class="stat-lab">Integritas Data</span>
+    <div class="music-float">
+        <div style="font-size:0.8rem; font-weight:700;">
+            <i class="fas fa-music" style="color:var(--accent)"></i> <span id="songTitle">Lofi: Rapel Gaji</span>
+        </div>
+        <button class="play-toggle" onclick="toggleAudio()"><i class="fas fa-play" id="playIcon"></i></button>
+        <button class="play-toggle" style="background:#e5e7eb; color:#374151" onclick="nextAudio()"><i class="fas fa-forward"></i></button>
+        <audio id="bgm" loop></audio>
+    </div>
+
+    <div class="container">
+        
+        <div class="glass hero-box">
+            <span class="date-badge" id="dateDisplay">Hari ke-1</span>
+            <div class="daily-quote" id="dailyQuote">"Memuat penderitaan..."</div>
+            <div class="daily-sub">Ingat: Gaji kecil, pahala besar (katanya).</div>
+        </div>
+
+        <div class="nav-scroller">
+            <div class="nav-pills">
+                <button class="nav-btn active" onclick="switchTab('admin', this)">⚡ Admin</button>
+                <button class="nav-btn" onclick="switchTab('healing', this)">🧘 Healing</button>
+                <button class="nav-btn" onclick="switchTab('survival', this)">🎪 Survival</button>
+                <button class="nav-btn" onclick="switchTab('void', this)">🗑️ Sambat</button>
+                <button class="nav-btn" onclick="switchTab('game', this)">📅 Cek Mental</button>
             </div>
         </div>
 
-        <div class="card">
-            <h2>Activity Snapshot</h2>
-            <div id="logSummary">
-                <p style="opacity:0.3; font-size: 13px; font-style: italic;">Memuat catatan aktivitas...</p>
+        <div id="admin" class="section active">
+            <div class="glass">
+                <div class="section-title"><i class="fas fa-fire" style="color:var(--accent)"></i> To-Do List Darurat</div>
+                
+                <p style="font-weight:700; margin-bottom:10px;">🔥 HARUS KELAR (Terpaksa)</p>
+                <input type="text" class="input-lg" placeholder="Ketik tugas, Enter..." onkeypress="addTodo(event, 'urgent')">
+                <div id="list-urgent"></div>
+
+                <p style="font-weight:700; margin:20px 0 10px; color:var(--text-grey);">💤 WACANA (Nanti Aja)</p>
+                <input type="text" class="input-lg" placeholder="Halusinasi produktif..." onkeypress="addTodo(event, 'later')">
+                <div id="list-later"></div>
+            </div>
+            <br>
+            <div class="glass" style="text-align:center;">
+                <div class="section-title" style="justify-content:center;">🎲 Generator Nilai Ghoib</div>
+                <div class="grade-big" id="gradeDisplay">--</div>
+                <input type="text" class="input-lg" placeholder="Nama Murid (Opsional)" style="text-align:center;">
+                <button class="btn-lg btn-primary" onclick="generateGrade()"><i class="fas fa-magic"></i> Munculkan Nilai</button>
             </div>
         </div>
 
-        <div class="card">
-            <h2>Akses Cepat</h2>
-            <div class="quick-nav">
-                <div class="nav-box" onclick="parent.go('rpm.html', 'Tactical RPM', this)">
-                    <span>📊</span>
-                    <label>Rancangan RPM</label>
+        <div id="healing" class="section">
+            <div class="glass">
+                <div class="section-title" style="color:var(--success)"><i class="fas fa-leaf"></i> Tarik Napas</div>
+                <p style="text-align:center; margin-bottom:20px;">Jangan lupa napas, BPJS ngurusnya ribet.</p>
+                <div class="breath-wrap">
+                    <div class="blob" id="breathBlob" onclick="startBreath()">MULAI</div>
                 </div>
-                <div class="nav-box" onclick="parent.go('administrasi.html', 'Data Center', this)">
-                    <span>📝</span>
-                    <label>Agenda Harian</label>
-                </div>
-                <div class="nav-box" onclick="parent.go('administrasi.html', 'Reflective Room', this)">
-                    <span>🧠</span>
-                    <label>Refleksi Guru</label>
-                </div>
-                <div class="nav-box" onclick="alert('Module Analytics: Locked')">
-                    <span>📡</span>
-                    <label>Keterpaduan Dokumen</label>
-                </div>
+            </div>
+            <br>
+            <div class="glass" style="text-align:center;">
+                <div class="section-title" style="justify-content:center; color:var(--primary)"><i class="fas fa-eye"></i> Cek Aura</div>
+                <div style="font-size:1.5rem; font-weight:800; margin:20px 0; min-height:50px;" id="auraText">???</div>
+                <button class="btn-lg btn-accent" onclick="checkAura()">Scan Jiwa Raga</button>
             </div>
         </div>
 
-        <div class="motto-footer">
-            SiPandu — Personal Teaching Workspace // v2.0
+        <div id="survival" class="section">
+            <div class="glass">
+                <div class="section-title" style="color:var(--warning)"><i class="fas fa-bullseye"></i> Bingo Honorer</div>
+                <div class="bingo-grid" id="bingoGrid"></div>
+                <button class="btn-lg btn-primary" onclick="resetBingo()">Reset Nasib</button>
+            </div>
+            <br>
+            <div class="glass">
+                <div class="section-title">🔮 Khodam Check</div>
+                <div style="font-size:1.2rem; font-weight:700; text-align:center; padding:20px; border:2px dashed #ccc; border-radius:15px; margin-bottom:15px;" id="khodamResult">
+                    Siapa yang melindungimu?
+                </div>
+                <button class="btn-lg btn-accent" onclick="checkKhodam()">Panggil Khodam</button>
+            </div>
+        </div>
+
+        <div id="void" class="section">
+            <div class="glass" style="text-align:center; padding:50px 20px;">
+                <h2>TEMPAT SAMBAT</h2>
+                <p style="margin-bottom:30px;">Tulis kekesalanmu, lalu klik tong sampah. Hilang selamanya.</p>
+                <input type="text" class="input-lg" id="voidInput" placeholder="Ketik: 'GAJI KECIL BANGET ANJ...'">
+                <button class="trash-btn" onclick="trashIt()">🗑️</button>
+            </div>
+        </div>
+
+        <div id="game" class="section">
+            <div class="glass">
+                <div class="section-title" style="color:var(--primary)"><i class="fas fa-calendar-alt"></i> Simulasi Mental 31 Hari</div>
+                <p style="margin-bottom:10px;">Bertahanlah tanpa resign. Klik tanggal untuk mulai.</p>
+                <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-weight:700; font-size:0.8rem;">
+                    <span>KEWARASAN:</span>
+                    <span id="sanityPercent">100%</span>
+                </div>
+                <div class="sanity-bar"><div class="sanity-fill" id="sanityBar"></div></div>
+                <div class="calendar-grid" id="calGrid"></div>
+                <button class="btn-lg btn-primary" style="margin-top:20px;" onclick="resetSim()">
+                    <i class="fas fa-redo"></i> Ulang Bulan Ini
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="sim-modal" id="simModal">
+        <div class="sim-content">
+            <div style="font-size:3rem; margin-bottom:10px;">😱</div>
+            <h3 id="modalDayTitle">HARI KE-X</h3>
+            <p class="sim-text" id="modalScenario">Skenario...</p>
+            <div class="sim-btn-group">
+                <button class="btn-lg btn-primary" onclick="resolveDay(true)">KUAT (Sabar)</button>
+                <button class="btn-lg btn-accent" onclick="resolveDay(false)" style="background:#ef4444;">RESIGN (Nyerah)</button>
+            </div>
         </div>
     </div>
 
     <script>
-        function loadHomeData() {
-            const adminStore = JSON.parse(localStorage.getItem('sipandu_authority_master')) || { common: {}, jurnal: [] };
-            const rpmStore = JSON.parse(localStorage.getItem('rpm_db_v5')) || [];
+        /* --- DATABASE --- */
+        const DB = {
+            struggles: [
+                "Awal bulan. Harapan masih hidup.", "Masih semangat karena belum inget gaji.", 
+                "Ngajar penuh, dompet kosong.", "Kata kepsek: sabar dulu ya.", 
+                "Masuk pagi, pulang sore, status masih honorer.", "Kerja tim, honor individu.", 
+                "Minggu tapi mikir RPP.", "Katanya sementara. Sudah bertahun-tahun.", 
+                "Jam kosong diisi. Honor tetap kosong.", "Ditanya: betah? Ya karena butuh.", 
+                "Ngajar sambil mikir cari kerja lain.", "Capek bukan karena murid, tapi sistem.", 
+                "Dibilang pengabdian, tapi tuntutannya profesional.", "Setengah bulan. Gaji masih mitos.", 
+                "Motivasi turun. Tanggung jawab naik.", "Honorer tapi bebannya ASN.", 
+                "Kerja ekstra biar dianggap.", "Datang paling pagi, pulang paling akhir.", 
+                "Dipuji rajin, dibayar pasrah.", "Kontrak dipegang sekolah, hidup dipegang doa.", 
+                "Akhir pekan tapi kepala tetap di sekolah.", "Mulai hitung sisa mie instan.", 
+                "Ngajar sambil pura-pura kuat.", "Katanya nunggu anggaran.", 
+                "Masih honorer, masih disuruh sabar.", "Kerja karena cinta, bertahan karena butuh.", 
+                "Ditanya: kapan daftar P3K?", "Bertahan itu pilihan, resign itu mimpi.", 
+                "Janji cair akhir bulan.", "Akhir bulan. Janji belum ditepati.", 
+                "Masuk bulan baru. Status masih sama."
+            ],
+            khodams: ["Kulkas 2 Pintu", "Beat Karbu Racing", "Peri Gaji UMR", "Siluman RPP", "Hantu Wifi RTO", "Tuyul Spidol", "Seblak Ceker Level 5", "Naga Printer Macet", "Genderuwo Akreditasi", "Jin Pengawas Ujian"],
+            auras: ["✨ Aura Guru Idola", "🔥 Aura Guru Killer", "🔋 Aura Low Battery", "🧘 Aura Pasrah Lillahi Ta'ala", "⚡ Aura Senggol Bacok", "🦄 Aura Pura-pura Bahagia"],
+            bingo: ["Spidol Ilang", "Murid Muntah", "Printer Rusak", "Wifi RTO", "Lupa Absen", "Ditanya Nikah", "Gaji Telat", "Siswa Bolos", "Rapat Gak Jelas", "Kopi Tumpah", "Laptop Kentang", "Ortu Rewel", "Jam Kosong", "Kebelet", "Ngantuk"],
+            simScenarios: [
+                "Hari pertama masuk. Murid manggil kamu 'Bro' bukan 'Pak/Bu'.", "Disuruh jadi panitia acara dadakan tanpa budget.", "Printer macet pas mau cetak soal ujian 5 menit lagi.", "Gaji telat cair (lagi). Alasan: bendahara lupa transfer.", "Ada walimurid protes nilainya anaknya jelek, padahal anaknya jarang masuk.", "Disuruh ngajar mapel yang bukan bidangmu karena guru lain bolos.", "Internet sekolah mati pas lagi input rapor online.", "Ketemu mantan murid yang udah kerja dan gajinya lebih gede dari kamu.", "Lupa bawa bekal, kantin tutup, dompet tinggal 5 ribu.", "Rapat evaluasi 4 jam cuma bahas warna taplak meja.", "Laptop restart sendiri pas lagi presentasi di depan pengawas.", "Hujan deras, bocor tepat di atas mejamu.", "Ditanya 'Kapan diangkat PNS?' sama tetangga julid.", "Siswa ijin ke toilet, balik-balik udah ganti jam pelajaran.", "File RPP setahun hilang karena flashdisk kena virus.", "Jam kosong dipake buat ngerjain administrasi orang lain.", "Dikasih tugas tambahan jadi admin medsos sekolah (gratis).", "Murid main HP pas pelajaran, ditegur malah nyindir di story WA.", "Pulang sore, kunci gerbang sekolah kebawa satpam.", "Hari Minggu ditelpon Kepsek nanyain data siswa.", "Spidol habis semua, terpaksa beli pake uang sendiri.", "Listrik padam pas lagi zoom meeting akreditasi.", "Dapet jatah piket kebersihan toilet karena OB sakit.", "Dituduh pilih kasih cuma karena minjemin pulpen ke satu siswa.", "Baju seragam kena tumpahan kopi di pagi buta.", "Motor mogok di jalan, telat sampai sekolah dimarahin.", "Dapat surat cinta dari murid (isinya minta nilai dinaikin).", "Uang kas tekor, dituduh korupsi padahal nombok.", "Sakit demam tapi gak boleh ijin karena gak ada pengganti.", "Gaji akhirnya cair! Tapi langsung habis bayar hutang.", "Selamat! Kamu bertahan sebulan. Hadiahnya: Ulangi lagi bulan depan."
+            ]
+        };
 
-            // Mengisi Nama Guru (Jika ada di local storage, ganti tulisan 'Ruang Kerja Pribadi')
-            // Jika belum ada data guru, biarkan default 'Ruang Kerja Pribadi' agar estetik
-            if(adminStore.common.guru) {
-                document.getElementById('userName').innerText = adminStore.common.guru;
-            }
+        /* --- STATE MANAGEMENT (LOCALSTORAGE) --- */
+        let todos = JSON.parse(localStorage.getItem('guru_todos')) || { urgent: [], later: [] };
+        let bingoState = JSON.parse(localStorage.getItem('guru_bingo')) || [];
+        let gameState = JSON.parse(localStorage.getItem('guru_game')) || { progress: 0, sanity: 100 };
 
-            document.getElementById('countRPM').innerText = rpmStore.length;
-            document.getElementById('countAgenda').innerText = adminStore.jurnal.length;
+        /* --- LOGIC UTAMA --- */
+        
+        // 1. Initial Load
+        const today = new Date().getDate();
+        document.getElementById('dateDisplay').innerText = `HARI KE-${today}`;
+        document.getElementById('dailyQuote').innerText = `"${DB.struggles[today-1] || DB.struggles[0]}"`;
+        renderTodos();
+        renderBingo();
+        initSim();
 
-            if(adminStore.jurnal.length > 0) {
-                const recent = adminStore.jurnal.slice(-3).reverse();
-                document.getElementById('logSummary').innerHTML = recent.map(j => `
-                    <div class="summary-item">
-                        <div>
-                            <div style="font-size: 9px; color: var(--purple-soft); font-weight: 900; opacity: 0.7;">${j.tgl || 'TIMESTAMP'}</div>
-                            <div style="font-size: 13px; margin-top: 6px; font-weight: 300; opacity: 0.9;">${j.kegiatan}</div>
-                        </div>
-                        <div style="font-size: 14px; opacity: 0.2;">●</div>
-                    </div>
-                `).join('');
-            } else {
-                 document.getElementById('logSummary').innerHTML = `<p style="opacity:0.3; font-size: 13px; font-style: italic;">Belum ada aktivitas tercatat.</p>`;
+        // 2. Navigation
+        function switchTab(id, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg; t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2000);
+        }
+
+        /* --- TO-DO LIST LOGIC --- */
+        function addTodo(e, type) {
+            if(e.key === 'Enter' && e.target.value) {
+                const newTask = { id: Date.now(), text: e.target.value, done: false };
+                todos[type].unshift(newTask);
+                saveTodos();
+                renderTodos();
+                e.target.value = '';
+                showToast("Tugas ditambahkan!");
             }
         }
-        window.onload = loadHomeData;
+
+        function toggleTodo(id, type) {
+            const idx = todos[type].findIndex(t => t.id === id);
+            if(idx > -1) {
+                todos[type][idx].done = !todos[type][idx].done;
+                saveTodos();
+                renderTodos();
+            }
+        }
+
+        function deleteTodo(id, type) {
+            todos[type] = todos[type].filter(t => t.id !== id);
+            saveTodos();
+            renderTodos();
+            showToast("Tugas dihapus!");
+        }
+
+        function saveTodos() {
+            localStorage.setItem('guru_todos', JSON.stringify(todos));
+        }
+
+        function renderTodos() {
+            ['urgent', 'later'].forEach(type => {
+                const container = document.getElementById('list-' + type);
+                container.innerHTML = '';
+                todos[type].forEach(todo => {
+                    const div = document.createElement('div');
+                    div.className = 'todo-item';
+                    div.innerHTML = `
+                        <div class="todo-text ${todo.done ? 'done' : ''}" onclick="toggleTodo(${todo.id}, '${type}')">
+                            <i class="fas fa-${todo.done ? 'check-circle' : 'circle'}" style="color:${todo.done ? 'var(--success)' : '#d1d5db'}"></i> 
+                            ${todo.text}
+                        </div>
+                        <button class="btn-delete" onclick="deleteTodo(${todo.id}, '${type}')"><i class="fas fa-trash"></i></button>
+                    `;
+                    container.appendChild(div);
+                });
+            });
+        }
+
+        /* --- GAME SIMULASI LOGIC --- */
+        function initSim() {
+            renderGrid();
+            updateSanity();
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('calGrid');
+            grid.innerHTML = '';
+            for(let i=0; i<31; i++) {
+                const day = document.createElement('div');
+                day.className = 'cal-day';
+                day.innerText = i + 1;
+                
+                if(i < gameState.progress) {
+                    day.classList.add('passed');
+                    day.innerHTML = '<i class="fas fa-check"></i>';
+                } else if (i === gameState.progress) {
+                    day.style.borderColor = 'var(--primary)';
+                    day.onclick = () => openSimModal(i);
+                } else {
+                    day.classList.add('locked');
+                }
+                grid.appendChild(day);
+            }
+        }
+
+        function openSimModal(dayIdx) {
+            const modal = document.getElementById('simModal');
+            document.getElementById('modalDayTitle').innerText = `HARI KE-${dayIdx + 1}`;
+            document.getElementById('modalScenario').innerText = DB.simScenarios[dayIdx];
+            modal.style.display = 'flex';
+        }
+
+        function resolveDay(isStrong) {
+            document.getElementById('simModal').style.display = 'none';
+            if(isStrong) {
+                gameState.progress++;
+                const damage = Math.floor(Math.random() * 5) + 1; 
+                gameState.sanity = Math.max(0, gameState.sanity - damage);
+                showToast(`Bertahan! Kewarasan -${damage}%`);
+                if(gameState.progress >= 31) alert("KAMU LOLOS SEBULAN! \nStatus: Manusia Setengah Dewa.");
+            } else {
+                gameState.sanity = 0;
+                alert("Game Over. Mentalmu jebol. \nSilakan healing dulu.");
+                gameState.progress = 0; gameState.sanity = 100;
+            }
+            localStorage.setItem('guru_game', JSON.stringify(gameState));
+            initSim();
+        }
+
+        function updateSanity() {
+            const bar = document.getElementById('sanityBar');
+            const txt = document.getElementById('sanityPercent');
+            bar.style.width = gameState.sanity + '%';
+            txt.innerText = gameState.sanity + '%';
+            if(gameState.sanity > 50) bar.style.background = 'var(--success)';
+            else if(gameState.sanity > 20) bar.style.background = 'var(--warning)';
+            else bar.style.background = 'var(--accent)';
+        }
+
+        function resetSim() {
+            if(confirm("Ulang dari Hari ke-1?")) {
+                gameState = { progress: 0, sanity: 100 };
+                localStorage.setItem('guru_game', JSON.stringify(gameState));
+                initSim();
+            }
+        }
+
+        /* --- BINGO LOGIC --- */
+        function renderBingo() {
+            const grid = document.getElementById('bingoGrid');
+            grid.innerHTML = '';
+            // If bingo state is empty or wrong size, init it
+            if(bingoState.length === 0) {
+                const items = DB.bingo.sort(() => 0.5 - Math.random()).slice(0, 9);
+                bingoState = items.map(txt => ({ text: txt, checked: false }));
+                localStorage.setItem('guru_bingo', JSON.stringify(bingoState));
+            }
+
+            bingoState.forEach((item, idx) => {
+                const d = document.createElement('div');
+                d.className = `bingo-item ${item.checked ? 'checked' : ''}`;
+                d.innerText = item.text;
+                d.onclick = () => toggleBingo(idx);
+                grid.appendChild(d);
+            });
+        }
+
+        function toggleBingo(idx) {
+            bingoState[idx].checked = !bingoState[idx].checked;
+            localStorage.setItem('guru_bingo', JSON.stringify(bingoState));
+            renderBingo();
+        }
+
+        function initBingo() { // Reset Bingo Button
+            bingoState = []; // Clear
+            renderBingo(); // Re-init inside render
+        }
+
+        /* --- OTHER FEATURES --- */
+        function generateGrade() {
+            const el = document.getElementById('gradeDisplay');
+            let i = 0;
+            const t = setInterval(() => {
+                el.innerText = Math.floor(Math.random() * 50) + 50;
+                i++;
+                if(i > 10) {
+                    clearInterval(t);
+                    el.innerText = Math.floor(Math.random() * (95 - 70 + 1)) + 70; 
+                    showToast('Nilai aman.');
+                }
+            }, 50);
+        }
+
+        let breathing = false;
+        function startBreath() {
+            if(breathing) return;
+            breathing = true;
+            const b = document.getElementById('breathBlob');
+            function cycle() {
+                b.className = 'blob inhale'; b.innerText = "TAHAN";
+                setTimeout(() => {
+                    b.className = 'blob exhale'; b.innerText = "HEMBUS";
+                    setTimeout(cycle, 4000);
+                }, 4000);
+            }
+            b.innerText = "TARIK";
+            cycle();
+        }
+
+        function checkAura() {
+            document.getElementById('auraText').innerText = "Scanning...";
+            setTimeout(() => { document.getElementById('auraText').innerText = DB.auras[Math.floor(Math.random()*DB.auras.length)]; }, 800);
+        }
+        function checkKhodam() { document.getElementById('khodamResult').innerText = DB.khodams[Math.floor(Math.random()*DB.khodams.length)]; }
+
+        function trashIt() {
+            const inp = document.getElementById('voidInput');
+            if(!inp.value) return;
+            inp.style.transition = '0.5s'; inp.style.transform = 'scale(0) rotate(720deg)';
+            setTimeout(() => { inp.value = ''; inp.style.transform = 'scale(1) rotate(0deg)'; showToast('Keluhan dimusnahkan.'); }, 500);
+        }
+
+        /* --- AUDIO --- */
+        const songs = [
+            {t: "Lofi: Rapel Gaji", src: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"},
+            {t: "Lofi: Koreksi", src: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=lofi-chill-medium-version-113845.mp3"}
+        ];
+        let sIdx = 0;
+        const bgm = document.getElementById('bgm');
+        bgm.src = songs[0].src;
+
+        function toggleAudio() {
+            const ic = document.getElementById('playIcon');
+            if(bgm.paused) { bgm.play(); ic.className = 'fas fa-pause'; } else { bgm.pause(); ic.className = 'fas fa-play'; }
+        }
+        function nextAudio() {
+            sIdx = (sIdx + 1) % songs.length;
+            bgm.src = songs[sIdx].src;
+            document.getElementById('songTitle').innerText = songs[sIdx].t;
+            bgm.play(); document.getElementById('playIcon').className = 'fas fa-pause';
+        }
+
     </script>
 </body>
 </html>
